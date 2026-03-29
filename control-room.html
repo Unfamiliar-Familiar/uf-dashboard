@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UF Control Room</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
   :root {
-    --bg: #0d0d0d; --card: #1a1a1a; --border: #2a2a2a;
-    --beige: #FBF9F2; --butter: #FFF5C4;
-    --green: #22c55e; --yellow: #eab308; --red: #ef4444; --blue: #3b82f6;
+    --bg: #FBF9F2; --card: #FFFFFF; --border: rgba(35,32,31,0.1);
+    --beige: #23201F; --butter: #9D3F0D;
+    --green: #166534; --yellow: #92400e; --red: #991b1b; --blue: #1e40af;
     --dim: #6b6560;
     --mono: 'DM Mono', 'SF Mono', monospace;
     --sans: 'Inter Tight', -apple-system, sans-serif;
@@ -20,7 +21,7 @@
   .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-width: 1600px; margin: 0 auto 32px; }
   .kpi-tile { background: var(--card); padding: 20px 16px; text-align: center; }
   .kpi-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
-  .kpi-value { font-family: var(--mono); font-size: 26px; font-weight: 400; color: var(--beige); line-height: 1; }
+  .kpi-value { font-family: var(--mono); font-size: 26px; font-weight: 400; color: var(--beige); line-height: 1; letter-spacing: -0.02em; }
   .kpi-sub { font-family: var(--mono); font-size: 11px; color: var(--dim); margin-top: 4px; }
   .kpi-up { color: var(--green); } .kpi-warn { color: var(--yellow); } .kpi-err { color: var(--red); }
 
@@ -38,7 +39,7 @@
   .header h1 { font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
   .header h2 { font-family: var(--mono); font-size: 28px; color: var(--beige); font-weight: 400; }
   .header .date { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-top: 8px; }
-  .header .north-star { font-size: 13px; color: var(--butter); margin-top: 12px; font-style: italic; }
+  .header .north-star { font-size: 13px; color: var(--butter); margin-top: 12px; font-style: italic; font-family: var(--mono); }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; max-width: 1600px; margin: 0 auto; }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
@@ -60,7 +61,7 @@
   .badge.off { background: rgba(239,68,68,0.15); color: var(--red); }
   .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; border-radius: 2px; }
-  .pf-green { background: var(--green); } .pf-yellow { background: var(--yellow); } .pf-dim { background: #444; }
+  .pf-green { background: var(--green); } .pf-yellow { background: var(--yellow); } .pf-dim { background: #ccc; }
 
   .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
   .row:last-child { border-bottom: none; }
@@ -68,7 +69,7 @@
   .row-value { font-family: var(--mono); font-size: 13px; }
 
   .clickable { cursor: pointer; }
-  .clickable:hover { background: rgba(255,255,255,0.03); border-radius: 4px; margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
+  .clickable:hover { background: rgba(35,32,31,0.04); border-radius: 4px; margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
   .clickable .arrow { color: var(--dim); font-size: 10px; transition: transform 0.2s; }
   .clickable.open .arrow { transform: rotate(90deg); }
 
@@ -76,15 +77,15 @@
   .detail.open { display: block; }
   .detail-table { width: 100%; border-collapse: collapse; font-size: 11px; }
   .detail-table th { text-align: left; padding: 6px 8px; color: var(--dim); font-weight: 500; border-bottom: 1px solid var(--border); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em; }
-  .detail-table td { padding: 6px 8px; border-bottom: 1px solid rgba(42,42,42,0.5); color: #ccc; }
-  .detail-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .detail-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); color: var(--beige); }
+  .detail-table tr:hover td { background: rgba(35,32,31,0.03); }
   .detail-table a { color: var(--butter); text-decoration: none; }
   .detail-table a:hover { text-decoration: underline; }
 
   .section-full { grid-column: 1 / -1; }
   .cron-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px; }
-  .cron-item { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 8px; background: rgba(255,255,255,0.02); border-radius: 4px; }
-  .cron-name { font-family: var(--mono); color: var(--beige); }
+  .cron-item { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 8px; background: rgba(35,32,31,0.03); border-radius: 4px; }
+  .cron-name { font-family: var(--mono); color: var(--beige); font-size: 12px; }
   .cron-schedule { color: var(--dim); font-family: var(--mono); font-size: 11px; }
   .cron-type { font-size: 10px; padding: 1px 5px; border-radius: 2px; }
   .cron-type.system { background: rgba(34,197,94,0.1); color: var(--green); }
@@ -96,7 +97,7 @@
   .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
   .tag-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); }
 
-  .footer { text-align: center; padding: 32px 0 16px; font-family: var(--mono); font-size: 11px; color: #444; }
+  .footer { text-align: center; padding: 32px 0 16px; font-family: var(--mono); font-size: 11px; color: var(--dim); }
 
   .genre-bar { display: flex; height: 20px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
   .genre-seg { height: 100%; position: relative; min-width: 2px; }
@@ -106,7 +107,7 @@
   .err-text { color: var(--red); }
   .ok-text { color: var(--green); }
 
-  .sub-row { font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(42,42,42,0.3); display: flex; justify-content: space-between; }
+  .sub-row { font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(35,32,31,0.06); display: flex; justify-content: space-between; }
   .sub-row:last-child { border-bottom: none; }
 
   .todo-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; display: flex; gap: 8px; align-items: flex-start; }
@@ -125,7 +126,7 @@
 <div class="header">
   <h1>Unfamiliar Familiar</h1>
   <h2>Control Room</h2>
-  <div class="date">Generated: 29 Mar 2026 11:38</div>
+  <div class="date">Generated: 29 Mar 2026 16:58</div>
   <div class="north-star">North star: Telegram = CEO brain. Peter + Nour just approve and shoot. Everything else automated.</div>
 </div>
 
@@ -396,19 +397,19 @@
     </div>
     <div class="detail" id="genres">
       <div class="genre-bar">
-        <div class="genre-seg" style="width:27.682403433476395%;background:#22c55e" data-label="Rock: 258 (28%)"></div>
+        <div class="genre-seg" style="width:27.78969957081545%;background:#22c55e" data-label="Rock: 259 (28%)"></div>
         <div class="genre-seg" style="width:8.905579399141631%;background:#3b82f6" data-label="Electronic: 83 (9%)"></div>
         <div class="genre-seg" style="width:7.939914163090128%;background:#eab308" data-label="Funk / Soul: 74 (8%)"></div>
         <div class="genre-seg" style="width:6.115879828326181%;background:#ef4444" data-label="Jazz: 57 (6%)"></div>
-        <div class="genre-seg" style="width:5.686695278969957%;background:#a855f7" data-label="Hip Hop: 53 (6%)"></div>
-        <div class="genre-seg" style="width:3.862660944206009%;background:#ec4899" data-label="Arabic, Folk, World, & Country: 36 (4%)"></div>
+        <div class="genre-seg" style="width:5.579399141630901%;background:#a855f7" data-label="Hip Hop: 52 (6%)"></div>
+        <div class="genre-seg" style="width:3.755364806866953%;background:#ec4899" data-label="Arabic, Folk, World, & Country: 35 (4%)"></div>
         <div class="genre-seg" style="width:3.111587982832618%;background:#06b6d4" data-label="Rock, Pop: 29 (3%)"></div>
         <div class="genre-seg" style="width:2.7896995708154506%;background:#f97316" data-label="Folk, World, & Country: 26 (3%)"></div>
         <div class="genre-seg" style="width:2.7896995708154506%;background:#84cc16" data-label="Pop: 26 (3%)"></div>
         <div class="genre-seg" style="width:2.1459227467811157%;background:#6366f1" data-label="Electronic, Pop: 20 (2%)"></div>
-        <div class="genre-seg" style="width:2.03862660944206%;background:#14b8a6" data-label="Arabic: 19 (2%)"></div>
-        <div class="genre-seg" style="width:1.9313304721030045%;background:#f43f5e" data-label="Funk / Soul, Pop: 18 (2%)"></div>
-        <div class="genre-seg" style="width:1.9313304721030045%;background:#8b5cf6" data-label="Unknown: 18 (2%)"></div>
+        <div class="genre-seg" style="width:2.1459227467811157%;background:#14b8a6" data-label="Arabic: 20 (2%)"></div>
+        <div class="genre-seg" style="width:2.03862660944206%;background:#f43f5e" data-label="Unknown: 19 (2%)"></div>
+        <div class="genre-seg" style="width:1.9313304721030045%;background:#8b5cf6" data-label="Funk / Soul, Pop: 18 (2%)"></div>
         <div class="genre-seg" style="width:1.3948497854077253%;background:#d946ef" data-label="Hip Hop, Funk / Soul: 13 (1%)"></div>
         <div class="genre-seg" style="width:1.0729613733905579%;background:#22c55e" data-label="Jazz, Funk / Soul: 10 (1%)"></div>
         <div class="genre-seg" style="width:1.0729613733905579%;background:#3b82f6" data-label="Electronic, Rock: 10 (1%)"></div>
@@ -427,14 +428,14 @@
         <div class="genre-seg" style="width:0.4291845493562232%;background:#22c55e" data-label="Hip Hop, Jazz, Funk / Soul: 4 (0%)"></div>
         <div class="genre-seg" style="width:0.3218884120171674%;background:#3b82f6" data-label="Rock, Stage & Screen: 3 (0%)"></div>
         <div class="genre-seg" style="width:0.3218884120171674%;background:#eab308" data-label="Electronic, Classical, Stage & Screen: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.3218884120171674%;background:#ef4444" data-label="Stage & Screen: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.3218884120171674%;background:#a855f7" data-label="Rock, Funk / Soul: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.3218884120171674%;background:#ec4899" data-label="Rock, Pop, Folk, World, & Country: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.2145922746781116%;background:#06b6d4" data-label="Electronic, Jazz, Rock, Pop: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2145922746781116%;background:#f97316" data-label="Jazz, Funk / Soul, Blues, Pop: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2145922746781116%;background:#84cc16" data-label="Electronic, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2145922746781116%;background:#6366f1" data-label="Jazz, Latin, Funk / Soul: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2145922746781116%;background:#14b8a6" data-label="Electronic, Hip Hop, Funk / Soul: 2 (0%)"></div>
+        <div class="genre-seg" style="width:0.3218884120171674%;background:#ef4444" data-label="Rock, Funk / Soul: 3 (0%)"></div>
+        <div class="genre-seg" style="width:0.3218884120171674%;background:#a855f7" data-label="Rock, Pop, Folk, World, & Country: 3 (0%)"></div>
+        <div class="genre-seg" style="width:0.2145922746781116%;background:#ec4899" data-label="Electronic, Jazz, Rock, Pop: 2 (0%)"></div>
+        <div class="genre-seg" style="width:0.2145922746781116%;background:#06b6d4" data-label="Jazz, Funk / Soul, Blues, Pop: 2 (0%)"></div>
+        <div class="genre-seg" style="width:0.2145922746781116%;background:#f97316" data-label="Electronic, Folk, World, & Country: 2 (0%)"></div>
+        <div class="genre-seg" style="width:0.2145922746781116%;background:#84cc16" data-label="Jazz, Latin, Funk / Soul: 2 (0%)"></div>
+        <div class="genre-seg" style="width:0.2145922746781116%;background:#6366f1" data-label="Electronic, Hip Hop, Funk / Soul: 2 (0%)"></div>
+        <div class="genre-seg" style="width:0.2145922746781116%;background:#14b8a6" data-label="Stage & Screen: 2 (0%)"></div>
         <div class="genre-seg" style="width:0.2145922746781116%;background:#f43f5e" data-label="Arabic, Pop, Folk, World, & Country: 2 (0%)"></div>
         <div class="genre-seg" style="width:0.2145922746781116%;background:#8b5cf6" data-label="Arabic, Rock: 2 (0%)"></div>
         <div class="genre-seg" style="width:0.2145922746781116%;background:#d946ef" data-label="Blues: 2 (0%)"></div>
@@ -506,19 +507,19 @@
       </div>
       <table class="detail-table" style="margin-top:8px">
         <tr><th>Genre</th><th>Count</th><th>%</th></tr>
-        <tr><td>Rock</td><td>258</td><td>28%</td></tr>
+        <tr><td>Rock</td><td>259</td><td>28%</td></tr>
         <tr><td>Electronic</td><td>83</td><td>9%</td></tr>
         <tr><td>Funk / Soul</td><td>74</td><td>8%</td></tr>
         <tr><td>Jazz</td><td>57</td><td>6%</td></tr>
-        <tr><td>Hip Hop</td><td>53</td><td>6%</td></tr>
-        <tr><td>Arabic, Folk, World, & Country</td><td>36</td><td>4%</td></tr>
+        <tr><td>Hip Hop</td><td>52</td><td>6%</td></tr>
+        <tr><td>Arabic, Folk, World, & Country</td><td>35</td><td>4%</td></tr>
         <tr><td>Rock, Pop</td><td>29</td><td>3%</td></tr>
         <tr><td>Folk, World, & Country</td><td>26</td><td>3%</td></tr>
         <tr><td>Pop</td><td>26</td><td>3%</td></tr>
         <tr><td>Electronic, Pop</td><td>20</td><td>2%</td></tr>
-        <tr><td>Arabic</td><td>19</td><td>2%</td></tr>
+        <tr><td>Arabic</td><td>20</td><td>2%</td></tr>
+        <tr><td>Unknown</td><td>19</td><td>2%</td></tr>
         <tr><td>Funk / Soul, Pop</td><td>18</td><td>2%</td></tr>
-        <tr><td>Unknown</td><td>18</td><td>2%</td></tr>
         <tr><td>Hip Hop, Funk / Soul</td><td>13</td><td>1%</td></tr>
         <tr><td>Jazz, Funk / Soul</td><td>10</td><td>1%</td></tr>
         <tr><td>Electronic, Rock</td><td>10</td><td>1%</td></tr>
@@ -537,7 +538,6 @@
         <tr><td>Hip Hop, Jazz, Funk / Soul</td><td>4</td><td>0%</td></tr>
         <tr><td>Rock, Stage & Screen</td><td>3</td><td>0%</td></tr>
         <tr><td>Electronic, Classical, Stage & Screen</td><td>3</td><td>0%</td></tr>
-        <tr><td>Stage & Screen</td><td>3</td><td>0%</td></tr>
         <tr><td>Rock, Funk / Soul</td><td>3</td><td>0%</td></tr>
         <tr><td>Rock, Pop, Folk, World, & Country</td><td>3</td><td>0%</td></tr>
         <tr><td>Electronic, Jazz, Rock, Pop</td><td>2</td><td>0%</td></tr>
@@ -545,6 +545,7 @@
         <tr><td>Electronic, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
         <tr><td>Jazz, Latin, Funk / Soul</td><td>2</td><td>0%</td></tr>
         <tr><td>Electronic, Hip Hop, Funk / Soul</td><td>2</td><td>0%</td></tr>
+        <tr><td>Stage & Screen</td><td>2</td><td>0%</td></tr>
         <tr><td>Arabic, Pop, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
         <tr><td>Arabic, Rock</td><td>2</td><td>0%</td></tr>
         <tr><td>Blues</td><td>2</td><td>0%</td></tr>
@@ -636,9 +637,9 @@
         <tr><td>Santana</td><td><a href="https://unfamiliarfamiliar.com/products/2829" target="_blank">Shango</a></td><td>AED 140</td><td>AED 80</td><td class="err-text">+75%</td><td><a href="https://www.cavo.ae/products/santana-shango-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
         <tr><td>The Rolling Stones</td><td><a href="https://unfamiliarfamiliar.com/products/3448" target="_blank">Let It Bleed</a></td><td>AED 176</td><td>AED 125</td><td class="err-text">+41%</td><td><a href="https://www.cavo.ae/products/the-rolling-stones-black-and-blue-gatefold-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
         <tr><td>Frank Sinatra</td><td><a href="https://unfamiliarfamiliar.com/products/3429" target="_blank">Ultimate Sinatra</a></td><td>AED 223</td><td>AED 159</td><td class="err-text">+40%</td><td><a href="https://www.vinyl.ae/products/ultimate-christmas-frank-sinatra-1" target="_blank">Vinyl.ae</a></td></tr>
-        <tr><td>Aretha Franklin</td><td><a href="https://unfamiliarfamiliar.com/products/3673" target="_blank">Lady Soul</a></td><td>AED 228</td><td>AED 169</td><td class="err-text">+35%</td><td><a href="https://www.vinyl.ae/products/queen-of-soul-aretha-franklin" target="_blank">Vinyl.ae</a></td></tr>
+        <tr><td>Aretha Franklin</td><td><a href="https://unfamiliarfamiliar.com/products/3667" target="_blank">Lady Soul</a></td><td>AED 228</td><td>AED 169</td><td class="err-text">+35%</td><td><a href="https://www.vinyl.ae/products/queen-of-soul-aretha-franklin" target="_blank">Vinyl.ae</a></td></tr>
         <tr><td>Abdel Halim Hafez, عبد الحليم حافظ</td><td><a href="https://unfamiliarfamiliar.com/products/3278" target="_blank">نبتدي منين الحكاية = Nebtdy Meneen El-Hekaya</a></td><td>AED 160</td><td>AED 125</td><td class="err-text">+28%</td><td><a href="https://www.cavo.ae/products/abdel-halim-hafez-نبتدي-منين-الحكاية-nebtedi-menien-el-hikaya-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
-        <tr><td>Ed Sheeran</td><td><a href="https://unfamiliarfamiliar.com/products/1859" target="_blank">÷ (Divide)</a></td><td>AED 236</td><td>AED 189</td><td class="err-text">+25%</td><td><a href="https://www.vinyl.ae/products/x-ed-sheeran" target="_blank">Vinyl.ae</a></td></tr>
+        <tr><td>Ed Sheeran</td><td><a href="https://unfamiliarfamiliar.com/products/1857" target="_blank">÷ (Divide)</a></td><td>AED 236</td><td>AED 189</td><td class="err-text">+25%</td><td><a href="https://www.vinyl.ae/products/x-ed-sheeran" target="_blank">Vinyl.ae</a></td></tr>
         <tr><td>ASALA</td><td><a href="https://unfamiliarfamiliar.com/products/3327" target="_blank">ASFA</a></td><td>AED 160</td><td>AED 130</td><td class="err-text">+23%</td><td><a href="https://www.cavo.ae/products/asala-asfa-lp" target="_blank">Cavo</a></td></tr>
         <tr><td>Elissa</td><td><a href="https://unfamiliarfamiliar.com/products/3301" target="_blank">ارجع للشوق = Ergaa Lel Shoua</a></td><td>AED 160</td><td>AED 130</td><td class="err-text">+23%</td><td><a href="https://www.cavo.ae/products/elissa-ergga-lel-shoua-lp" target="_blank">Cavo</a></td></tr>
         <tr><td>Elissa</td><td><a href="https://unfamiliarfamiliar.com/products/3312" target="_blank">بتمون = Betmoun</a></td><td>AED 160</td><td>AED 130</td><td class="err-text">+23%</td><td><a href="https://www.cavo.ae/products/elissa-betmoun-lp" target="_blank">Cavo</a></td></tr>
@@ -654,7 +655,7 @@
     <div class="detail" id="underpriced">
       <table class="detail-table">
         <tr><th>Artist</th><th>Album</th><th>UF</th><th>Comp</th><th>Diff</th></tr>
-        <tr><td>Al Green</td><td><a href="https://unfamiliarfamiliar.com/products/3416" target="_blank">Greatest Hits</a></td><td>AED 141</td><td>AED 229</td><td class="ok-text">-38%</td></tr>
+        <tr><td>Al Green</td><td><a href="https://unfamiliarfamiliar.com/products/3417" target="_blank">Greatest Hits</a></td><td>AED 141</td><td>AED 229</td><td class="ok-text">-38%</td></tr>
         <tr><td>Supertramp</td><td><a href="https://unfamiliarfamiliar.com/products/2933" target="_blank">Breakfast In America</a></td><td>AED 110</td><td>AED 170</td><td class="ok-text">-35%</td></tr>
         <tr><td>Chaka Khan</td><td><a href="https://unfamiliarfamiliar.com/products/2954" target="_blank">Chaka</a></td><td>AED 110</td><td>AED 169</td><td class="ok-text">-35%</td></tr>
         <tr><td>Michael Jackson</td><td><a href="https://unfamiliarfamiliar.com/products/1986" target="_blank">Thriller</a></td><td>AED 139</td><td>AED 199</td><td class="ok-text">-30%</td></tr>
@@ -670,7 +671,7 @@
     <div class="two-col">
       <div>
         <div class="row"><span class="row-label">Mood tagged</span><span class="row-value ok-text">100%</span></div>
-        <div class="row"><span class="row-label">Secondary mood</span><span class="row-value">815/932 (87%)</span></div>
+        <div class="row"><span class="row-label">Secondary mood</span><span class="row-value">816/932 (88%)</span></div>
         <div class="row"><span class="row-label">Brand DNA</span><span class="row-value ok-text">57% (531/932)</span></div>
         <div class="row"><span class="row-label">Low confidence tags</span><span class="row-value err-text">13</span></div>
         <div class="row"><span class="row-label">Weak mood configs</span><span class="row-value ">0</span></div>
@@ -757,15 +758,15 @@
       <table class="detail-table">
         <tr><th>Artist</th><th>Album</th><th>Mood</th><th>Score</th></tr>
         <tr><td>DMX</td><td><a href="https://unfamiliarfamiliar.com/products/3488" target="_blank">X Gon' Give It To Ya</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
-        <tr><td>Kanye West</td><td><a href="https://unfamiliarfamiliar.com/products/3455" target="_blank">The College Dropout </a></td><td>Cool Kids Club</td><td class="err-text">10</td></tr>
-        <tr><td>Kendrick Lamar</td><td><a href="https://unfamiliarfamiliar.com/products/2425" target="_blank">GNX(1LP) / Lamar, Kendrick / GNX(1LP)</a></td><td>TikTok Bangers</td><td class="err-text">10</td></tr>
+        <tr><td>Kanye West</td><td><a href="https://unfamiliarfamiliar.com/products/3456" target="_blank">The College Dropout </a></td><td>Cool Kids Club</td><td class="err-text">10</td></tr>
+        <tr><td>Kendrick Lamar</td><td><a href="https://unfamiliarfamiliar.com/products/3440" target="_blank">GNX(1LP) / Lamar, Kendrick / GNX(1LP)</a></td><td>TikTok Bangers</td><td class="err-text">10</td></tr>
         <tr><td>Lizzo</td><td><a href="https://unfamiliarfamiliar.com/products/3180" target="_blank">Coconut Oil</a></td><td>TikTok Bangers</td><td class="err-text">10</td></tr>
-        <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/3652" target="_blank">GO:OD AM (2LP) / Miller, Mac / GO:OD AM </a></td><td>GRWM</td><td class="err-text">10</td></tr>
+        <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/3646" target="_blank">GO:OD AM (2LP) / Miller, Mac / GO:OD AM </a></td><td>GRWM</td><td class="err-text">10</td></tr>
         <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/3443" target="_blank">Macadelic</a></td><td>GRWM</td><td class="err-text">10</td></tr>
-        <tr><td>Snoop Doggy Dogg</td><td><a href="https://unfamiliarfamiliar.com/products/2739" target="_blank">Tha Doggfather</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
+        <tr><td>Snoop Doggy Dogg</td><td><a href="https://unfamiliarfamiliar.com/products/2740" target="_blank">Tha Doggfather</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
         <tr><td>Various Artists</td><td><a href="https://unfamiliarfamiliar.com/products/3431" target="_blank">KPOP Demon Hunters (Sountrack From Netfl</a></td><td>Cool Kids Club</td><td class="err-text">10</td></tr>
-        <tr><td>Wu-Tang Clan</td><td><a href="https://unfamiliarfamiliar.com/products/3635" target="_blank">Wu-Tang Forever</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
-        <tr><td>Earth Wind And Fire</td><td><a href="https://unfamiliarfamiliar.com/products/3562" target="_blank">Greatest Hits 1978 Vol1 (1LP) / Earth Wi</a></td><td>Dinner: The Host's Edit</td><td class="err-text">15</td></tr>
+        <tr><td>Wu-Tang Clan</td><td><a href="https://unfamiliarfamiliar.com/products/3624" target="_blank">Wu-Tang Forever</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
+        <tr><td>Earth Wind And Fire</td><td><a href="https://unfamiliarfamiliar.com/products/3561" target="_blank">Greatest Hits 1978 Vol1 (1LP) / Earth Wi</a></td><td>Dinner: The Host's Edit</td><td class="err-text">15</td></tr>
         <tr><td>Lil Wayne</td><td><a href="https://unfamiliarfamiliar.com/products/3519" target="_blank">I Am Music</a></td><td>Selector Mode</td><td class="err-text">15</td></tr>
         <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/2495" target="_blank">K.I.D.S. (Kickin Incredibly Dope Shit)</a></td><td>Cool Kids Club</td><td class="err-text">15</td></tr>
         <tr><td>ARAB STAR</td><td><a href="https://unfamiliarfamiliar.com/products/3323" target="_blank">EGYPTIAN MIX</a></td><td>Habibi Heat</td><td class="err-text">20</td></tr>

@@ -126,7 +126,7 @@
 <div class="header">
   <h1>Unfamiliar Familiar</h1>
   <h2>Control Room</h2>
-  <div class="date">Generated: 29 Mar 2026 16:58</div>
+  <div class="date">Generated: 29 Mar 2026 17:01</div>
   <div class="north-star">North star: Telegram = CEO brain. Peter + Nour just approve and shoot. Everything else automated.</div>
 </div>
 
@@ -1072,27 +1072,27 @@ SCRIPTS (~/.openclaw/scripts/)
 
 </div>
 
-<div style="margin:48px 24px 0; border-top:1px solid rgba(255,255,255,0.07); padding-top:40px">
+<div style="margin:48px 24px 0; border-top:1px solid var(--border); padding-top:40px">
 
-  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#444;margin-bottom:28px">Full Architecture</div>
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:28px">Full Architecture</div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
 
-    <div style="background:#0d0d0d;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8A96E;margin-bottom:16px">Entry Points</div>
-      <div style="font-family:var(--mono);font-size:12px;color:#888;line-height:1.9">
-        iPhone → @UF_operator_bot → <span style="color:#F0EBE0">UF++ Tab</span><br>
-        iPhone → @Soulmate_md_bot → <span style="color:#F0EBE0">soulmate.md Tab</span><br>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">Entry Points</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
+        iPhone → @UF_operator_bot → <span style="color:var(--beige)">UF++ Tab</span><br>
+        iPhone → @Soulmate_md_bot → <span style="color:var(--beige)">soulmate.md Tab</span><br>
         Claude mobile app → Dispatch → Mac<br>
         Nour → @UF_operator_bot → Luna (same bot)
       </div>
     </div>
 
-    <div style="background:#0d0d0d;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8A96E;margin-bottom:16px">Mac (Always On)</div>
-      <div style="font-family:var(--mono);font-size:12px;color:#888;line-height:1.9">
-        <span style="color:#F0EBE0">Tab 1 — UF++</span> (this dashboard)<br>
-        <span style="color:#F0EBE0">Tab 2 — soulmate.md</span> (separate context)<br>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">Mac (Always On)</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
+        <span style="color:var(--beige)">Tab 1 — UF++</span> (this dashboard)<br>
+        <span style="color:var(--beige)">Tab 2 — soulmate.md</span> (separate context)<br>
         OpenClaw — scheduler only (crons, no interactive)<br>
         Background scripts — no Claude API needed
       </div>
@@ -1100,18 +1100,18 @@ SCRIPTS (~/.openclaw/scripts/)
 
   </div>
 
-  <div style="background:#0d0d0d;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:24px;margin-bottom:20px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8A96E;margin-bottom:20px">Agent Team</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:20px">Agent Team</div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-      {"".join(f'<div style="text-align:center"><div style="font-size:15px;margin-bottom:6px">{e}</div><div style="font-size:12px;font-weight:700;color:#F0EBE0">{n}</div><div style="font-size:11px;color:#555;margin-top:3px">{r}</div></div>' for e,n,r in [("🌅","Leo","Ops · 8am daily"),("📊","Rami","SEO · daily+Mon"),("🔭","Scout","Intel · Wed"),("🧠","Atlas","CEO · Sunday"),("🌙","Luna","Content · Fri+Nour"),("💰","Vera","CFO · monthly"),("🗺️","Sage","Strategy · monthly"),("🎵","Kamal","Curation · on-demand")])}
+      {"".join(f'<div style="text-align:center"><div style="font-size:15px;margin-bottom:6px">{e}</div><div style="font-size:12px;font-weight:600;color:var(--beige)">{n}</div><div style="font-size:11px;color:var(--dim);margin-top:3px">{r}</div></div>' for e,n,r in [("🌅","Leo","Ops · 8am daily"),("📊","Rami","SEO · daily+Mon"),("🔭","Scout","Intel · Wed"),("🧠","Atlas","CEO · Sunday"),("🌙","Luna","Content · Fri+Nour"),("💰","Vera","CFO · monthly"),("🗺️","Sage","Strategy · monthly"),("🎵","Kamal","Curation · on-demand")])}
     </div>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px">
 
-    <div style="background:#0d0d0d;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8A96E;margin-bottom:16px">UF Stack</div>
-      <div style="font-family:var(--mono);font-size:12px;color:#888;line-height:1.9">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">UF Stack</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
         Website: React + Express / Replit<br>
         Deploy: Google Cloud<br>
         Inventory: Discogs<br>
@@ -1123,9 +1123,9 @@ SCRIPTS (~/.openclaw/scripts/)
       </div>
     </div>
 
-    <div style="background:#0d0d0d;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8A96E;margin-bottom:16px">TG Delivery</div>
-      <div style="font-family:var(--mono);font-size:12px;color:#888;line-height:1.9">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">TG Delivery</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
         All reports → uf_tg.py → TG_BOT_TOKEN<br>
         @UF_operator_bot: commands + reports<br>
         @Soulmate_md_bot: soulmate.md only<br>
@@ -1135,15 +1135,15 @@ SCRIPTS (~/.openclaw/scripts/)
       </div>
     </div>
 
-    <div style="background:#0d0d0d;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8A96E;margin-bottom:16px">Phase Status</div>
-      <div style="font-size:12px;color:#888;line-height:2">
-        <span style="color:#4ade80">✅</span> Phase 1 — SEO<br>
-        <span style="color:#4ade80">✅</span> Phase 2 — Content<br>
-        <span style="color:#4ade80">✅</span> Phase 3 — CEO Brain<br>
-        <span style="color:#C8A96E">⏳</span> Phase 4 — Social (next)<br>
-        <span style="color:#444">○</span> Phase 5 — Growth<br>
-        <span style="color:#444">○</span> Phase 6 — Scale
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">Phase Status</div>
+      <div style="font-size:12px;color:var(--dim);line-height:2">
+        <span style="color:var(--green)">✅</span> Phase 1 — SEO<br>
+        <span style="color:var(--green)">✅</span> Phase 2 — Content<br>
+        <span style="color:var(--green)">✅</span> Phase 3 — CEO Brain<br>
+        <span style="color:var(--yellow)">⏳</span> Phase 4 — Social (next)<br>
+        <span style="color:var(--dim)">○</span> Phase 5 — Growth<br>
+        <span style="color:var(--dim)">○</span> Phase 6 — Scale
       </div>
     </div>
 
@@ -1153,7 +1153,7 @@ SCRIPTS (~/.openclaw/scripts/)
 
 <div class="footer">
   UNFAMILIAR FAMILIAR — CONTROL ROOM — BUILT WITH CLAUDE<br>
-  <span style="color:#333">Regenerate: python3 ~/.openclaw/scripts/uf-control-room.py</span>
+  <span style="color:var(--dim)">Regenerate: python3 ~/.openclaw/scripts/uf-control-room.py</span>
 </div>
 
 <script>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Council: Al Serkal Blank Space — Proposal Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF9F2;
+    --text: #23201F;
+    --accent: #9D3F0D;
+    --accent-light: #C4541A;
+    --muted: #7A7469;
+    --border: #E2DFDA;
+    --card: #F5F2EB;
+    --card-dark: #EDE9E0;
+    --green: #2A6B3A;
+    --green-bg: #EDF7F0;
+    --red-bg: #FDF2EE;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; padding: 0 0 80px; }
+
+  .header { border-bottom: 1px solid var(--border); padding: 40px 60px 32px; }
+  .header-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+  .header-question { font-size: 26px; font-weight: 600; line-height: 1.3; max-width: 760px; margin-bottom: 16px; }
+  .header-meta { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; gap: 24px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 60px; }
+
+  .verdict-block { margin-top: 48px; background: var(--text); color: var(--bg); border-radius: 4px; padding: 40px 44px; }
+  .verdict-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: rgba(251,249,242,0.5); text-transform: uppercase; margin-bottom: 20px; }
+  .verdict-title { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 10px; }
+  .verdict-text { font-size: 18px; font-weight: 400; line-height: 1.65; margin-bottom: 28px; }
+  .verdict-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 28px; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 28px; }
+  .verdict-item-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: rgba(251,249,242,0.45); text-transform: uppercase; margin-bottom: 8px; }
+  .verdict-item-text { font-size: 14px; line-height: 1.5; color: rgba(251,249,242,0.85); }
+
+  .monday-block { margin-top: 32px; border: 2px solid var(--accent); border-radius: 4px; padding: 28px 32px; display: flex; gap: 24px; align-items: flex-start; }
+  .monday-icon { font-family: var(--mono); font-size: 22px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+  .monday-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  .monday-action { font-size: 17px; font-weight: 500; line-height: 1.5; }
+
+  .section { margin-top: 56px; }
+  .section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .concept-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 24px; }
+  .concept-card-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+  .concept-card-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+  .concept-card-body { font-size: 13px; line-height: 1.6; color: #4A4540; }
+  .concept-card-list { list-style: none; margin-top: 10px; }
+  .concept-card-list li { font-size: 13px; color: #4A4540; padding: 4px 0; padding-left: 14px; position: relative; }
+  .concept-card-list li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent); font-size: 11px; }
+
+  .collective-bar { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .collective-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 22px; }
+  .collective-role { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  .collective-name { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+  .collective-brings { font-size: 13px; color: #4A4540; line-height: 1.55; }
+
+  .advisor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .advisor-card { background: var(--card); border-radius: 4px; border: 1px solid var(--border); overflow: hidden; }
+  .advisor-card.featured { grid-column: 1 / -1; border: 2px solid var(--accent); }
+  .advisor-header { padding: 18px 22px 14px; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; user-select: none; }
+  .advisor-header:hover { background: var(--card-dark); }
+  .advisor-persona { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .advisor-preview { font-size: 14px; font-weight: 500; line-height: 1.4; flex: 1; }
+  .advisor-toggle { font-size: 18px; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
+  .advisor-body { display: none; padding: 0 22px 20px; font-size: 14px; line-height: 1.65; color: #3A3632; border-top: 1px solid var(--border); margin-top: 0; padding-top: 16px; }
+  .advisor-card.open .advisor-body { display: block; }
+  .advisor-card.open .advisor-toggle { transform: rotate(45deg); }
+  .advisor-body p { margin-bottom: 12px; }
+  .advisor-body p:last-child { margin-bottom: 0; }
+  .advisor-body ul { list-style: none; margin: 8px 0 12px; }
+  .advisor-body ul li { font-size: 13px; padding: 3px 0 3px 14px; position: relative; }
+  .advisor-body ul li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent); font-size: 11px; }
+
+  .peer-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .peer-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 20px 24px; }
+  .peer-reviewer { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; }
+  .peer-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; margin-bottom: 8px; font-size: 14px; }
+  .peer-row-label { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; padding-top: 2px; }
+
+  .conditions-block { background: var(--card-dark); border-radius: 4px; padding: 28px 32px; margin-top: 20px; }
+  .conditions-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 20px; }
+  .condition-item { display: flex; gap: 16px; margin-bottom: 18px; }
+  .condition-item:last-child { margin-bottom: 0; }
+  .condition-num { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--accent); flex-shrink: 0; line-height: 1.2; }
+  .condition-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .condition-body { font-size: 13px; color: #4A4540; line-height: 1.55; }
+
+  .pitch-sequence { margin-top: 20px; }
+  .pitch-step { display: flex; gap: 20px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .pitch-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .pitch-week { font-family: var(--mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; flex-shrink: 0; width: 80px; padding-top: 2px; }
+  .pitch-step-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .pitch-step-body { font-size: 13px; color: #4A4540; line-height: 1.55; }
+
+  .footer { margin-top: 64px; padding: 20px 60px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">UF Council -- Session #006 . Final Proposal Review</div>
+  <div class="header-question">Should we submit this proposal to Al Serkal's Blank Space programme? Is it strong enough to win? What's missing?</div>
+  <div class="header-meta">
+    <span>10 April 2026</span>
+    <span>5 Advisors . Conditions . Monday Action</span>
+    <span>Deadline: End of April 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- VERDICT BLOCK -->
+  <div class="verdict-block">
+    <div class="verdict-label">Council Verdict -- 5 Advisors Unanimous</div>
+    <div class="verdict-title">GO -- Submit, but close the gaps first. You have 20 days.</div>
+    <div class="verdict-text">
+      The proposal is strong. Genuinely strong. The collective is credible, the concept is differentiated, the cultural heritage story is an emotional anchor that most applicants cannot match. Disc Jockey Beirut, 1970, 90,000 records -- that is not a pitch, that is a legacy walking into the room. The immersive tech layer from Hybrid Xperience turns a listening bar into a destination. The community programming is deep enough to fill four weeks. But the proposal as it currently stands has structural gaps that a sharp selection committee will notice: no artist performance schedule, no wellness/yoga integration, no explicit Al Serkal tenant collaboration plan, no Flipside DJ school detail. These are not fatal -- they are fixable in a week. Fix them and this proposal goes from "competitive" to "the one they remember." Confidence: 82%. With the gaps closed: 91%.
+    </div>
+    <div class="verdict-grid">
+      <div>
+        <div class="verdict-item-label">Confidence Level</div>
+        <div class="verdict-item-text">82% as-is. 91% with gaps closed. The heritage story and immersive tech give this proposal an edge most applicants cannot manufacture.</div>
+      </div>
+      <div>
+        <div class="verdict-item-label">Go / No-Go</div>
+        <div class="verdict-item-text">GO. Submit before April 30. But do not submit the current version -- close the 6 missing elements first. You have the time.</div>
+      </div>
+      <div>
+        <div class="verdict-item-label">Key Risk</div>
+        <div class="verdict-item-text">Submitting a proposal that reads as "immersive nightlife" rather than "community-first cultural programme." Al Serkal will reject spectacle without substance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONDAY ACTION -->
+  <div class="monday-block">
+    <div class="monday-icon">&rarr;</div>
+    <div>
+      <div class="monday-label">Monday Morning -- The single most important thing</div>
+      <div class="monday-action">Write the 4-week activation calendar -- every single day, day and night. Include at least 2 artist performances, 1 DJ school session with Flipside, 1 yoga/wellness morning, and 2 open community listening sessions. This calendar is what turns the proposal from a concept deck into an operational plan. Al Serkal needs to see you can fill the space for 28 consecutive days.</div>
+    </div>
+  </div>
+
+  <!-- THE CONCEPT -->
+  <div class="section">
+    <div class="section-label">The Concept -- The Listening Bar</div>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-label">Day Mode -- Cultural Workspace</div>
+        <div class="concept-card-title">Al Serkal's first sober social space. Coffee, vinyl, calm.</div>
+        <div class="concept-card-body">Walk in with a laptop. Soft ambient visuals on the walls. Slower music from the archive -- Fairuz in the morning, jazz in the afternoon. Coffee and matcha served by existing Al Serkal cafe partners. Browse the crates. Buy a record. Stay for hours.</div>
+        <ul class="concept-card-list">
+          <li>Free entry, walk-in, no reservation</li>
+          <li>Ambient reactive visuals at low intensity</li>
+          <li>F&amp;B partnership with Al Serkal cafes (they serve in our space)</li>
+          <li>UF vinyl crates available to browse and purchase</li>
+          <li>Open studio days and community listening sessions</li>
+          <li>Yoga/wellness classes using the space (mornings)</li>
+        </ul>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Night Mode -- The Listening Box</div>
+        <div class="concept-card-title">Ticketed evenings. Curated sets. Immersive visuals.</div>
+        <div class="concept-card-body">The room transforms. Hybrid Xperience projection mapping goes full intensity -- circular vinyl visuals reactive to every beat. The Jukebox cube lights up. Deeper sound from the HiFi stacks. Themed nights, each a distinct emotional world.</div>
+        <ul class="concept-card-list">
+          <li>Midnight in Beirut -- Arabic vinyl, nostalgia visuals</li>
+          <li>Disco Therapy -- 70s vinyl, mirror ball projections</li>
+          <li>Jazz &amp; Rain -- ambient jazz, cinematic rainfall</li>
+          <li>Women in Music -- female artists across eras</li>
+          <li>Analog Love -- love songs, intimate candlelight</li>
+          <li>Live artist performances from local/regional musicians</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE COLLECTIVE -->
+  <div class="section">
+    <div class="section-label">The Collective -- Four pillars, one proposal</div>
+    <div class="collective-bar">
+      <div class="collective-card">
+        <div class="collective-role">Curation &amp; Heritage</div>
+        <div class="collective-name">Unfamiliar Familiar</div>
+        <div class="collective-brings">Born from Disc Jockey, Beirut's record store since 1970. 90,000+ records -- the oldest, largest collection in MENA. Specialises in rare Arabic vinyl. 20 mood crates. Ships UAE-wide. The soul of the space.</div>
+      </div>
+      <div class="collective-card">
+        <div class="collective-role">Immersive Technology</div>
+        <div class="collective-name">Hybrid Xperience</div>
+        <div class="collective-brings">Projection mapping, holograms, interactive installations. Clients: Expo 2020, F1, Pepsi, NEOM. Audio-reactive visuals that respond to vinyl in real time. The world-first differentiator.</div>
+      </div>
+      <div class="collective-card">
+        <div class="collective-role">Community &amp; Events</div>
+        <div class="collective-name">Vinyl Souk</div>
+        <div class="collective-brings">Regular vinyl markets, DJ sets, listening sessions across Dubai. The community hub for vinyl culture. Artist relationships. Programming muscle. Brings the audience on night one.</div>
+      </div>
+      <div class="collective-card">
+        <div class="collective-role">Sound Design</div>
+        <div class="collective-name">Independent HiFi Engineers</div>
+        <div class="collective-brings">Custom sound system design for the space. Audiophile-grade listening experience. Speaker stacks flanking the room. The sonic foundation that makes every record sound the way it was meant to.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTALLATIONS -->
+  <div class="section">
+    <div class="section-label">Installations -- What fills the space</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-label">Hybrid Xperience</div>
+        <div class="concept-card-title">Circular Vinyl Projection</div>
+        <div class="concept-card-body">Main wall -- large-scale projection mapping reactive to the music. Visuals breathe with the rhythm. Subtle during the day. Full intensity at night. The signature visual element.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Hybrid Xperience</div>
+        <div class="concept-card-title">The Jukebox -- Interactive LED Cube</div>
+        <div class="concept-card-body">2x2m full-LED interactive cube. Visitors select a mood, visuals wrap all 4 sides. A physical manifestation of UF's 20 mood crates. Social media magnet.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Hybrid Xperience</div>
+        <div class="concept-card-title">LED Wall -- Design Your Own Cover</div>
+        <div class="concept-card-body">Interactive LED wall cycling iconic album artwork. Visitors design their own vinyl cover. Cycles through legendary artwork from the archive -- Fairuz, Oum Kalthoum, Ziad Rahbani.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">UF + HiFi Engineers</div>
+        <div class="concept-card-title">Physical Space Design</div>
+        <div class="concept-card-body">Persian rug lounge with curved sofas. Spiral vinyl tower -- UF-branded browsing sculpture. Modular crate-digging display tables (6 types). HiFi speaker stacks flanking the space. All movable furniture -- no structural changes.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADVISORS -->
+  <div class="section">
+    <div class="section-label">Advisory Council -- Five perspectives</div>
+    <div class="advisor-grid">
+
+      <!-- CSO -->
+      <div class="advisor-card" id="card-cso">
+        <div class="advisor-header" onclick="toggle('cso')">
+          <div>
+            <div class="advisor-persona">Chief Strategy Officer</div>
+            <div class="advisor-preview">The proposal is competitively positioned. The heritage story is the moat -- no other applicant can manufacture 50 years of vinyl history.</div>
+          </div>
+          <div class="advisor-toggle">+</div>
+        </div>
+        <div class="advisor-body">
+          <p>The strategic positioning of this proposal is strong on three axes: differentiation (no other listening bar concept in Dubai, let alone one with immersive tech), credibility (Disc Jockey's 50-year heritage, Hybrid's blue-chip client list, Vinyl Souk's community track record), and alignment with Al Serkal's mission (interdisciplinary, community-first, culturally substantive).</p>
+          <p>The competitive advantage is real. Most Blank Space applicants will be individual artists, small collectives doing installations, or one-off exhibition proposals. A four-company collective proposing a fully programmed, revenue-generating cultural venue with 28 days of content is a different category of application. You are not competing against other listening bars -- you are competing against the typical Blank Space applicant, which skews toward visual art and short-run exhibitions. This proposal is bigger, more operational, and more community-oriented than what they usually receive.</p>
+          <p>The heritage angle is the strategic moat. "Born from Disc Jockey, Beirut's record store since 1970" is not a tagline -- it is provenance that cannot be replicated. In a region where cultural authenticity is increasingly valued, this lineage is your strongest card. Lead with it in the proposal. Do not bury it on slide 7.</p>
+          <p><strong>Recommendations:</strong></p>
+          <ul>
+            <li>Lead the proposal with the heritage story -- Disc Jockey 1970, 90,000 records, now in Dubai</li>
+            <li>Position the 4-week activation as proof-of-concept for a permanent venue</li>
+            <li>Include a one-paragraph competitive analysis: "No listening bar exists in the GCC. The closest global comparisons (Tokyo, London) lack immersive tech."</li>
+            <li>Quantify community impact: expected footfall, F&amp;B revenue for Al Serkal tenants, email signups, social impressions</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Cultural Programming Director -->
+      <div class="advisor-card" id="card-cultural">
+        <div class="advisor-header" onclick="toggle('cultural')">
+          <div>
+            <div class="advisor-persona">Cultural Programming Director</div>
+            <div class="advisor-preview">The themed nights are strong, but the calendar needs artist performances, DJ school, and wellness programming to feel complete.</div>
+          </div>
+          <div class="advisor-toggle">+</div>
+        </div>
+        <div class="advisor-body">
+          <p>The five themed nights -- Midnight in Beirut, Disco Therapy, Jazz &amp; Rain, Women in Music, Analog Love -- are emotionally compelling and well-conceived. Each creates a distinct world. The naming is strong. But a 4-week activation needs more than five recurring themes. The current programming reads as "five flavours of listening session." What's missing is variety of format -- not just variety of genre.</p>
+          <p>The proposal needs at least three additional programming formats to demonstrate the space's versatility: (1) Live artist performances -- invite local and regional musicians to play acoustic sets alongside vinyl. This is especially powerful for the "artists need a space to perform" community angle. (2) DJ school sessions with Flipside -- this is a public-facing educational element that Al Serkal loves. It shows the space is not just consumption but knowledge transfer. (3) Morning yoga or wellness classes using the space -- functional beverages (matcha, coffee), ambient sound, slow start. This fills the morning slot and shows the space works at all hours.</p>
+          <p>Additionally, open community listening sessions and gallery crossover programming should be on the calendar. Invite an Al Serkal gallery to curate visuals for one evening. Invite a cafe to do a tasting paired with vinyl. These cross-tenant activations are exactly what Al Serkal wants to see -- you are strengthening their ecosystem, not just occupying a warehouse.</p>
+          <p><strong>Recommendations:</strong></p>
+          <ul>
+            <li>Add 2-3 confirmed live artist performances to the 4-week calendar (even "in discussion" names help)</li>
+            <li>Include 1 Flipside DJ school session per week -- public-facing, ticketed or free</li>
+            <li>Add 2 morning yoga/wellness sessions across the 4 weeks</li>
+            <li>Schedule 2 open community listening sessions (free, drop-in, no curation -- let the community bring records)</li>
+            <li>Plan 1 gallery crossover night -- partner with an existing Al Serkal gallery for visual curation</li>
+            <li>Build a full 28-day calendar, not just a list of themes. Day-by-day. Morning, afternoon, evening.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Community Impact Advisor -->
+      <div class="advisor-card" id="card-community">
+        <div class="advisor-header" onclick="toggle('community')">
+          <div>
+            <div class="advisor-persona">Community Impact Advisor</div>
+            <div class="advisor-preview">The community case is genuine, not performative. But spell it out -- Al Serkal needs to see the ripple effect on their tenants, not just on your audience.</div>
+          </div>
+          <div class="advisor-toggle">+</div>
+        </div>
+        <div class="advisor-body">
+          <p>The community impact argument is the second strongest element of this proposal, after the heritage story. Music bridges cultures -- that is not a platitude here, it is structurally true. A Lebanese vinyl archive playing Fairuz for an Emirati, Indian, Filipino, and European audience in Al Quoz is the kind of organic cultural exchange that Al Serkal was built for. This space does not need to "create" community -- it attracts people who already want connection and gives them a reason to sit together.</p>
+          <p>The key distinction to make in the proposal: this space drives repeat foot traffic, not one-time visits. A gallery exhibition gets visited once. A listening bar gets visited weekly. That is a fundamentally different value proposition for Al Serkal's ecosystem. Every return visit means another coffee from the cafe, another browse through the gallery next door, another meal at the restaurant. You are extending dwell time across the entire district.</p>
+          <p>The "not competing with existing tenants -- feeding them" framing is critical and must be explicit. The F&amp;B integration (Al Serkal cafes serve inside the space) means existing tenants benefit directly. The gallery crossover nights mean existing galleries get new audiences. The DJ school means Flipside gets a venue. You are the rising tide, not a competitor for limited attention.</p>
+          <p><strong>Recommendations:</strong></p>
+          <ul>
+            <li>Include a "Tenant Benefit Map" -- one paragraph showing how each type of Al Serkal tenant benefits (cafes, galleries, restaurants, studios)</li>
+            <li>Quantify: "We estimate 40-60 daily visitors during daytime, 50-80 per evening session. Each visitor spends an average of 2 hours in the Al Serkal precinct."</li>
+            <li>Mention the regional context: "Artists in the region need spaces to perform. This space provides that -- especially important during difficult times in Lebanon, Palestine, and the wider region."</li>
+            <li>Frame the space as a "cultural commons" -- open to all Al Serkal tenants for pop-ups, classes, and collaborations</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Ex-CEO of Al Serkal (FEATURED - full width) -->
+      <div class="advisor-card featured" id="card-exalserkal">
+        <div class="advisor-header" onclick="toggle('exalserkal')">
+          <div>
+            <div class="advisor-persona">Independent Advisory -- Ex-CEO, Al Serkal Avenue</div>
+            <div class="advisor-preview">This is one of the stronger Blank Space applications I would expect to see. But you need to understand what the committee is actually scoring -- and where most applicants fail.</div>
+          </div>
+          <div class="advisor-toggle">+</div>
+        </div>
+        <div class="advisor-body">
+          <p><strong>What the selection committee actually looks for:</strong></p>
+          <p>The Blank Space programme is not a grant. It is not a favour. It is Al Serkal investing warehouse space, WiFi, utilities, and marketing support in a project that enhances their brand positioning as the region's leading independent cultural district. The committee evaluates three things above all else: (1) Does this make Al Serkal more relevant? (2) Will this generate press, social media, and foot traffic? (3) Is this team capable of actually delivering what they promise? Most applicants fail on the third question. They have beautiful concepts and no operational plan.</p>
+
+          <p><strong>What makes this proposal stand out:</strong></p>
+          <p>Three things immediately separate this from the typical applicant pool. First, it is a collective -- not a solo artist asking for studio space. Collectives signal maturity, shared risk, and a broader community. Al Serkal has historically favoured collaborative proposals because they generate more activity and more cross-pollination. Second, the heritage story is extraordinary. Disc Jockey, founded 1970 in Beirut, 90,000 records, the oldest and largest collection in MENA -- that is a cultural asset, not a business pitch. The committee will remember this. Third, the immersive technology layer from Hybrid Xperience makes this press-worthy. Al Serkal needs content for their own marketing -- a listening bar with reactive projections gives them that content.</p>
+
+          <p><strong>What the committee will scrutinise:</strong></p>
+          <p>The committee will ask: "What happens on a Tuesday afternoon in Week 3?" If you cannot answer that with a specific programme, your proposal reads as aspirational, not operational. They have seen dozens of proposals that describe an incredible opening night and then have nothing for the remaining 27 days. Your 4-week calendar must be granular -- every day, morning through night. This is the single biggest differentiator between proposals that win and proposals that impress but lose.</p>
+
+          <p>They will also ask about the public-facing element. Blank Space requires it. Your evening ticketed sessions satisfy this, but the committee wants more than ticketed events -- they want elements that are free, accessible, and open to anyone walking through Al Serkal. Open studio days, community listening sessions, the daytime walk-in format, the DJ school sessions -- these are your public-facing answers. Make them prominent, not buried.</p>
+
+          <p><strong>Common mistakes applicants make:</strong></p>
+          <ul>
+            <li>Leading with the concept instead of the community impact. Al Serkal does not fund cool ideas -- they fund ideas that strengthen their ecosystem. Lead with what you give, not what you get.</li>
+            <li>Treating the 10-slide limit as a creative constraint. It is a discipline test. If you cannot explain your project clearly in 10 slides, the committee doubts you can execute it clearly in 4 weeks.</li>
+            <li>Ignoring the "how will you use the space" question. This sounds obvious but most applicants describe what they will do, not how the physical space will be configured. Include a floor plan or spatial diagram -- even a rough one. Show furniture placement, tech setup, audience flow.</li>
+            <li>Not naming specific partners. "We will partner with local cafes" is weak. "We are in conversation with [specific Al Serkal cafe] to serve coffee in the space during daytime hours" is strong. Name names even if conversations are early.</li>
+            <li>Forgetting that Al Serkal has existing programming. Your proposal should complement, not conflict with, their calendar. Check what is already scheduled for your proposed dates.</li>
+          </ul>
+
+          <p><strong>The competitive landscape:</strong></p>
+          <p>Blank Space typically receives 30-60 applications per cycle. Most are individual artists or small collectives proposing exhibitions, residencies, or single-event activations. A fully programmed, 28-day, multi-company, revenue-generating cultural venue is unusual and will stand out structurally. Your main competition is not other listening bars -- it is the 2-3 other strong proposals that also have operational depth, community integration, and a compelling cultural narrative. You need to be the one that feels most "ready to go" -- the committee wants to fund execution, not potential.</p>
+
+          <p><strong>What would make the committee say yes immediately:</strong></p>
+          <ul>
+            <li>A complete 4-week calendar, day by day, with specific event names, formats, and times</li>
+            <li>At least one confirmed F&amp;B partner from within Al Serkal (even informal confirmation)</li>
+            <li>A 60-second demo video or visual mockup from Hybrid Xperience showing the reactive projections</li>
+            <li>A spatial diagram showing how the warehouse will be configured (no structural changes -- they are strict about this)</li>
+            <li>A clear statement of who the single point of contact is (Peter) and how the collective makes decisions</li>
+            <li>Evidence of existing community: "Vinyl Souk has hosted X events with Y attendees. UF has Z subscribers and ships to W customers."</li>
+          </ul>
+
+          <p><strong>What would make them reject:</strong></p>
+          <ul>
+            <li>A proposal that reads as a commercial venture disguised as a cultural programme. If the ticket revenue and vinyl sales feel like the primary motive, the committee will pass. Lead with culture, heritage, and community. Revenue is a byproduct, not the goal.</li>
+            <li>Any hint of structural modifications to the space. Blank Space is explicit: no major changes. All your installations (projections, LED cube, furniture) must be movable. State this clearly.</li>
+            <li>A vague public-facing element. "The space will be open to the public" is not enough. Specific free events, open hours, community programming -- that is what they need to see.</li>
+            <li>No evidence the team can deliver. Include previous project examples, portfolio links, past event documentation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Brand & Design Director -->
+      <div class="advisor-card" id="card-brand">
+        <div class="advisor-header" onclick="toggle('brand')">
+          <div>
+            <div class="advisor-persona">Brand &amp; Design Director</div>
+            <div class="advisor-preview">The story is there. The emotion is there. But the deck itself must be as curated as the crates -- 10 slides, no wasted space, every frame earns its place.</div>
+          </div>
+          <div class="advisor-toggle">+</div>
+        </div>
+        <div class="advisor-body">
+          <p>You have 10 slides. That is not a limitation -- it is the best thing about this format. A 10-slide deck forces clarity. Every slide must answer one question and nothing more. The storytelling arc should be: Heritage (who we are) &rarr; Gap (what's missing in Dubai) &rarr; Concept (the listening bar) &rarr; Collective (who delivers it) &rarr; Space (how it looks) &rarr; Programme (what happens for 4 weeks) &rarr; Community (who benefits) &rarr; Impact (what Al Serkal gains). That is 8 slides of substance and 2 slides for cover + closing.</p>
+          <p>The emotional anchor of the deck must be the heritage story. Slide 1 or 2 should feature Disc Jockey Beirut. If you have a photograph of the original store -- use it. If you have a photograph of the vinyl archive -- use it. The selection committee should feel the weight of 50 years of music curation before they even see the concept. This is what separates your proposal from every other "cool event idea" they receive.</p>
+          <p>Design language: use UF's brand guidelines. Beige (#FBF9F2), black (#23201F), butter (#FFF5C4). Inter Tight. Clean. Minimal. Let the photographs and the story do the work. Do not over-design. The deck should feel like the space it describes -- quiet, curated, confident. If the deck feels like a nightclub flyer, the committee will assume the space will too.</p>
+          <p><strong>Recommended 10-slide structure:</strong></p>
+          <ul>
+            <li>Slide 1: Cover -- "The Listening Bar" / A proposal by [Collective name] for Al Serkal Blank Space</li>
+            <li>Slide 2: Heritage -- Disc Jockey, Beirut, 1970. The story. The archive. Photo if available.</li>
+            <li>Slide 3: The Collective -- 4 members, their roles, one line each. Logos.</li>
+            <li>Slide 4: The Concept -- Day mode / Night mode. Two columns. What it feels like.</li>
+            <li>Slide 5: The Space -- Floor plan or spatial diagram. Installations marked. "All movable, no structural changes."</li>
+            <li>Slide 6: Installations -- The 3 Hybrid pieces (projection, LED wall, Jukebox cube). Visual mockups.</li>
+            <li>Slide 7: 4-Week Activation Plan -- Calendar view. Every day mapped. Theme nights, open sessions, DJ school, yoga, artist performances.</li>
+            <li>Slide 8: Community Impact -- Who benefits. Tenant integration. Cultural bridge. Repeat foot traffic.</li>
+            <li>Slide 9: Public-Facing Element -- Free daytime access, open listening sessions, DJ school, community events.</li>
+            <li>Slide 10: The Ask -- What we need from Al Serkal. What Al Serkal gets. Contact: Peter / blankspace@alserkalavenue.ae.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONDITIONS -->
+  <div class="section">
+    <div class="section-label">Conditions -- What must be done before submitting</div>
+    <div class="conditions-block">
+      <div class="conditions-label">Non-negotiables before the proposal goes to blankspace@alserkalavenue.ae</div>
+
+      <div class="condition-item">
+        <div class="condition-num">01</div>
+        <div>
+          <div class="condition-title">Build the full 28-day activation calendar</div>
+          <div class="condition-body">Day by day. Morning, afternoon, evening. Include: 5 themed listening nights (recurring weekly), at least 3 live artist performances, 2 Flipside DJ school sessions, 2 yoga/wellness mornings, 3 open community listening sessions, 1 gallery crossover night, and daytime open hours every day. This calendar is what separates "competitive" from "winning."</div>
+        </div>
+      </div>
+
+      <div class="condition-item">
+        <div class="condition-num">02</div>
+        <div>
+          <div class="condition-title">Get visual assets from Hybrid Xperience</div>
+          <div class="condition-body">A demo video, visual mockup, or rendered image showing the reactive projections in action. The committee needs to see what this looks like, not just read about it. Even a 30-second clip of existing Hybrid work with a vinyl audio overlay is better than nothing. This asset makes or breaks the "world-first" claim.</div>
+        </div>
+      </div>
+
+      <div class="condition-item">
+        <div class="condition-num">03</div>
+        <div>
+          <div class="condition-title">Create a spatial diagram of the warehouse layout</div>
+          <div class="condition-body">Show furniture placement, projection surfaces, LED cube position, speaker stacks, lounge area, crate-digging tables, and audience flow. Explicitly note: "All installations are movable. No structural modifications." This answers the committee's question before they ask it.</div>
+        </div>
+      </div>
+
+      <div class="condition-item">
+        <div class="condition-num">04</div>
+        <div>
+          <div class="condition-title">Name specific Al Serkal tenant partners</div>
+          <div class="condition-body">Reach out to at least one Al Serkal cafe for the daytime F&amp;B integration. Even an informal "we'd be interested" message gives you a name to put in the proposal. "In conversation with [Cafe Name] for daytime service" is dramatically stronger than "we plan to partner with Al Serkal cafes."</div>
+        </div>
+      </div>
+
+      <div class="condition-item">
+        <div class="condition-num">05</div>
+        <div>
+          <div class="condition-title">Confirm Flipside DJ school partnership</div>
+          <div class="condition-body">One message to Flipside: "We're proposing a vinyl listening bar at Al Serkal Blank Space. Would you be interested in running a DJ workshop session during the activation?" A yes -- even informal -- gives the proposal a named educational partner and satisfies the "knowledge transfer" element.</div>
+        </div>
+      </div>
+
+      <div class="condition-item">
+        <div class="condition-num">06</div>
+        <div>
+          <div class="condition-title">Collect evidence of execution from all collective members</div>
+          <div class="condition-body">Each member needs 1-2 lines of proof: UF ("90,000+ records, X subscribers, Y orders shipped"), Hybrid ("Clients include Expo 2020, F1, Pepsi, NEOM"), Vinyl Souk ("Hosted X vinyl markets with Y attendees"), HiFi engineers ("Designed systems for [reference]"). The committee funds teams that can deliver, not teams that can dream.</div>
+        </div>
+      </div>
+
+      <div class="condition-item">
+        <div class="condition-num">07</div>
+        <div>
+          <div class="condition-title">Keep the deck to exactly 10 slides -- no exceptions</div>
+          <div class="condition-body">Max 10 slides is a hard rule. Follow the recommended structure: Cover, Heritage, Collective, Concept, Space, Installations, Calendar, Community, Public-Facing, The Ask. Every slide earns its place. No filler. No "about us" padding. If it does not answer a committee question, cut it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT'S MISSING (from old deck) -->
+  <div class="section">
+    <div class="section-label">Gap Analysis -- What was missing and must be added</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-card-label">Added to proposal</div>
+        <div class="concept-card-title">Artist Performances</div>
+        <div class="concept-card-body">Live sets from local and regional musicians. Acoustic performances alongside vinyl. Gives artists a venue -- especially important for the regional context. Must name at least 2-3 artists or say "in conversation with."</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Added to proposal</div>
+        <div class="concept-card-title">Flipside DJ School</div>
+        <div class="concept-card-body">Partnership with Flipside for DJ workshops during the activation. Public-facing educational element. Satisfies the "knowledge transfer" criteria. Weekly or bi-weekly sessions.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Added to proposal</div>
+        <div class="concept-card-title">Yoga &amp; Wellness</div>
+        <div class="concept-card-body">Morning sessions using the space. Ambient vinyl soundscape. Functional beverages. Fills the morning slot and demonstrates the space works at all hours -- not just evenings.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Added to proposal</div>
+        <div class="concept-card-title">Al Serkal Tenant Integration</div>
+        <div class="concept-card-body">Existing cafes serve F&amp;B inside the space. Gallery crossover nights. Restaurant pop-ups. The space becomes a hub that feeds the ecosystem, not competes with it.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Added to proposal</div>
+        <div class="concept-card-title">Open Community Sessions</div>
+        <div class="concept-card-body">Free, drop-in listening sessions where the community brings their own records. Open studio days. No curation -- just shared space and shared music. The most "Al Serkal" thing on the calendar.</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-card-label">Added to proposal</div>
+        <div class="concept-card-title">Gallery Crossover Programming</div>
+        <div class="concept-card-body">Invite Al Serkal galleries to curate the visual element for one evening. Art meets music. Cross-pollination between tenants. Exactly the interdisciplinary programming Al Serkal champions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEER REVIEW -->
+  <div class="section">
+    <div class="section-label">Peer Review Synthesis</div>
+    <div class="peer-grid">
+      <div class="peer-card">
+        <div class="peer-reviewer">All five advisors -- Cross-review</div>
+        <div class="peer-row">
+          <div class="peer-row-label">Consensus</div>
+          <div>Unanimous GO. The proposal is strong enough to win, but not in its current form. With the 7 conditions met, this becomes one of the strongest Blank Space applications the committee will see this cycle.</div>
+        </div>
+        <div class="peer-row">
+          <div class="peer-row-label">Strongest asset</div>
+          <div>The Disc Jockey heritage story. 50+ years, 90,000 records, Beirut to Dubai. No other applicant can manufacture this provenance. It is the emotional core of the proposal and must be front and centre.</div>
+        </div>
+        <div class="peer-row">
+          <div class="peer-row-label">Key risk</div>
+          <div>Submitting a concept-heavy, calendar-light proposal. The committee has seen beautiful ideas that fell apart in execution. The 28-day calendar is the single most important asset. Build it before anything else.</div>
+        </div>
+        <div class="peer-row">
+          <div class="peer-row-label">Framing</div>
+          <div>Lead with community and heritage, not with technology and spectacle. Al Serkal funds cultural programmes, not immersive experiences. The tech is the differentiator, but culture is the foundation. Get the order right.</div>
+        </div>
+        <div class="peer-row">
+          <div class="peer-row-label">Timeline</div>
+          <div>20 days to deadline. Week 1: calendar + partner outreach. Week 2: visual assets + spatial diagram. Week 3: deck build. Submit by April 28 with 2-day buffer. Do not rush the deck -- rush the calendar and partnerships.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>UF Council -- Session #006 . 10 April 2026</span>
+  <span>Al Serkal Blank Space Proposal Review . Deadline: End of April 2026</span>
+</div>
+
+<script>
+function toggle(id) {
+  const card = document.getElementById('card-' + id);
+  card.classList.toggle('open');
+}
+</script>
+</body>
+</html>

@@ -199,6 +199,15 @@
     background: rgba(74,222,128,0.12);
     color: #4ade80;
   }
+  .pri-seasonal {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: rgba(129,140,248,0.12);
+    color: #818cf8;
+  }
 
   /* Status badges */
   .status-good {
@@ -232,6 +241,23 @@
     border-radius: 20px;
     background: rgba(255,255,255,0.06);
     color: #666;
+  }
+  .status-indexed {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: rgba(74,222,128,0.18);
+    color: #4ade80;
+    font-weight: 600;
+  }
+  .status-submitted {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: rgba(250,204,21,0.12);
+    color: #facc15;
   }
 
   /* Open field highlight */
@@ -275,6 +301,25 @@
     flex-shrink: 0;
     margin-top: 1px;
   }
+  .check-done {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #4ade80;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    background: rgba(74,222,128,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4ade80;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .checklist li.done {
+    color: #666;
+    text-decoration: line-through;
+  }
 
   /* CPC callout */
   .callout {
@@ -305,7 +350,7 @@
   <div class="header-top">
     <div>
       <h1>SEO Intelligence <span>— Unfamiliar Familiar</span></h1>
-      <div class="meta">Last updated: 9 April 2026 &middot; unfamiliarfamiliar.com</div>
+      <div class="meta">Updated 17 Apr 2026 &middot; unfamiliarfamiliar.com</div>
     </div>
     <a href="control-room.html" class="back-link">&larr; Control Room</a>
   </div>
@@ -313,72 +358,59 @@
 
 <div class="container">
 
-<!-- 7. TRAFFIC OVERVIEW -->
+<!-- MARKETING METRICS -->
 <div class="section">
-  <div class="section-title">Marketing Metrics &mdash; Acquisition & Revenue</div>
+  <div class="section-title">Marketing Metrics &mdash; Acquisition &amp; Revenue</div>
 
   <!-- Data Source Status -->
-  <div class="card" style="margin-bottom:20px;border-left:3px solid #f59e0b;">
+  <div class="card" style="margin-bottom:20px;border-left:3px solid #22c55e;">
     <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:13px;">
-      <div><span style="color:#22c55e;">●</span> <strong>Google Ads</strong> — Live (API) &nbsp;<span style="color:#6b6560;font-size:11px;">AED 20/day PMax</span></div>
-      <div><span style="color:#ef4444;">●</span> <strong>Meta/IG Ads</strong> — Manual <span style="color:#ef4444;font-size:11px;">⚠ API blocked — see feedback_meta_api_setup.md</span></div>
-      <div><span style="color:#f59e0b;">●</span> <strong>Merchant Center</strong> — Suspended <span style="color:#f59e0b;font-size:11px;">⏳ Review pending</span></div>
-      <div><span style="color:#22c55e;">●</span> <strong>GA4</strong> — Live (API)</div>
-      <div><span style="color:#22c55e;">●</span> <strong>GSC</strong> — Live (API)</div>
+      <div><span style="color:#22c55e;">&#9679;</span> <strong>Google Ads</strong> &mdash; LIVE &nbsp;<span style="color:#6b6560;font-size:11px;">AED 20/day (just bumped)</span></div>
+      <div><span style="color:#ef4444;">&#9679;</span> <strong>Meta/IG Ads</strong> &mdash; MANUAL <span style="color:#ef4444;font-size:11px;">API blocked</span></div>
+      <div><span style="color:#22c55e;">&#9679;</span> <strong>Merchant Center</strong> &mdash; CLEAR <span style="color:#22c55e;font-size:11px;">Zero critical issues. Limited &rarr; Approved transitioning</span></div>
+      <div><span style="color:#22c55e;">&#9679;</span> <strong>GA4</strong> &mdash; LIVE</div>
+      <div><span style="color:#22c55e;">&#9679;</span> <strong>GSC</strong> &mdash; LIVE</div>
     </div>
   </div>
 
   <div class="stats-grid">
-    <!-- CAC -->
-    <div class="stat-card" style="border-top:3px solid #f59e0b;">
-      <div class="stat-value">AED 96</div>
-      <div class="stat-label">CAC (Blended)</div>
-      <div class="stat-sub">Total ad spend ÷ paid orders (30d)</div>
-      <div style="font-size:11px;color:#6b6560;margin-top:6px;">
-        Google: AED 733 + Meta: ~$434 (AED 1,594)<br>
-        ÷ 9 orders = AED 249 blended<br>
-        <em style="color:#f59e0b;">⚠ Includes organic orders — true paid CAC higher</em>
-      </div>
-    </div>
-    <!-- Google Ads CAC -->
+    <!-- Google Ads -->
     <div class="stat-card" style="border-top:3px solid #22c55e;">
       <div class="stat-value">AED 733</div>
       <div class="stat-label">Google Ads Spend</div>
-      <div class="stat-sub">30-day total · AED 20/day</div>
+      <div class="stat-sub">Total &middot; AED 20/day</div>
       <div style="font-size:11px;color:#6b6560;margin-top:6px;">
-        653 clicks · AED 1.19 CPC<br>
-        2 tracked conversions<br>
-        <span style="color:#22c55e;">Mustafa order: AED 723 (144x ROAS that day)</span>
+        653 clicks &middot; AED 1.12 CPC<br>
+        2 tracked conversions
       </div>
     </div>
     <!-- Meta Ads -->
     <div class="stat-card" style="border-top:3px solid #ef4444;">
       <div class="stat-value">$434</div>
       <div class="stat-label">Meta/IG Ad Spend</div>
-      <div class="stat-sub">All-time · 12 campaigns (Nour)</div>
+      <div class="stat-sub">All-time &middot; 12 campaigns</div>
       <div style="font-size:11px;color:#6b6560;margin-top:6px;">
-        2,385 link clicks · $0.07 CPC<br>
-        Daily limit: $52.37<br>
-        <span style="color:#ef4444;">⚠ MANUAL — API not connected</span>
+        2,385 link clicks &middot; $0.18 CPC<br>
+        <span style="color:#ef4444;">MANUAL &mdash; API blocked</span>
       </div>
     </div>
-    <!-- Revenue -->
+    <!-- Revenue 30d -->
     <div class="stat-card" style="border-top:3px solid #818cf8;">
       <div class="stat-value">AED 4,954</div>
       <div class="stat-label">Revenue (30d)</div>
-      <div class="stat-sub">9 orders · AOV AED 644</div>
+      <div class="stat-sub">9 orders</div>
     </div>
     <!-- AOV -->
     <div class="stat-card">
-      <div class="stat-value">AED 1,004</div>
+      <div class="stat-value">AED 992</div>
       <div class="stat-label">AOV (All-time)</div>
-      <div class="stat-sub">23 orders · AED 23,101 total</div>
+      <div class="stat-sub">25 orders &middot; AED 23,813 total</div>
     </div>
-    <!-- ROAS -->
+    <!-- Blended ROAS -->
     <div class="stat-card">
-      <div class="stat-value">2.6x</div>
+      <div class="stat-value">2.1x</div>
       <div class="stat-label">Blended ROAS (30d)</div>
-      <div class="stat-sub">AED 4,954 rev ÷ ~AED 2,236 spend</div>
+      <div class="stat-sub">AED 4,954 rev &divide; ~AED 2,327 spend</div>
       <div style="font-size:11px;color:#6b6560;margin-top:6px;">
         Google: AED 733 + Meta: ~AED 1,594
       </div>
@@ -393,46 +425,48 @@
       <tbody>
         <tr><td>February 2026</td><td>12</td><td>AED 15,391</td><td>AED 1,283</td></tr>
         <tr><td>March 2026</td><td>7</td><td>AED 4,885</td><td>AED 698</td></tr>
-        <tr><td>April 2026 (MTD)</td><td>4</td><td>AED 2,825</td><td>AED 706</td></tr>
-        <tr style="font-weight:600;border-top:1px solid rgba(255,255,255,0.1);"><td>All-time</td><td>23</td><td>AED 23,101</td><td>AED 1,004</td></tr>
+        <tr><td>April 2026 (MTD)</td><td>6</td><td>AED 3,537</td><td>AED 590</td></tr>
+        <tr style="font-weight:600;border-top:1px solid rgba(255,255,255,0.1);"><td>All-time</td><td>25</td><td>AED 23,813</td><td>AED 992</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- TRAFFIC OVERVIEW -->
+<!-- ORGANIC TRAFFIC -->
 <div class="section">
-  <div class="section-title">Organic Traffic &mdash; 28 Days</div>
+  <div class="section-title">Organic Traffic &mdash; 7 Days</div>
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-value">13</div>
       <div class="stat-label">Organic Clicks</div>
-      <div class="stat-sub">28-day total</div>
+      <div class="stat-sub">7-day total</div>
+      <div style="font-size:11px;color:#4ade80;margin-top:6px;">+160% vs prev week (5)</div>
     </div>
     <div class="stat-card">
       <div class="stat-value">182</div>
       <div class="stat-label">Impressions</div>
-      <div class="stat-sub">28-day total</div>
+      <div class="stat-sub">7-day total</div>
+      <div style="font-size:11px;color:#4ade80;margin-top:6px;">+39% vs prev week (131)</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value">~4%</div>
+      <div class="stat-value">~7%</div>
       <div class="stat-label">Avg CTR</div>
       <div class="stat-sub">click-through rate</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value">5,154</div>
-      <div class="stat-label">URLs Queued</div>
-      <div class="stat-sub">indexing in progress</div>
+      <div class="stat-value">1/14</div>
+      <div class="stat-label">Blogs Indexed</div>
+      <div class="stat-sub">rest submitted Apr 14</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value">~2mo</div>
+      <div class="stat-value">~3mo</div>
       <div class="stat-label">Domain Age</div>
       <div class="stat-sub">early authority phase</div>
     </div>
   </div>
 </div>
 
-<!-- 2. KEYWORD RANKINGS (GSC) -->
+<!-- KEYWORD RANKINGS (GSC) -->
 <div class="section">
   <div class="section-title">Keyword Rankings &mdash; Google Search Console</div>
   <div class="card">
@@ -448,77 +482,17 @@
       </thead>
       <tbody>
         <tr>
-          <td>unfamiliar familiar</td>
-          <td>6</td>
-          <td>38</td>
-          <td>15.8%</td>
-          <td class="pos-yellow">8.4</td>
-        </tr>
-        <tr>
-          <td>familiar</td>
-          <td>0</td>
-          <td>38</td>
-          <td>0%</td>
-          <td class="pos-yellow">5.3</td>
-        </tr>
-        <tr>
-          <td>build your store</td>
-          <td>0</td>
-          <td>12</td>
-          <td>0%</td>
-          <td class="pos-yellow">9.2</td>
-        </tr>
-        <tr>
-          <td>down memory lane</td>
-          <td>0</td>
-          <td>6</td>
-          <td>0%</td>
-          <td class="pos-yellow">5.8</td>
-        </tr>
-        <tr>
-          <td>unfamiliar records</td>
-          <td>0</td>
-          <td>4</td>
-          <td>0%</td>
-          <td class="pos-yellow">7.0</td>
-        </tr>
-        <tr>
-          <td>throwback</td>
-          <td>0</td>
-          <td>3</td>
-          <td>0%</td>
-          <td class="pos-green">1.7</td>
-        </tr>
-        <tr>
-          <td>familar</td>
-          <td>0</td>
-          <td>3</td>
-          <td>0%</td>
-          <td class="pos-green">4.0</td>
-        </tr>
-        <tr>
-          <td>crate digging</td>
-          <td>0</td>
+          <td><strong>unfamiliar familiar</strong></td>
           <td>2</td>
-          <td>0%</td>
-          <td class="pos-yellow">5.0</td>
-        </tr>
-        <tr>
-          <td>taste vinyl</td>
-          <td>0</td>
           <td>2</td>
-          <td>0%</td>
-          <td class="pos-yellow">8.0</td>
-        </tr>
-        <tr>
-          <td>love record</td>
-          <td>0</td>
-          <td>2</td>
-          <td>0%</td>
-          <td class="pos-yellow">9.0</td>
+          <td>100%</td>
+          <td class="pos-green">2.0</td>
         </tr>
       </tbody>
     </table>
+    <div class="card-note">
+      All other keywords have &lt;5 impressions. Not ranking for commercial terms yet &mdash; blogs submitted for indexing Apr 14, waiting for Google to process.
+    </div>
     <div style="margin-top: 14px; font-size: 11px; color: #555; display: flex; gap: 20px; flex-wrap: wrap;">
       <span><span class="pos-green">&bull;</span> Position &lt; 5</span>
       <span><span class="pos-yellow">&bull;</span> Position 5 &ndash; 10</span>
@@ -528,7 +502,7 @@
   </div>
 </div>
 
-<!-- 3. TARGET KEYWORDS — GAP ANALYSIS -->
+<!-- TARGET KEYWORDS — GAP ANALYSIS -->
 <div class="section">
   <div class="section-title">Target Keywords &mdash; Gap Analysis</div>
   <div class="card">
@@ -546,106 +520,127 @@
         <tr>
           <td><strong>vinyl records dubai</strong></td>
           <td>390</td>
-          <td>?</td>
-          <td><span class="status-new">Blog live — submitted</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Blog live &mdash; submitted</span></td>
           <td><span class="pri-critical">Critical</span></td>
         </tr>
         <tr>
           <td><strong>vinyls dubai</strong></td>
           <td>390</td>
-          <td>?</td>
-          <td><span class="status-new">Blog live — submitted</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Blog live &mdash; submitted</span></td>
           <td><span class="pri-critical">Critical</span></td>
         </tr>
         <tr>
           <td><strong>record store dubai</strong></td>
           <td>170</td>
-          <td>High</td>
-          <td><span class="status-not">Blog live — submitted</span></td>
+          <td>High (mall retailers)</td>
+          <td><span class="status-submitted">Blog live &mdash; submitted</span></td>
           <td><span class="pri-critical">Critical</span></td>
         </tr>
         <tr>
           <td><strong>vinyl shop dubai</strong></td>
           <td>170</td>
-          <td>High</td>
-          <td><span class="status-not">Blog live — submitted</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Blog live &mdash; submitted</span></td>
           <td><span class="pri-critical">Critical</span></td>
         </tr>
         <tr>
           <td><strong>dubai record store</strong></td>
           <td>170</td>
-          <td>High</td>
-          <td><span class="status-not">Blog live — submitted</span></td>
+          <td>High (mall retailers)</td>
+          <td><span class="status-submitted">Blog live &mdash; submitted</span></td>
           <td><span class="pri-critical">Critical</span></td>
+        </tr>
+        <tr>
+          <td>record store day</td>
+          <td>480</td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Seasonal &mdash; pop-up email sent</span></td>
+          <td><span class="pri-seasonal">Seasonal</span></td>
+        </tr>
+        <tr>
+          <td>turntable dubai</td>
+          <td>110</td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Blog live (Listening Setup) &mdash; submitted</span></td>
+          <td><span class="pri-high">High</span></td>
+        </tr>
+        <tr>
+          <td>vinyl player dubai</td>
+          <td>110</td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Covered in Listening Setup &mdash; submitted</span></td>
+          <td><span class="pri-high">High</span></td>
         </tr>
         <tr>
           <td>vinyl store dubai</td>
           <td>90</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Covered in blogs &mdash; submitted</span></td>
           <td><span class="pri-high">High</span></td>
         </tr>
         <tr>
           <td>vinyl records uae</td>
           <td>40</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Blog live &mdash; submitted</span></td>
           <td><span class="pri-high">High</span></td>
+        </tr>
+        <tr>
+          <td>fairuz vinyl</td>
+          <td>30</td>
+          <td>CPC AED 0</td>
+          <td><span class="status-indexed">INDEXED by Google</span></td>
+          <td><span class="pri-niche">Niche &mdash; own it</span></td>
         </tr>
         <tr>
           <td>record shop dubai</td>
           <td>20</td>
-          <td>High</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-submitted">Covered in blogs</span></td>
           <td><span class="pri-high">High</span></td>
         </tr>
         <tr>
           <td>used vinyl records dubai</td>
           <td>20</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-not">Not targeted yet</span></td>
           <td><span class="pri-high">High</span></td>
         </tr>
         <tr>
           <td>arabic vinyl records</td>
           <td>10</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-indexed">INDEXED by Google</span></td>
           <td><span class="pri-niche">Niche &mdash; own it</span></td>
         </tr>
         <tr>
           <td>ziad rahbani vinyl</td>
           <td>10</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
-          <td><span class="pri-niche">Niche &mdash; own it</span></td>
-        </tr>
-        <tr>
-          <td>fairuz vinyl</td>
-          <td>30</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-indexed">INDEXED by Google</span></td>
           <td><span class="pri-niche">Niche &mdash; own it</span></td>
         </tr>
         <tr>
           <td>arabic music vinyl</td>
           <td>10</td>
-          <td>?</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td>CPC AED 0</td>
+          <td><span class="status-indexed">INDEXED by Google</span></td>
           <td><span class="pri-niche">Niche &mdash; own it</span></td>
         </tr>
         <tr>
           <td>vinyl gift dubai</td>
           <td>10</td>
           <td>&mdash;</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td><span class="status-not">Not targeted yet</span></td>
           <td><span class="pri-niche">Niche</span></td>
         </tr>
         <tr>
           <td>presents for vinyl lovers</td>
           <td>10</td>
           <td>&mdash;</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td><span class="status-not">Not targeted yet</span></td>
           <td><span class="pri-niche">Niche</span></td>
         </tr>
       </tbody>
@@ -653,7 +648,107 @@
   </div>
 </div>
 
-<!-- 4. COMPETITOR LANDSCAPE -->
+<!-- UNTAPPED KEYWORDS — ZERO COMPETITION -->
+<div class="section">
+  <div class="section-title">Untapped Keywords &mdash; Zero Competition</div>
+  <div class="card">
+    <div class="callout" style="margin-top:0;margin-bottom:16px;">
+      CPC is AED 0.00 across ALL keywords below &mdash; no competitors are bidding. Massive paid + organic opportunity.
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Keyword</th>
+          <th>UAE Vol/mo</th>
+          <th>Global Vol</th>
+          <th>UF Position</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>record store day</strong></td>
+          <td>480</td>
+          <td>&mdash;</td>
+          <td><span class="status-submitted">Pop-up email sent</span></td>
+          <td>Seasonal, massive &mdash; blog needed</td>
+        </tr>
+        <tr>
+          <td>record store day online</td>
+          <td>40</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not targeted</span></td>
+          <td>Seasonal tail keyword</td>
+        </tr>
+        <tr>
+          <td>vinyl player dubai</td>
+          <td>110</td>
+          <td>&mdash;</td>
+          <td><span class="status-submitted">Covered in blog</span></td>
+          <td>Listening Setup blog</td>
+        </tr>
+        <tr>
+          <td>turntable dubai</td>
+          <td>110</td>
+          <td>&mdash;</td>
+          <td><span class="status-submitted">Blog live</span></td>
+          <td>Listening Setup blog</td>
+        </tr>
+        <tr>
+          <td>arabic vinyl records</td>
+          <td>10</td>
+          <td>&mdash;</td>
+          <td><span class="status-indexed">INDEXED</span></td>
+          <td class="open-field">We're the ONLY ones</td>
+        </tr>
+        <tr>
+          <td>fairuz vinyl</td>
+          <td>30</td>
+          <td>&mdash;</td>
+          <td><span class="status-indexed">INDEXED</span></td>
+          <td class="open-field">We're the ONLY ones</td>
+        </tr>
+        <tr>
+          <td>ziad rahbani vinyl</td>
+          <td>10</td>
+          <td>&mdash;</td>
+          <td><span class="status-indexed">INDEXED</span></td>
+          <td class="open-field">We're the ONLY ones</td>
+        </tr>
+        <tr>
+          <td>vinyl gift</td>
+          <td>10</td>
+          <td>22K</td>
+          <td><span class="status-not">Not targeted</span></td>
+          <td>Gift guide blog needed</td>
+        </tr>
+        <tr>
+          <td>presents for vinyl lovers</td>
+          <td>10</td>
+          <td>1.9K</td>
+          <td><span class="status-not">Not targeted</span></td>
+          <td>Gift guide blog needed</td>
+        </tr>
+        <tr>
+          <td>vinyl subscription box</td>
+          <td>10</td>
+          <td>320</td>
+          <td><span class="status-not">Not targeted</span></td>
+          <td>Future product opportunity</td>
+        </tr>
+        <tr>
+          <td>personalized vinyl record</td>
+          <td>10</td>
+          <td>1K</td>
+          <td><span class="status-not">Not targeted</span></td>
+          <td>Future product opportunity</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- COMPETITOR LANDSCAPE -->
 <div class="section">
   <div class="section-title">Competitor Landscape</div>
   <div class="card">
@@ -662,7 +757,7 @@
         <tr>
           <th>Keyword</th>
           <th>UAE Vol</th>
-          <th>UF Ranking</th>
+          <th>UF Status</th>
           <th>Competitors</th>
         </tr>
       </thead>
@@ -670,150 +765,200 @@
         <tr>
           <td><strong>vinyl records dubai</strong></td>
           <td>390</td>
-          <td><span class="status-not">Not ranking</span></td>
-          <td>Virgin Megastore, Cavo</td>
+          <td><span class="status-submitted">Blog submitted</span></td>
+          <td>CPC AED 0 &mdash; no one bidding</td>
         </tr>
         <tr>
           <td><strong>record store dubai</strong></td>
           <td>170</td>
-          <td><span class="status-not">Not ranking</span></td>
-          <td>Virgin Megastore</td>
+          <td><span class="status-submitted">Blog submitted</span></td>
+          <td>High organic competition (mall retailers)</td>
         </tr>
         <tr>
           <td><strong>vinyl shop dubai</strong></td>
           <td>170</td>
-          <td><span class="status-not">Not ranking</span></td>
-          <td>Unknown</td>
+          <td><span class="status-submitted">Blog submitted</span></td>
+          <td>CPC AED 0 &mdash; no one bidding</td>
         </tr>
         <tr>
           <td>arabic vinyl records</td>
           <td>10</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td><span class="status-indexed">INDEXED</span></td>
           <td class="open-field">None &mdash; open field</td>
         </tr>
         <tr>
           <td>fairuz vinyl</td>
           <td>30</td>
-          <td><span class="status-not">Not ranking</span></td>
+          <td><span class="status-indexed">INDEXED</span></td>
+          <td class="open-field">None &mdash; open field</td>
+        </tr>
+        <tr>
+          <td>ziad rahbani vinyl</td>
+          <td>10</td>
+          <td><span class="status-indexed">INDEXED</span></td>
           <td class="open-field">None &mdash; open field</td>
         </tr>
       </tbody>
     </table>
     <div class="callout">
-      CPC is AED 0.00 across ALL keywords &mdash; no competitors are bidding. Massive paid opportunity.
+      CPC is AED 0.00 across ALL keywords &mdash; no competitors are bidding. Arabic vinyl, fairuz vinyl, ziad rahbani = completely open field with NO competitors.
     </div>
   </div>
 </div>
 
-<!-- 5. BLOG CONTENT COVERAGE -->
+<!-- BLOG CONTENT COVERAGE -->
 <div class="section">
   <div class="section-title">Blog Content Coverage</div>
   <div class="summary-bar">
-    <strong>14 / 15</strong> blogs SEO-optimized &nbsp;&middot;&nbsp; <strong>Rock Lovers tags done &nbsp;&middot;&nbsp; <strong>3</strong> new posts targeting "record store dubai", "buy vinyl UAE", "arabic vinyl" &nbsp;&middot;&nbsp; Updated 9 Apr 2026
+    <strong>15 / 15</strong> blogs SEO-optimized &nbsp;&middot;&nbsp; All submitted for indexing via API (Apr 14) &nbsp;&middot;&nbsp; <strong>4</strong> blogs INDEXED by Google &nbsp;&middot;&nbsp; Updated 17 Apr 2026
   </div>
   <div class="card" style="overflow-x: auto;">
     <table>
       <thead>
         <tr>
+          <th>#</th>
           <th>Blog Post</th>
           <th>Date</th>
-          <th>SEO Score</th>
+          <th>SEO Status</th>
           <th>Target Keywords</th>
-          <th>Status</th>
+          <th>Indexing</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/tiktok-bangers-vinyl-in-dubai" target="_blank">TikTok Bangers Vinyl in Dubai</a></td>
-          <td style="white-space:nowrap;">Apr 3, 2026</td>
+          <td>1</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/tiktok-bangers-vinyl-in-dubai" target="_blank">TikTok Bangers Vinyl in Dubai</a></td>
+          <td style="white-space:nowrap;">Apr 3</td>
           <td><span class="status-good">Optimized</span></td>
           <td>vinyl records dubai</td>
-          <td style="color:#4ade80;">Good</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/rock-lovers-collectors-guide-rock-vinyl-dubai" target="_blank">Rock Lovers: Collector's Guide</a></td>
-          <td style="white-space:nowrap;">Mar 27, 2026</td>
-          <td><span class="status-partial">Partial</span></td>
-          <td style="color:#555;">none specific</td>
-          <td style="color:#facc15;">Needs retrofit</td>
+          <td>2</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/rock-lovers-collectors-guide-rock-vinyl-dubai" target="_blank">Rock Lovers: Collector's Guide</a></td>
+          <td style="white-space:nowrap;">Mar 27</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>rock vinyl dubai, tags added</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/kitchen-grooves-best-vinyl-records-cooking-meal-prep-dubai" target="_blank">Kitchen Grooves: Best Vinyl for Cooking</a></td>
-          <td style="white-space:nowrap;">Mar 20, 2026</td>
+          <td>3</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/kitchen-grooves-best-vinyl-records-cooking-meal-prep-dubai" target="_blank">Kitchen Grooves: Best Vinyl for Cooking</a></td>
+          <td style="white-space:nowrap;">Mar 20</td>
           <td><span class="status-good">Optimized</span></td>
           <td>vinyl records dubai</td>
-          <td style="color:#4ade80;">Good</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/cool-kids-club-art-curious-listening-dubai-vinyl" target="_blank">Cool Kids Club: Art of Curious Listening</a></td>
-          <td style="white-space:nowrap;">Mar 14, 2026</td>
-          <td><span class="status-partial">Partial</span></td>
-          <td style="color:#555;">none specific</td>
-          <td style="color:#facc15;">Needs retrofit</td>
+          <td>4</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/cool-kids-club-art-curious-listening-dubai-vinyl" target="_blank">Cool Kids Club: Art of Curious Listening</a></td>
+          <td style="white-space:nowrap;">Mar 14</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>vinyl dubai, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/understanding-vinyl-grading-guide" target="_blank">Understanding Vinyl Grading</a></td>
-          <td style="white-space:nowrap;">Mar 11, 2026</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>5</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/understanding-vinyl-grading-guide" target="_blank">Understanding Vinyl Grading</a></td>
+          <td style="white-space:nowrap;">Mar 11</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>vinyl grading, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/listening-setup-turntable-speaker-guide" target="_blank">The Listening Setup</a></td>
-          <td style="white-space:nowrap;">Dec 1, 2025</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>6</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/listening-setup-turntable-speaker-guide" target="_blank">The Listening Setup</a></td>
+          <td style="white-space:nowrap;">Feb 15</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>turntable dubai, vinyl player dubai</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/how-to-care-for-vinyl-records" target="_blank">How to Care for Your Vinyl Records</a></td>
-          <td style="white-space:nowrap;">Nov 15, 2025</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>7</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/how-to-care-for-vinyl-records" target="_blank">How to Care for Your Vinyl Records</a></td>
+          <td style="white-space:nowrap;">Feb 15</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>vinyl care, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/concept-unfamiliar-familiar" target="_blank">The Concept of Unfamiliar Familiar</a></td>
-          <td style="white-space:nowrap;">Nov 1, 2025</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>8</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/concept-unfamiliar-familiar" target="_blank">The Concept of Unfamiliar Familiar</a></td>
+          <td style="white-space:nowrap;">Feb 15</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>unfamiliar familiar, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/new-vs-pre-loved-vinyl" target="_blank">New vs. Pre-Loved Vinyl</a></td>
-          <td style="white-space:nowrap;">Oct 20, 2025</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>9</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/new-vs-pre-loved-vinyl" target="_blank">New vs. Pre-Loved Vinyl</a></td>
+          <td style="white-space:nowrap;">Mar 11</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>pre-loved vinyl dubai, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/how-to-play-vinyl-properly" target="_blank">How to Play Vinyl Properly</a></td>
-          <td style="white-space:nowrap;">Oct 10, 2025</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>10</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/how-to-play-vinyl-properly" target="_blank">How to Play Vinyl Properly</a></td>
+          <td style="white-space:nowrap;">Feb 15</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>how to play vinyl, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
         <tr>
-          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/blog/how-to-build-vinyl-collection" target="_blank">How to Build a Vinyl Collection</a></td>
-          <td style="white-space:nowrap;">Oct 1, 2025</td>
-          <td><span class="status-bad">Not optimized</span></td>
-          <td style="color:#555;">none</td>
-          <td style="color:#f87171;">Needs full rewrite</td>
+          <td>11</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/how-to-build-vinyl-collection" target="_blank">How to Build a Vinyl Collection</a></td>
+          <td style="white-space:nowrap;">Feb 15</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>vinyl collection dubai, retrofitted</td>
+          <td><span class="status-submitted">Submitted</span></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/best-vinyl-record-stores-dubai" target="_blank">Best Vinyl Record Stores Dubai</a></td>
+          <td style="white-space:nowrap;">Apr 9</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>record store dubai, vinyl shop dubai</td>
+          <td><span class="status-submitted">Submitted</span></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/where-to-buy-vinyl-uae" target="_blank">Where to Buy Vinyl UAE</a></td>
+          <td style="white-space:nowrap;">Apr 9</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>vinyl records uae, vinyls dubai</td>
+          <td><span class="status-submitted">Submitted</span></td>
+        </tr>
+        <tr style="background:rgba(74,222,128,0.04);">
+          <td>14</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/arabic-vinyl-records-fairuz-golden-era" target="_blank">Arabic Vinyl Records: Fairuz &amp; Golden Era</a></td>
+          <td style="white-space:nowrap;">Apr 9</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>arabic vinyl, fairuz vinyl, ziad rahbani</td>
+          <td><span class="status-indexed">INDEXED</span></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><a class="blog-link" href="https://unfamiliarfamiliar.com/community/blog/kitchen-grooves-best-vinyl-records-cooking-meal-prep-dubai-2" target="_blank">Kitchen Grooves (duplicate)</a></td>
+          <td style="white-space:nowrap;">Apr 11</td>
+          <td><span class="status-good">Optimized</span></td>
+          <td>vinyl records dubai (duplicate)</td>
+          <td><span class="status-submitted">Submitted</span></td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- 6. CONTENT GAP — MISSING BLOG POSTS -->
+<!-- CONTENT GAP — BLOGS STILL NEEDED -->
 <div class="section">
-  <div class="section-title">Content Gap &mdash; Missing Blog Posts</div>
+  <div class="section-title">Content Gap &mdash; Blogs Still Needed</div>
   <div class="card">
     <table>
       <thead>
         <tr>
           <th>Priority</th>
-          <th>Suggested Title</th>
+          <th>Blog / Mood Crate</th>
           <th>Target Keyword</th>
           <th>UAE Vol</th>
           <th>Status</th>
@@ -821,45 +966,129 @@
       </thead>
       <tbody>
         <tr>
-          <td><span class="pri-critical">1</span></td>
-          <td><strong>Best Vinyl Record Stores in Dubai &mdash; Complete Guide</strong></td>
-          <td>record store dubai</td>
-          <td>170</td>
+          <td><span class="pri-seasonal">Seasonal</span></td>
+          <td><strong>Record Store Day Dubai</strong></td>
+          <td>record store day</td>
+          <td>480</td>
           <td><span class="status-not">Not written</span></td>
         </tr>
         <tr>
-          <td><span class="pri-critical">2</span></td>
-          <td><strong>Where to Buy Vinyl Records in UAE &mdash; Online &amp; In-Store</strong></td>
-          <td>vinyl records dubai</td>
-          <td>390</td>
+          <td><span class="pri-high">High</span></td>
+          <td><strong>Vinyl Gift Guide Dubai</strong></td>
+          <td>vinyl gift dubai, presents for vinyl lovers</td>
+          <td>10+</td>
           <td><span class="status-not">Not written</span></td>
         </tr>
         <tr>
-          <td><span class="pri-critical">3</span></td>
-          <td><strong>Arabic Vinyl Records: Fairuz, Ziad Rahbani &amp; the Golden Era</strong></td>
-          <td>arabic vinyl records</td>
+          <td><span class="pri-high">Next</span></td>
+          <td><strong>90's Rewind</strong> (mood crate)</td>
+          <td>90s vinyl dubai</td>
+          <td>&mdash;</td>
+          <td><span class="status-partial">Pending approval</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-high">Apr 18</span></td>
+          <td><strong>Habibi After Hours</strong> (mood crate)</td>
+          <td>arabic music vinyl</td>
           <td>10</td>
+          <td><span class="status-partial">Saved for Apr 18</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Dinner Host's Edit</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
           <td><span class="status-not">Not written</span></td>
         </tr>
         <tr>
-          <td><span class="pri-high">4</span></td>
-          <td>Vinyl Gift Guide Dubai &mdash; Best Records to Give</td>
-          <td>vinyl gift dubai</td>
-          <td>10</td>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Roadtrip</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
           <td><span class="status-not">Not written</span></td>
         </tr>
         <tr>
-          <td><span class="pri-high">5</span></td>
-          <td>Turntable Setup Guide Dubai &mdash; Best Record Players</td>
-          <td>turntable dubai</td>
-          <td>110</td>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>GRWM</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
           <td><span class="status-not">Not written</span></td>
         </tr>
         <tr>
-          <td><span class="pri-high">6 &ndash; 21</span></td>
-          <td>16 remaining mood crate blogs (Kitchen Grooves template)</td>
-          <td>mood-specific keywords</td>
-          <td>varies</td>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Coffee First</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Slow Sunday</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Reading Room</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Dancefloor Throwback</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>House Warm-Up</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Can't-Go-Wrong Classics</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>80's Night</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Habibi Heat</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Soul &amp; Funk</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Midnight Jazz</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
+          <td><span class="status-not">Not written</span></td>
+        </tr>
+        <tr>
+          <td><span class="pri-niche">Backlog</span></td>
+          <td>Selector Mode</td>
+          <td>mood-specific</td>
+          <td>&mdash;</td>
           <td><span class="status-not">Not written</span></td>
         </tr>
       </tbody>
@@ -867,34 +1096,54 @@
   </div>
 </div>
 
-<!-- 8. ACTION ITEMS -->
+<!-- ACTION ITEMS -->
 <div class="section">
   <div class="section-title">Action Items</div>
   <div class="card">
     <ul class="checklist">
-      <li>
-        <div class="check-box"></div>
-        <span>Retrofit 7 old blog posts with Dubai keywords + FAQ schema + product links</span>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Retrofit 7 old blog posts with Dubai keywords + FAQ schema</span>
+      </li>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Write 3 new SEO blog posts (record store, buy vinyl, arabic vinyl)</span>
+      </li>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Optimize product page title tags (Vinyl Record | UF Dubai)</span>
+      </li>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Submit all 14 blogs for indexing via API</span>
+      </li>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Add indexing scope to Google OAuth</span>
+      </li>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Bump Google Ads to AED 20/day</span>
+      </li>
+      <li class="done">
+        <div class="check-done">&#10003;</div>
+        <span>Pop-up invite email sent (176 subscribers, Record Store Day)</span>
       </li>
       <li>
         <div class="check-box"></div>
-        <span>Write "Best Vinyl Record Stores in Dubai" blog</span>
+        <span>Wait for blogs to get indexed (submitted Apr 14, processing)</span>
       </li>
       <li>
         <div class="check-box"></div>
-        <span>Write "Where to Buy Vinyl Records in UAE" blog</span>
+        <span>Write remaining 14 mood crate blog posts</span>
       </li>
       <li>
         <div class="check-box"></div>
-        <span>Write "Arabic Vinyl Records: Golden Era" blog</span>
+        <span>Write Record Store Day blog post (targets 480/mo keyword)</span>
       </li>
       <li>
         <div class="check-box"></div>
-        <span>Optimize all product page title tags (artist + album + "vinyl record")</span>
-      </li>
-      <li>
-        <div class="check-box"></div>
-        <span>Write remaining 16 mood crate blog posts</span>
+        <span>Write Vinyl Gift Guide blog post (targets gift keywords)</span>
       </li>
       <li>
         <div class="check-box"></div>
@@ -902,7 +1151,11 @@
       </li>
       <li>
         <div class="check-box"></div>
-        <span>Merchant Center reinstatement (pending review)</span>
+        <span>Merchant Center: wait for Limited &rarr; Approved transition</span>
+      </li>
+      <li>
+        <div class="check-box"></div>
+        <span>Install TikTok pixel</span>
       </li>
     </ul>
   </div>

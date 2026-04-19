@@ -1074,6 +1074,111 @@
     </div>
   </div>
 
+  <!-- ═══════════════════ INVENTORY ECONOMICS ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Inventory Economics</div>
+    <div class="card">
+      <!-- KPI row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+        <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:22px;font-weight:600;color:var(--beige);">AED 160K</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:4px;">INVENTORY COST</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:22px;font-weight:600;color:var(--beige);">AED 298K</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:4px;">RETAIL VALUE</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:22px;font-weight:600;color:var(--green);">46.3%</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:4px;">POTENTIAL MARGIN</div>
+        </div>
+        <div style="text-align:center;padding:16px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:22px;font-weight:600;color:var(--beige);">AED 46.3K</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:4px;">REVENUE (SOLD)</div>
+        </div>
+      </div>
+
+      <!-- Cost Recovery Bar Chart -->
+      <div style="margin-bottom:24px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--dim);margin-bottom:8px;">COST RECOVERY — AED 46K of 160K recovered (28.9%)</div>
+        <div style="width:100%;height:28px;background:var(--bg);border-radius:14px;overflow:hidden;position:relative;">
+          <div style="width:28.9%;height:100%;background:var(--green);border-radius:14px;"></div>
+          <div style="position:absolute;right:8px;top:5px;font-family:var(--mono);font-size:11px;color:var(--dim);">AED 252K remaining</div>
+        </div>
+      </div>
+
+      <!-- Inventory Split Chart — Horizontal stacked bar -->
+      <div style="margin-bottom:24px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--dim);margin-bottom:8px;">INVENTORY SPLIT — 976 SKUs / 1,629 units</div>
+        <div style="width:100%;height:36px;display:flex;border-radius:8px;overflow:hidden;">
+          <div style="width:22.1%;background:#9D3F0D;display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--mono);font-size:9px;color:#fff;">MAJOR 22%</span></div>
+          <div style="width:16.9%;background:#B597E8;display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--mono);font-size:9px;color:#fff;">INDIE 17%</span></div>
+          <div style="width:31.6%;background:#B0CBE8;display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--mono);font-size:9px;color:#23201F;">AUDIT PENDING 32%</span></div>
+          <div style="width:29.4%;background:#166534;display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--mono);font-size:9px;color:#fff;">PRE-LOVED 29%</span></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);"><span style="display:inline-block;width:10px;height:10px;background:#9D3F0D;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>New — Major Label (216 SKUs) — distribution risk</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);"><span style="display:inline-block;width:10px;height:10px;background:#B597E8;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>New — Indie/Other (165 SKUs) — no risk</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);"><span style="display:inline-block;width:10px;height:10px;background:#B0CBE8;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>New — Not Yet Audited (308 SKUs)</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim);"><span style="display:inline-block;width:10px;height:10px;background:#166534;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Pre-loved (287 SKUs) — secondhand, no distribution rights apply</span>
+        </div>
+      </div>
+
+      <!-- Margin by Condition -->
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--dim);margin-bottom:8px;">MARGIN BY CONDITION</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:12px 16px;background:var(--bg);border-radius:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--beige);">NEW (689 SKUs)</span>
+              <span style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--beige);">45%</span>
+            </div>
+            <div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
+              <div style="width:45%;height:100%;background:var(--green);border-radius:4px;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;">
+              <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Cost: AED 142K</span>
+              <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Value: AED 260K</span>
+            </div>
+          </div>
+          <div style="padding:12px 16px;background:var(--bg);border-radius:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--beige);">PRE-LOVED (287 SKUs)</span>
+              <span style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--green);">53%</span>
+            </div>
+            <div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
+              <div style="width:53%;height:100%;background:var(--green);border-radius:4px;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;">
+              <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Cost: AED 18K</span>
+              <span style="font-family:var(--mono);font-size:9px;color:var(--dim);">Value: AED 38K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit Economics -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="text-align:center;padding:12px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:18px;color:var(--beige);">AED 98</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;">AVG COST/UNIT</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:18px;color:var(--beige);">AED 183</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;">AVG PRICE/UNIT</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:18px;color:var(--beige);">1,629</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;">UNITS IN STOCK</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;font-family:var(--mono);font-size:10px;color:var(--dim);text-align:center;">
+        Label audit in progress — Discogs API lookup running. Data updates automatically. · <a href="label-intelligence.html" style="color:var(--butter);">View Label Intelligence →</a>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══════════════════ QUICK LINKS ═══════════════════ -->
   <div class="section" style="text-align: center;">
     <div class="section-label" style="text-align: center;">Quick Links</div>

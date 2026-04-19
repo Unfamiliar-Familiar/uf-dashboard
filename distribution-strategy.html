@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distribution Strategy — Unfamiliar Familiar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #FBF9F2;
+    --card: #FFFFFF;
+    --border: rgba(35,32,31,0.08);
+    --text: #23201F;
+    --accent: #9D3F0D;
+    --dim: #8a847e;
+    --green: #166534;
+    --green-bg: rgba(22,101,52,0.08);
+    --amber: #92400e;
+    --amber-bg: rgba(146,64,14,0.08);
+    --red: #991b1b;
+    --red-bg: rgba(153,27,27,0.08);
+    --butter: #FFF5C4;
+    --butter-dark: #a38b00;
+    --mono: 'DM Mono', 'SF Mono', monospace;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    padding: 48px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .back-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .back-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .header-brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .header-title {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .header-subtitle {
+    font-size: 16px;
+    color: var(--dim);
+    margin-top: 8px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .header-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 12px;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  /* ── Value Chain ── */
+  .value-chain {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 24px 0;
+  }
+  .chain-node {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    padding-bottom: 8px;
+  }
+  .chain-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 40px;
+    position: relative;
+  }
+  .chain-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ccc;
+    z-index: 1;
+    flex-shrink: 0;
+    border: 3px solid var(--card);
+    box-shadow: 0 0 0 2px #ccc;
+  }
+  .chain-dot.dot-here {
+    background: var(--green);
+    box-shadow: 0 0 0 2px var(--green), 0 0 0 6px var(--green-bg);
+    width: 16px;
+    height: 16px;
+  }
+  .chain-dot.dot-target {
+    background: var(--butter-dark);
+    box-shadow: 0 0 0 2px var(--butter-dark), 0 0 0 6px rgba(163,139,0,0.12);
+    width: 16px;
+    height: 16px;
+  }
+  .chain-line {
+    width: 2px;
+    height: 40px;
+    background: #ddd;
+  }
+  .chain-content {
+    padding-top: 0;
+    flex: 1;
+  }
+  .chain-role {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .chain-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+  .chain-arrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    padding-left: 60px;
+    padding-bottom: 4px;
+  }
+  .chain-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-left: 8px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+  .badge-here {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+  .badge-target {
+    background: rgba(163,139,0,0.1);
+    color: var(--butter-dark);
+  }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  table td {
+    padding: 12px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  table tr:last-child td {
+    border-bottom: none;
+  }
+  table .label-name {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  table .status-open {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    background: var(--green-bg);
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  table .status-partial {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    background: var(--amber-bg);
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .tier-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Advantage Cards ── */
+  .adv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .adv-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .adv-card-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .adv-card-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .adv-card-stat {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 12px;
+  }
+
+  /* ── Phase Cards ── */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .phase-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+  }
+  .phase-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .phase-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .phase-title {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .phase-timeline {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .phase-list {
+    list-style: none;
+    padding: 0;
+  }
+  .phase-list li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .phase-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1.5px solid var(--dim);
+  }
+  .phase-card.active .phase-list li::before {
+    border-color: var(--accent);
+    background: rgba(157,63,13,0.15);
+  }
+
+  /* ── Incident Log ── */
+  .incident {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .incident-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    white-space: nowrap;
+    padding-top: 2px;
+    min-width: 70px;
+  }
+  .incident-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .incident-flag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--red);
+    background: var(--red-bg);
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── Quick Links ── */
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .quick-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    transition: all 0.2s;
+    background: var(--card);
+  }
+  .quick-link:hover {
+    border-color: var(--accent);
+    background: rgba(157,63,13,0.04);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .phase-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { padding: 24px 16px; }
+    .header-title { font-size: 24px; }
+    .adv-grid { grid-template-columns: 1fr; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-brand">Unfamiliar Familiar</div>
+        <h1 class="header-title">Distribution Strategy</h1>
+        <div class="header-subtitle">From retailer to regional distributor. The plan.</div>
+      </div>
+      <a href="control-room.html" class="back-link">Back to Control Room</a>
+    </div>
+    <div class="header-date">Updated: 19 Apr 2026</div>
+  </div>
+
+  <!-- ── VALUE CHAIN ── -->
+  <div class="section">
+    <div class="section-label">Value Chain</div>
+    <div class="card">
+      <div class="card-title">Global Music Distribution &mdash; Where UF Sits &amp; Where UF is Going</div>
+      <div class="value-chain">
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Artist</div>
+            <div class="chain-desc">Creates the music. Signs with a label.</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Label</div>
+            <div class="chain-desc">Owns master rights. Presses vinyl. Licenses territory distribution.</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot dot-target"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Regional Distributor <span class="chain-badge badge-target">UF TARGET</span></div>
+            <div class="chain-desc">Exclusive per territory. Imports, warehouses, and distributes to wholesalers and shops within their region. This is where UF wants to be for UAE/GCC.</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Wholesaler / Supplier</div>
+            <div class="chain-desc">Modulor, LAF, EbO &mdash; aggregate from distributors, sell to record shops.</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot dot-here"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Record Shop <span class="chain-badge badge-here">UF IS HERE</span></div>
+            <div class="chain-desc">Buys from wholesalers, curates, sells direct to customers. UF's current position.</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Customer</div>
+            <div class="chain-desc">End buyer. Vinyl collectors, enthusiasts, gift buyers across UAE.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TARGET LABELS ── -->
+  <div class="section">
+    <div class="section-label">Target Labels</div>
+
+    <!-- Tier 1 -->
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="tier-label">Tier 1 &mdash; High Priority (Arabic Catalogue, No UAE Distributor)</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Based</th>
+              <th>Key Artists</th>
+              <th>Why Target</th>
+              <th>UAE Dist.</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-name">Wewantsounds</td>
+              <td>Paris</td>
+              <td>Fairuz, Ziad Rahbani, Abdel Halim, Warda</td>
+              <td>THE Arabic vinyl reissue label. 100+ releases.</td>
+              <td><span class="status-open">OPEN</span></td>
+              <td>Contact via wholesale form</td>
+            </tr>
+            <tr>
+              <td class="label-name">Habibi Funk</td>
+              <td>Berlin</td>
+              <td>Fadoul, Kamal Keila, Al Massrieen</td>
+              <td>Most recognized Arabic vinyl brand globally. 30+ releases.</td>
+              <td><span class="status-partial">PARTIAL</span></td>
+              <td>Contact via Bandcamp</td>
+            </tr>
+            <tr>
+              <td class="label-name">Souma Records</td>
+              <td>Brussels</td>
+              <td>Oum Kalthoum</td>
+              <td>THE Oum Kalthoum reissue label. Massive demand.</td>
+              <td><span class="status-open">OPEN</span></td>
+              <td>High demand potential</td>
+            </tr>
+            <tr>
+              <td class="label-name">Now-Again Records</td>
+              <td>LA</td>
+              <td>Omar Khorshid, Elias Rahbani (Voix de l'Orient)</td>
+              <td>Holds the legendary Lebanese label license.</td>
+              <td><span class="status-open">OPEN</span></td>
+              <td>Via Stones Throw network</td>
+            </tr>
+            <tr>
+              <td class="label-name">Majazz Project</td>
+              <td>Palestine / London</td>
+              <td>Palestinian archive, folk, revolutionary</td>
+              <td>Culturally powerful. Strong GCC resonance.</td>
+              <td><span class="status-open">OPEN</span></td>
+              <td>Very niche</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tier 2 -->
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="tier-label">Tier 2 &mdash; Specialist</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Based</th>
+              <th>Key Artists</th>
+              <th>Why Target</th>
+              <th>UAE Dist.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-name">Nawa Recordings</td>
+              <td>Beirut</td>
+              <td>Maurice Louca, Nadah El Shazly</td>
+              <td>Contemporary Arab music on vinyl. Based in Beirut.</td>
+              <td><span class="status-open">OPEN</span></td>
+            </tr>
+            <tr>
+              <td class="label-name">Radio Martiko</td>
+              <td>Belgium</td>
+              <td>Abdou El Omari, Egyptian compilations</td>
+              <td>Rare MENA reissues.</td>
+              <td><span class="status-open">OPEN</span></td>
+            </tr>
+            <tr>
+              <td class="label-name">Sublime Frequencies</td>
+              <td>Seattle</td>
+              <td>Omar Souleyman</td>
+              <td>Middle East field recordings. Cult following.</td>
+              <td><span class="status-open">OPEN</span></td>
+            </tr>
+            <tr>
+              <td class="label-name">Hive Mind Records</td>
+              <td>Brighton</td>
+              <td>Maalem Mahmoud Gania (Gnawa)</td>
+              <td>Moroccan/African reissues.</td>
+              <td><span class="status-open">OPEN</span></td>
+            </tr>
+            <tr>
+              <td class="label-name">Analog Africa</td>
+              <td>Frankfurt</td>
+              <td>North African content</td>
+              <td>Cultural connection. Tunisian founder.</td>
+              <td><span class="status-open">OPEN</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tier 3 -->
+    <div class="card">
+      <div class="tier-label">Tier 3 &mdash; Future / Complex</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-name">Sono Cairo</td>
+              <td>Egyptian state label. Holds Oum Kalthoum, Abdel Halim originals. Not actively pressing vinyl.</td>
+            </tr>
+            <tr>
+              <td class="label-name">Voix de l'Orient (legacy)</td>
+              <td>Licensed to Now-Again. Original pressings = collectors only.</td>
+            </tr>
+            <tr>
+              <td class="label-name">EMI Arabia (now Universal)</td>
+              <td>Absorbed into UMG. Not pressing vinyl.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPETITIVE ADVANTAGE ── -->
+  <div class="section">
+    <div class="section-label">UF's Competitive Advantage</div>
+    <div class="adv-grid">
+      <div class="adv-card">
+        <div class="adv-card-title">Heritage</div>
+        <div class="adv-card-text">Disc Jockey Beirut, founded 1970. A 90,000+ record collection &mdash; the oldest in MENA.</div>
+        <div class="adv-card-stat">55 years of vinyl history</div>
+      </div>
+      <div class="adv-card">
+        <div class="adv-card-title">Demand Proof</div>
+        <div class="adv-card-text">84 orders, AED 46K revenue. Pop-up drove 55 walk-ins in a single day.</div>
+        <div class="adv-card-stat">Proven market, real customers</div>
+      </div>
+      <div class="adv-card">
+        <div class="adv-card-title">Infrastructure</div>
+        <div class="adv-card-text">E-commerce live, UAE trade license, nationwide shipping, 20 curated mood crates.</div>
+        <div class="adv-card-stat">Fully operational</div>
+      </div>
+      <div class="adv-card">
+        <div class="adv-card-title">Arabic Niche</div>
+        <div class="adv-card-text">No one else is seriously distributing Arabic vinyl in the GCC. The lane is completely open.</div>
+        <div class="adv-card-stat">Zero competitors in category</div>
+      </div>
+      <div class="adv-card">
+        <div class="adv-card-title">Zero Competition</div>
+        <div class="adv-card-text">CPC is AED 0 on all Arabic vinyl keywords. UF owns the search landscape.</div>
+        <div class="adv-card-stat">Organic monopoly on search</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THE PLAN ── -->
+  <div class="section">
+    <div class="section-label">The Plan</div>
+    <div class="phase-grid">
+
+      <div class="phase-card active">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-title">Secure Indie Arabic Labels</div>
+        <div class="phase-timeline">Q2 2026</div>
+        <ul class="phase-list">
+          <li>Contact Wewantsounds wholesale</li>
+          <li>Contact Habibi Funk</li>
+          <li>Contact Souma Records</li>
+          <li>Pitch: UF as exclusive GCC distributor, Disc Jockey heritage, proven demand</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-title">Build Wholesale Infrastructure</div>
+        <div class="phase-timeline">Q3 2026</div>
+        <ul class="phase-list">
+          <li>Minimum order commitments with labels</li>
+          <li>Warehouse / storage solution</li>
+          <li>Wholesale pricing for UAE record shops</li>
+          <li>B2B ordering system</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-title">Expand to Majors</div>
+        <div class="phase-timeline">Q4 2026+</div>
+        <ul class="phase-list">
+          <li>Volume track record from Phase 1&ndash;2</li>
+          <li>Approach indie label groups (Beggars, !K7)</li>
+          <li>Eventually approach Universal / Warner for Arabic catalogue only</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── INCIDENT LOG ── -->
+  <div class="section">
+    <div class="section-label">Incident Log</div>
+    <div class="card">
+      <div class="incident">
+        <div class="incident-date">Apr 18</div>
+        <div class="incident-body">
+          <strong>Rhythm &amp; Beats</strong> (Muhammad Javed) &mdash; claims exclusive Universal/Warner distribution in Gulf. Threatened legal action over parallel imports. UF not responding. Checking legality. <span class="incident-flag">TRIGGERED STRATEGY</span>
+          <br><br>
+          This incident accelerated the distribution strategy. Moving up the value chain removes dependence on parallel imports entirely.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QUICK LINKS ── -->
+  <div class="section">
+    <div class="section-label">Quick Links</div>
+    <div class="quick-links">
+      <a href="https://wewantsounds.com/pages/wholesale" class="quick-link" target="_blank" rel="noopener">Wewantsounds Wholesale</a>
+      <a href="https://habibifunk.bandcamp.com" class="quick-link" target="_blank" rel="noopener">Habibi Funk Bandcamp</a>
+      <a href="https://soumarecords.com" class="quick-link" target="_blank" rel="noopener">Souma Records</a>
+      <a href="https://now-again.com" class="quick-link" target="_blank" rel="noopener">Now-Again Records</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

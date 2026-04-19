@@ -5,1253 +5,1094 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UF Control Room</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=DM+Mono:wght@400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
   :root {
-    --bg: #FBF9F2; --card: #FFFFFF; --border: rgba(35,32,31,0.1);
-    --beige: #23201F; --butter: #9D3F0D;
-    --green: #166534; --yellow: #92400e; --red: #991b1b; --blue: #1e40af;
-    --dim: #6b6560;
+    --bg: #FBF9F2;
+    --card: #FFFFFF;
+    --border: rgba(35,32,31,0.08);
+    --text: #23201F;
+    --accent: #9D3F0D;
+    --dim: #8a847e;
+    --green: #166534;
+    --green-bg: rgba(22,101,52,0.08);
+    --amber: #92400e;
+    --amber-bg: rgba(146,64,14,0.08);
+    --red: #991b1b;
+    --red-bg: rgba(153,27,27,0.08);
     --mono: 'DM Mono', 'SF Mono', monospace;
     --sans: 'Inter Tight', -apple-system, sans-serif;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--beige); font-family: var(--sans); padding: 24px; min-height: 100vh; }
 
-  /* KPI Strip */
-  .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-width: 1600px; margin: 0 auto 32px; }
-  .kpi-tile { background: var(--card); padding: 20px 16px; text-align: center; }
-  .kpi-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
-  .kpi-value { font-family: var(--mono); font-size: 26px; font-weight: 400; color: var(--beige); line-height: 1; letter-spacing: -0.02em; }
-  .kpi-sub { font-family: var(--mono); font-size: 11px; color: var(--dim); margin-top: 4px; }
-  .kpi-up { color: var(--green); } .kpi-warn { color: var(--yellow); } .kpi-err { color: var(--red); }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    padding: 48px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
 
-  /* Sparkline */
-  .spark { display: flex; align-items: flex-end; gap: 2px; height: 24px; margin-top: 6px; justify-content: center; }
-  .spark-bar { width: 6px; background: var(--border); border-radius: 1px; min-height: 2px; }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
 
-  /* Lead badges */
-  .lead-row { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
-  .lead-row:last-child { border-bottom: none; }
-  .lead-hot { color: var(--red); font-family: var(--mono); font-size: 10px; background: rgba(239,68,68,0.1); padding: 1px 6px; border-radius: 2px; }
-  .lead-warm { color: var(--yellow); font-family: var(--mono); font-size: 10px; background: rgba(234,179,8,0.1); padding: 1px 6px; border-radius: 2px; }
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .header-title {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .header-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 12px;
+  }
 
-  .header { text-align: center; padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-  .header h1 { font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
-  .header h2 { font-family: var(--mono); font-size: 28px; color: var(--beige); font-weight: 400; }
-  .header .date { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-top: 8px; }
-  .header .north-star { font-size: 13px; color: var(--butter); margin-top: 12px; font-style: italic; font-family: var(--mono); }
+  /* ── Executive Summary ── */
+  .exec-summary {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+  .exec-summary-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .exec-summary ul {
+    list-style: none;
+    padding: 0;
+  }
+  .exec-summary li {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .exec-summary li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; max-width: 1600px; margin: 0 auto; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
-  .card-title { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .card-title .dot { width: 6px; height: 6px; border-radius: 50%; }
-  .dot.green { background: var(--green); } .dot.yellow { background: var(--yellow); }
-  .dot.red { background: var(--red); } .dot.blue { background: var(--blue); }
+  /* ── KPI Strip ── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .kpi-tile {
+    background: var(--card);
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .kpi-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .kpi-value {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .kpi-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  .kpi-change {
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .change-up { color: var(--green); }
+  .change-warn { color: var(--amber); }
+  .change-down { color: var(--red); }
 
-  .phase { margin-bottom: 14px; }
-  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .phase-name { font-family: var(--mono); font-size: 13px; }
-  .badge { font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 3px; }
-  .badge.done { background: rgba(34,197,94,0.15); color: var(--green); }
-  .badge.active { background: rgba(234,179,8,0.15); color: var(--yellow); }
-  .badge.planned { background: rgba(107,101,96,0.15); color: var(--dim); }
-  .badge.live { background: rgba(34,197,94,0.15); color: var(--green); }
-  .badge.ok { background: rgba(34,197,94,0.15); color: var(--green); }
-  .badge.warn { background: rgba(234,179,8,0.15); color: var(--yellow); }
-  .badge.off { background: rgba(239,68,68,0.15); color: var(--red); }
-  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; border-radius: 2px; }
-  .pf-green { background: var(--green); } .pf-yellow { background: var(--yellow); } .pf-dim { background: #ccc; }
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .dot-green { background: var(--green); }
+  .dot-amber { background: var(--amber); }
+  .dot-red { background: var(--red); }
 
-  .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .row:last-child { border-bottom: none; }
-  .row-label { color: var(--dim); font-size: 12px; }
-  .row-value { font-family: var(--mono); font-size: 13px; }
+  /* ── Section ── */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 16px;
+    font-weight: 500;
+    padding-left: 4px;
+  }
 
-  .clickable { cursor: pointer; }
-  .clickable:hover { background: rgba(35,32,31,0.04); border-radius: 4px; margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
-  .clickable .arrow { color: var(--dim); font-size: 10px; transition: transform 0.2s; }
-  .clickable.open .arrow { transform: rotate(90deg); }
+  /* ── Cards Grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .cards-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card-full {
+    grid-column: 1 / -1;
+  }
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
 
-  .detail { display: none; padding: 8px 0; font-size: 12px; }
-  .detail.open { display: block; }
-  .detail-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  .detail-table th { text-align: left; padding: 6px 8px; color: var(--dim); font-weight: 500; border-bottom: 1px solid var(--border); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em; }
-  .detail-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); color: var(--beige); }
-  .detail-table tr:hover td { background: rgba(35,32,31,0.03); }
-  .detail-table a { color: var(--butter); text-decoration: none; }
-  .detail-table a:hover { text-decoration: underline; }
+  /* ── Revenue Table ── */
+  .rev-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .rev-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .rev-table td {
+    padding: 12px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .rev-table tr:last-child td { border-bottom: none; }
+  .rev-table .mono {
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  .rev-table .total-row td {
+    font-weight: 600;
+    border-top: 2px solid var(--text);
+    border-bottom: none;
+  }
+  .rev-table .highlight {
+    color: var(--accent);
+    font-weight: 500;
+  }
 
-  .section-full { grid-column: 1 / -1; }
-  .cron-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px; }
-  .cron-item { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 8px; background: rgba(35,32,31,0.03); border-radius: 4px; }
-  .cron-name { font-family: var(--mono); color: var(--beige); font-size: 12px; }
-  .cron-schedule { color: var(--dim); font-family: var(--mono); font-size: 11px; }
-  .cron-type { font-size: 10px; padding: 1px 5px; border-radius: 2px; }
-  .cron-type.system { background: rgba(34,197,94,0.1); color: var(--green); }
-  .cron-type.openclaw { background: rgba(234,179,8,0.1); color: var(--yellow); }
+  /* ── Bar Chart ── */
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    height: 160px;
+    padding: 0 16px;
+    margin-top: 16px;
+  }
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar {
+    width: 100%;
+    max-width: 80px;
+    border-radius: 6px 6px 0 0;
+    transition: height 0.5s ease;
+    position: relative;
+  }
+  .bar-online {
+    background: var(--text);
+  }
+  .bar-walkin {
+    background: var(--accent);
+    margin-top: 2px;
+    border-radius: 0;
+  }
+  .bar-stack {
+    width: 100%;
+    max-width: 80px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .bar-value {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .bar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 
-  .tag { font-family: var(--mono); font-size: 10px; padding: 1px 5px; border-radius: 2px; }
-  .tag-blue { background: rgba(59,130,246,0.15); color: var(--blue); }
-  .tag-green { background: rgba(34,197,94,0.15); color: var(--green); }
-  .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
-  .tag-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); }
+  /* ── Channel Cards ── */
+  .channel-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .channel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .channel-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .channel-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 980px;
+  }
+  .badge-live { background: var(--green-bg); color: var(--green); }
+  .badge-active { background: var(--amber-bg); color: var(--amber); }
+  .badge-blocked { background: var(--red-bg); color: var(--red); }
 
-  .footer { text-align: center; padding: 32px 0 16px; font-family: var(--mono); font-size: 11px; color: var(--dim); }
+  .channel-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .metric {
+    padding: 0;
+  }
+  .metric-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 4px;
+    font-weight: 400;
+  }
+  .metric-value {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .metric-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 2px;
+  }
 
-  .genre-bar { display: flex; height: 20px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
-  .genre-seg { height: 100%; position: relative; min-width: 2px; }
-  .genre-seg:hover::after { content: attr(data-label); position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; z-index: 10; color: var(--beige); font-family: var(--mono); }
+  /* ── SEO ── */
+  .seo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .seo-stat {
+    text-align: center;
+    padding: 16px 8px;
+    background: rgba(35,32,31,0.02);
+    border-radius: 8px;
+  }
+  .seo-stat-value {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .seo-stat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 6px;
+    font-weight: 400;
+  }
+  .progress-bar {
+    height: 4px;
+    background: rgba(35,32,31,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    transition: width 0.5s ease;
+  }
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
 
-  .warn-text { color: var(--yellow); }
-  .err-text { color: var(--red); }
-  .ok-text { color: var(--green); }
+  /* ── Inventory ── */
+  .inv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .inv-stat {
+    text-align: center;
+    padding: 20px 8px;
+  }
+  .inv-stat-value {
+    font-family: var(--mono);
+    font-size: 28px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .inv-stat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 6px;
+  }
+  .inv-note {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
 
-  .sub-row { font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(35,32,31,0.06); display: flex; justify-content: space-between; }
-  .sub-row:last-child { border-bottom: none; }
+  /* ── Strategic Initiatives ── */
+  .initiative {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .initiative:last-child { border-bottom: none; }
+  .init-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .init-name {
+    flex: 1;
+    color: var(--text);
+  }
+  .init-detail {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    text-align: right;
+  }
 
-  .todo-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; display: flex; gap: 8px; align-items: flex-start; }
-  .todo-item:last-child { border-bottom: none; }
-  .todo-check { font-family: var(--mono); flex-shrink: 0; }
+  /* ── Quick Links ── */
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    color: var(--text);
+    text-decoration: none;
+    background: var(--card);
+    transition: all 0.2s ease;
+    font-weight: 400;
+  }
+  .pill:hover {
+    border-color: var(--text);
+    background: var(--text);
+    color: var(--bg);
+  }
 
-  .wide { grid-column: 1 / -1; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 48px 0 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  /* ── Unit Economics ── */
+  .ue-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .ue-cell {
+    background: var(--card);
+    padding: 16px;
+    text-align: center;
+  }
+  .ue-value {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .ue-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    .cards-grid, .cards-grid-3 { grid-template-columns: 1fr; }
+    .seo-grid { grid-template-columns: repeat(3, 1fr); }
+    .inv-grid { grid-template-columns: repeat(3, 1fr); }
+    .channel-metrics { grid-template-columns: repeat(2, 1fr); }
+    .ue-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    body { padding: 24px 16px; }
+    .kpi-strip { grid-template-columns: 1fr 1fr; }
+    .kpi-value { font-size: 22px; }
+    .header-title { font-size: 24px; }
+    .bar-chart { gap: 12px; height: 120px; }
+    .seo-grid { grid-template-columns: 1fr; }
+    .inv-grid { grid-template-columns: 1fr; }
+    .ue-grid { grid-template-columns: 1fr 1fr; }
+  }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="header">
-  <h1>Unfamiliar Familiar</h1>
-  <h2>Control Room</h2>
-  <div class="date">Generated: 03 Apr 2026 14:08</div>
-  <div class="north-star">North star: Telegram = CEO brain. Peter + Nour just approve and shoot. Everything else automated.</div>
-</div>
+<div class="container">
 
-<!-- KPI Strip -->
-<div class="kpi-strip">
-  <div class="kpi-tile">
-    <div class="kpi-label">Total Revenue</div>
-    <div class="kpi-value kpi-up">AED 46,649</div>
-    <div class="kpi-sub">84 paid orders</div>
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <div class="header">
+    <div class="header-brand">Unfamiliar Familiar</div>
+    <h1 class="header-title">Control Room</h1>
+    <div class="header-date">Saturday 19 April 2026 &middot; Updated 19 Apr 2026</div>
   </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Revenue MTD (Apr)</div>
-    <div class="kpi-value kpi-up">AED 26,373</div>
-    <div class="kpi-sub">65 orders this month</div>
-  </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Online AOV</div>
-    <div class="kpi-value kpi-up">AED 763</div>
-    <div class="kpi-sub">33 online orders</div>
-  </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Walk-in AOV</div>
-    <div class="kpi-value kpi-up">AED 406</div>
-    <div class="kpi-sub">51 walk-in orders</div>
-  </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Subscribers</div>
-    <div class="kpi-value kpi-up">176</div>
-    <div class="kpi-sub">email list</div>
-  </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Pop-up Day (Apr 18)</div>
-    <div class="kpi-value kpi-up">AED 22,166</div>
-    <div class="kpi-sub">55 walk-in orders</div>
-  </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Catalogue</div>
-    <div class="kpi-value">991</div>
-    <div class="kpi-sub">available SKUs</div>
-  </div>
-  <div class="kpi-tile">
-    <div class="kpi-label">Merchant Center</div>
-    <div class="kpi-value kpi-up">CLEAR</div>
-    <div class="kpi-sub">0 issues</div>
-  </div>
-</div>
 
-<div class="grid">
+  <!-- ═══════════════════ EXECUTIVE SUMMARY ═══════════════════ -->
+  <div class="exec-summary">
+    <div class="exec-summary-label">Executive Summary</div>
+    <ul>
+      <li>Pop-up at Shabab Lab drove AED 22,166 in one day &mdash; 55 walk-ins, best single-day performance ever. Pop-up model validated as a repeatable revenue channel.</li>
+      <li>April MTD: AED 26,373 across 65 orders &mdash; 5.4x March revenue and 4.2x February. Order velocity accelerating.</li>
+      <li>SEO infrastructure complete. Rami indexing 200 pages/day across 22,170 total URLs. Only 1 of 16 blogs indexed so far &mdash; organic traffic unlock is weeks away.</li>
+    </ul>
+  </div>
 
-  <!-- ═══ P&L SNAPSHOT ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> P&amp;L Snapshot <span style="font-size:10px;color:var(--green);font-family:var(--mono);margin-left:4px">LIVE — Google Sheet</span></div>
-    <div class="row"><span class="row-label">Total Revenue (all channels)</span><span class="row-value ok-text">AED 45,979</span></div>
-    <div class="row"><span class="row-label">Online Revenue (e-commerce)</span><span class="row-value ok-text">AED 6,199</span></div>
-    <div class="row"><span class="row-label">Revenue MTD (Apr)</span><span class="row-value ok-text">AED 26,373 (65 orders)</span></div>
-    <div class="row"><span class="row-label">Online AOV</span><span class="row-value">AED 763 (33 orders)</span></div>
-    <div class="row"><span class="row-label">Walk-in AOV</span><span class="row-value">AED 406 (51 orders)</span></div>
-    <div class="row"><span class="row-label">Total Paid Orders</span><span class="row-value ok-text">84 orders (AED 46,649)</span></div>
-    <div class="row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px"><span class="row-label">Pop-up Apr 18 (Shabab Lab)</span><span class="row-value ok-text">55 orders / AED 22,166</span></div>
-    <div class="row"><span class="row-label">Pop-up rev share (20%)</span><span class="row-value warn-text">AED 4,433</span></div>
-    <div class="row"><span class="row-label">Pop-up net to UF</span><span class="row-value ok-text">AED 17,733</span></div>
-    <div class="row"><span class="row-label">COGS (inventory)</span><span class="row-value">AED 191,629</span></div><div class="row"><span class="row-label">OPEX (operations)</span><span class="row-value">AED 50,961</span></div><div class="row"><span class="row-label">CAPEX (assets)</span><span class="row-value">AED 30,575</span></div><div class="row"><span class="row-label">Taxes / customs</span><span class="row-value">AED 10,557</span></div><div class="row"><span class="row-label">Total Costs (Sheet)</span><span class="row-value err-text">AED 283,722</span></div>
-    <div class="row"><span class="row-label">Gross Profit (rev − COGS)</span><span class="row-value ok-text">AED -170,039</span></div>
-    <div class="row"><span class="row-label">Gross Margin</span><span class="row-value">TBD — needs COGS update</span></div>
-    <div class="row"><span class="row-label">Net Position (rev − all costs)</span><span class="row-value warn-text">AED -262,132</span></div>
-    <div class="row"><span class="row-label">Sell-Through</span><span class="row-value">330 sold / 1,476 total (22%)</span></div>
-    <div style="margin-top:12px;font-size:11px;color:var(--dim);padding:8px;background:rgba(35,32,31,0.03);border-radius:4px">
-      Costs live from Google Sheet via Vera. Revenue from Replit.
+  <!-- ═══════════════════ KPI STRIP ═══════════════════ -->
+  <div class="kpi-strip">
+    <div class="kpi-tile">
+      <div class="kpi-label">Total GMV</div>
+      <div class="kpi-value">46,649</div>
+      <div class="kpi-sub">AED &middot; 84 orders</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">April MTD</div>
+      <div class="kpi-value">26,373</div>
+      <div class="kpi-sub">AED &middot; 65 orders</div>
+      <div class="kpi-change change-up">+440% vs Mar</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Online AOV</div>
+      <div class="kpi-value">763</div>
+      <div class="kpi-sub">AED &middot; 33 orders</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Walk-in AOV</div>
+      <div class="kpi-value">406</div>
+      <div class="kpi-sub">AED &middot; 51 orders</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Subscribers</div>
+      <div class="kpi-value">220+</div>
+      <div class="kpi-sub">Email list</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Google Ads ROAS</div>
+      <div class="kpi-value">0.5x</div>
+      <div class="kpi-sub">AED ~380 spend / 3 conv</div>
+      <div class="kpi-change change-down">Below 1x</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Catalogue</div>
+      <div class="kpi-value">991</div>
+      <div class="kpi-sub">SKUs &middot; 1,651 units</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-label">Merchant Center</div>
+      <div class="kpi-value"><span class="status-dot dot-green"></span>Clear</div>
+      <div class="kpi-sub">0 issues</div>
     </div>
   </div>
 
-  <!-- ═══ INVESTMENTS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> Investments <span style="font-size:10px;color:var(--green);font-family:var(--mono);margin-left:4px">LIVE — Google Sheet</span></div>
-    <div class="row"><span class="row-label">Peter — Funded (PAH)</span><span class="row-value">AED 121,800</span></div><div class="row"><span class="row-label">Peter — Spent</span><span class="row-value err-text">AED 250,945</span></div><div class="row"><span class="row-label">Peter — Remaining</span><span class="row-value err-text">AED -129,145</span></div><div class="row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:4px"><span class="row-label">Nour — Funded (NS)</span><span class="row-value">AED 3,000</span></div><div class="row"><span class="row-label">Nour — Spent</span><span class="row-value err-text">AED 32,777</span></div><div class="row"><span class="row-label">Nour — Remaining</span><span class="row-value err-text">AED -29,777</span></div><div class="row" style="border-top:2px solid var(--border);margin-top:6px;padding-top:6px"><span class="row-label">Total Funded</span><span class="row-value">AED 124,800</span></div><div class="row"><span class="row-label">Total Costs (deployed)</span><span class="row-value err-text">AED 283,722</span></div><div class="row"><span class="row-label">Net Cash Deployed</span><span class="row-value warn-text">AED 262,132</span></div><div class="row"><span class="row-label">Peter share</span><span class="row-value">88% of costs</span></div>
-    <div style="margin-top:12px;font-size:11px;color:var(--dim);padding:8px;background:rgba(35,32,31,0.03);border-radius:4px">
-      Add costs via TG: <span style="font-family:var(--mono)">/vera add 500 AED Vendor Description OPEX PAH CC</span>
-    </div>
-  </div>
+  <!-- ═══════════════════ REVENUE BREAKDOWN ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Revenue Breakdown</div>
+    <div class="cards-grid">
 
-  <!-- ═══ DIGITAL CHANNELS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot yellow"></span> Digital Channels &amp; CAC</div>
-    <div class="row">
-      <span>Google PMax</span>
-      <a href="https://ads.google.com" target="_blank"><span class="badge ok">RUNNING ↗</span></a>
-    </div>
-    <div class="row"><span class="row-label">Daily budget</span><span class="row-value warn-text">Pull from Ads API →</span></div>
-    <div class="row"><span class="row-label">Est. CAC</span><span class="row-value warn-text">Connect Ads API</span></div>
-    <div class="row"><span>Meta Ads</span><span class="badge warn">PENDING (2wk wait)</span></div>
-    <div class="row"><span>TikTok</span><span class="badge ok">ORGANIC — Nour daily</span></div>
-    <div class="row"><span>Organic Social</span><span class="badge ok">GROWING</span></div>
-    <div class="row"><span>Email (SendGrid)</span><span class="badge ok">17 FLOWS LIVE</span></div>
-    <div class="row"><span>Tribe w Nos Agency</span><span class="badge live">HIRED ✓</span></div>
-    <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--dim)">
-      <div style="margin-bottom:4px">Key ad insight: Habibi ad outperformed homepage ad</div>
-      <div>Pages/session: 2.5 (Habibi) vs 1.9 (homepage)</div>
-      <div style="margin-top:6px"><a href="https://analytics.google.com" target="_blank" style="color:var(--butter)">GA4 ↗</a> &nbsp; <a href="https://ads.google.com" target="_blank" style="color:var(--butter)">Google Ads ↗</a> &nbsp; <a href="https://business.facebook.com" target="_blank" style="color:var(--butter)">Meta ↗</a> &nbsp; <a href="seo-intelligence.html" style="color:var(--butter);font-weight:500">📊 SEO Intelligence ↗</a></div>
-    </div>
-  </div>
-
-  <!-- ═══ MASTERPLAN ═══ -->
-  <div class="card section-full">
-    <div class="card-title"><span class="dot green"></span> Build Masterplan</div>
-    <div class="two-col" style="gap:28px;align-items:start">
-
-      <!-- LEFT: All phases -->
-      <div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;margin-bottom:12px">ALL PHASES</div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 1 — SEO Foundation</span><span class="badge done">COMPLETE</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-green" style="width:100%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Sitemap · Merchant Center · GBP · GA4 · Schema · Daily indexing (196/day)</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 2 — Content Infrastructure</span><span class="badge done">COMPLETE</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-green" style="width:100%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">All 5 agents live · Nour shoot workflow · Blog approval → auto-publish → GBP</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 3 — CEO Brain</span><span class="badge done">COMPLETE</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-green" style="width:100%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Atlas Sunday report · Leo daily brief · Vera P&L · Control Room dashboard</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 3.5 — Strategy Layer (Sage)</span><span class="badge active">BUILDING</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-yellow" style="width:40%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Monthly State of UF · Cross-dept synthesis · OKRs · Benchmark tracker</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 4 — Social Automation</span><span class="badge active">IN PROGRESS</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-yellow" style="width:35%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Instagram Graph API · TikTok Creator API · 5 content series · Luna extended</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 4.5 — Paid Channels (Rami/Vera)</span><span class="badge active">ACTIVE</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-yellow" style="width:50%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Google Ads live · Basic Access applied Mar 27 · Conversion tracking pending · Meta/TikTok APIs pending</div>
-        </div>
-
-        <div class="phase" style="opacity:0.45">
-          <div class="phase-header"><span class="phase-name">Phase 5 — Growth & Marketing</span><span class="badge planned">PLANNED</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-dim" style="width:5%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Reddit Agent · X/Twitter · GEO Agent · AI Writer · Community Builder</div>
-        </div>
-
-        <div class="phase" style="opacity:0.45">
-          <div class="phase-header"><span class="phase-name">Phase 5.5 — PR & Media (Bianca)</span><span class="badge planned">PLANNED</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-dim" style="width:0%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">TimeOut Dubai · Gulf News · Khaleej Times · Press kit · Outreach automation</div>
-        </div>
-
-        <div class="phase" style="opacity:0.45">
-          <div class="phase-header"><span class="phase-name">Phase 6 — BD & Partnerships (Bianca)</span><span class="badge planned">PLANNED</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-dim" style="width:0%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Artist/label collabs · Mass outreach · Events calendar · Komi.io</div>
-        </div>
-
-        <div class="phase" style="opacity:0.45">
-          <div class="phase-header"><span class="phase-name">Phase 7 — Events (Eve)</span><span class="badge planned">PLANNED</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-dim" style="width:0%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Venue research · PMO milestones · Post-event P&L · Supplier directory</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 8 — IT & Security (Max + Rex)</span><span class="badge active">IN PROGRESS</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-yellow" style="width:60%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Max live (Tailscale · SSH · health) · Rex security audit planned</div>
-        </div>
-
-        <div class="phase" style="opacity:0.45">
-          <div class="phase-header"><span class="phase-name">Phase 9 — Customer Service (Cara)</span><span class="badge planned">PLANNED</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-dim" style="width:0%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">WhatsApp · Gmail · IG DMs · FAQ automation · CSAT tracking</div>
-        </div>
-
-        <div class="phase">
-          <div class="phase-header"><span class="phase-name">Phase 10 — Buying Intelligence (Leo+)</span><span class="badge active">IN PROGRESS</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-yellow" style="width:70%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">188k SKUs in SQLite · Replit PostgreSQL live · PO generator pending · Weekly sync pending</div>
-        </div>
-
-        <div class="phase" style="opacity:0.35;margin-top:8px">
-          <div class="phase-header"><span class="phase-name">Venture Factory</span><span class="badge planned">PARKED</span></div>
-          <div class="progress-bar"><div class="progress-fill pf-dim" style="width:0%"></div></div>
-          <div style="font-size:11px;color:var(--dim);margin-top:3px">Resume when UF hits 1 order/day consistently</div>
+      <!-- Monthly Comparison Chart -->
+      <div class="card">
+        <div class="card-title">Monthly Revenue (AED)</div>
+        <div class="bar-chart">
+          <div class="bar-group">
+            <div class="bar-value">15,391</div>
+            <div class="bar bar-online" style="height: 58%;"></div>
+            <div class="bar-label">Feb</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-value">4,885</div>
+            <div class="bar bar-online" style="height: 18%;"></div>
+            <div class="bar-label">Mar</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-value">26,373</div>
+            <div class="bar bar-online" style="height: 100%;"></div>
+            <div class="bar-label">Apr</div>
+          </div>
         </div>
       </div>
 
-      <!-- RIGHT: Next builds -->
-      <div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;margin-bottom:12px">NEXT BUILDS — IMMEDIATE</div>
-
-        <div style="display:flex;flex-direction:column;gap:10px">
-
-          <div style="border-left:2px solid var(--yellow);padding-left:12px">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Replit WRITE Endpoints</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">PATCH /api/data/products/:id · Kamal TG approval flow for mood changes · Bulk reassign endpoint</div>
-            <div style="margin-top:4px"><span class="badge active">NEXT UP</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--yellow);padding-left:12px">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Google Ads Conversion Tracking</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">gtag purchase event on Replit order confirmation · 415 clicks / 0 conversions = blind spend</div>
-            <div style="margin-top:4px"><span class="badge warn">URGENT</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--yellow);padding-left:12px">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Google Ads Basic Access</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">LIVE · Keywords + Competitors working · Unlocks <code style="font-size:10px">ads keywords</code> + <code style="font-size:10px">ads competitors</code></div>
-            <div style="margin-top:4px"><span class="badge active">AWAITING</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Kamal Mood Mismatch Fix</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">69 mismatches · 5 genre mapping rules needed · folk/world → Habibi Heat · hip-hop → 90s Rewind</div>
-            <div style="margin-top:4px"><span class="badge planned">QUEUED</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Reddit Scanner</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">Account aged ~Mar 25 · Run: <code style="font-size:10px">python3 uf-reddit-scanner.py --setup</code> · Tue/Fri 8am cron</div>
-            <div style="margin-top:4px"><span class="badge planned">RETRY NOW</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">WebAmi Batch Intake (~Apr 4)</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">~500 SKUs incoming · Largest drop yet · Intake workflow + drop alert + Kamal curation queue</div>
-            <div style="margin-top:4px"><span class="badge planned">QUEUED</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Instagram Graph API</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">Auto-post from Nour's shoot log · Luna extended · Daily drip Mon–Sun</div>
-            <div style="margin-top:4px"><span class="badge planned">PHASE 4</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Purchase Order Generator</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">TG <code style="font-size:10px">buy 10000</code> command · Leo pulls top-margin SKUs · Auto-generates PO to supplier</div>
-            <div style="margin-top:4px"><span class="badge planned">PHASE 10</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">Meta & TikTok Ads APIs</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">Meta billing fix pending · TikTok resubmission Mar 23 · Vera tracks spend when live</div>
-            <div style="margin-top:4px"><span class="badge planned">BLOCKED</span></div>
-          </div>
-
-          <div style="border-left:2px solid var(--dim);padding-left:12px;opacity:0.6">
-            <div style="font-family:var(--mono);font-size:12px;color:var(--fg)">CRM — Zara Agent</div>
-            <div style="font-size:11px;color:var(--dim);margin-top:3px">Repeat buyers · VIP list · Geography · Top 10 monthly · Retention flows</div>
-            <div style="margin-top:4px"><span class="badge planned">PHASE 5</span></div>
-          </div>
-
-        </div>
+      <!-- Revenue Table -->
+      <div class="card">
+        <div class="card-title">Revenue Detail</div>
+        <table class="rev-table">
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th>Orders</th>
+              <th>Revenue</th>
+              <th>AOV</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Online</td>
+              <td class="mono">33</td>
+              <td class="mono">AED 25,179</td>
+              <td class="mono">AED 763</td>
+            </tr>
+            <tr>
+              <td>Walk-in (excl. pop-up)</td>
+              <td class="mono">51</td>
+              <td class="mono">AED 20,706</td>
+              <td class="mono">AED 406</td>
+            </tr>
+            <tr>
+              <td class="highlight">Pop-up &mdash; Shabab Lab (Apr 18)</td>
+              <td class="mono highlight">55</td>
+              <td class="mono highlight">AED 22,166</td>
+              <td class="mono highlight">AED 403</td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px; color: var(--dim); font-size: 12px;">Rev share (20% to Shabab)</td>
+              <td class="mono" style="color: var(--dim);">&mdash;</td>
+              <td class="mono" style="color: var(--red);">-AED 4,433</td>
+              <td class="mono" style="color: var(--dim);">&mdash;</td>
+            </tr>
+            <tr>
+              <td style="padding-left: 24px; color: var(--dim); font-size: 12px;">Net pop-up revenue</td>
+              <td class="mono" style="color: var(--dim);">&mdash;</td>
+              <td class="mono" style="color: var(--green);">AED 17,733</td>
+              <td class="mono" style="color: var(--dim);">&mdash;</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total</td>
+              <td class="mono">84</td>
+              <td class="mono">AED 46,649</td>
+              <td class="mono">AED 555</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
   </div>
 
-  <!-- ═══ CATALOGUE ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot blue"></span> Catalogue</div>
-    <div class="row"><span class="row-label">Total products</span><span class="row-value">991</span></div>
-    <div class="row"><span class="row-label">Available</span><span class="row-value ok-text">991</span></div>
-    <div class="row"><span class="row-label">Sold</span><span class="row-value">0</span></div>
-    <div class="row"><span class="row-label">Avg price</span><span class="row-value">AED 172</span></div>
-    <div class="row"><span class="row-label">Price range</span><span class="row-value">AED 85 – 950</span></div>
-    <div class="row"><span class="row-label">Suppliers</span><span class="row-value">0</span></div>
-
-    <div class="row clickable" onclick="toggle('genres')">
-      <span class="row-label">Genres <span class="arrow">▸</span></span>
-      <span class="row-value">109 genres</span>
-    </div>
-    <div class="detail" id="genres">
-      <div class="genre-bar">
-        <div class="genre-seg" style="width:27.664155005382128%;background:#22c55e" data-label="Rock: 257 (28%)"></div>
-        <div class="genre-seg" style="width:8.934337997847146%;background:#3b82f6" data-label="Electronic: 83 (9%)"></div>
-        <div class="genre-seg" style="width:7.965554359526372%;background:#eab308" data-label="Funk / Soul: 74 (8%)"></div>
-        <div class="genre-seg" style="width:6.135629709364909%;background:#ef4444" data-label="Jazz: 57 (6%)"></div>
-        <div class="genre-seg" style="width:5.597416576964478%;background:#a855f7" data-label="Hip Hop: 52 (6%)"></div>
-        <div class="genre-seg" style="width:3.8751345532831003%;background:#ec4899" data-label="Arabic, Folk, World, & Country: 36 (4%)"></div>
-        <div class="genre-seg" style="width:3.013993541442411%;background:#06b6d4" data-label="Rock, Pop: 28 (3%)"></div>
-        <div class="genre-seg" style="width:2.798708288482239%;background:#f97316" data-label="Folk, World, & Country: 26 (3%)"></div>
-        <div class="genre-seg" style="width:2.798708288482239%;background:#84cc16" data-label="Pop: 26 (3%)"></div>
-        <div class="genre-seg" style="width:2.1528525296017222%;background:#6366f1" data-label="Electronic, Pop: 20 (2%)"></div>
-        <div class="genre-seg" style="width:2.045209903121636%;background:#14b8a6" data-label="Arabic: 19 (2%)"></div>
-        <div class="genre-seg" style="width:1.829924650161464%;background:#f43f5e" data-label="Funk / Soul, Pop: 17 (2%)"></div>
-        <div class="genre-seg" style="width:1.829924650161464%;background:#8b5cf6" data-label="Unknown: 17 (2%)"></div>
-        <div class="genre-seg" style="width:1.3993541442411195%;background:#d946ef" data-label="Hip Hop, Funk / Soul: 13 (1%)"></div>
-        <div class="genre-seg" style="width:1.0764262648008611%;background:#22c55e" data-label="Jazz, Funk / Soul: 10 (1%)"></div>
-        <div class="genre-seg" style="width:1.0764262648008611%;background:#3b82f6" data-label="Electronic, Rock: 10 (1%)"></div>
-        <div class="genre-seg" style="width:1.0764262648008611%;background:#eab308" data-label="Reggae: 10 (1%)"></div>
-        <div class="genre-seg" style="width:0.9687836383207751%;background:#ef4444" data-label="Pop, Folk, World, & Country: 9 (1%)"></div>
-        <div class="genre-seg" style="width:0.8611410118406888%;background:#a855f7" data-label="Electronic, Hip Hop, Funk / Soul, Pop: 8 (1%)"></div>
-        <div class="genre-seg" style="width:0.7534983853606028%;background:#ec4899" data-label="Hip Hop, Funk / Soul, Pop: 7 (1%)"></div>
-        <div class="genre-seg" style="width:0.7534983853606028%;background:#06b6d4" data-label="Electronic, Funk / Soul, Pop: 7 (1%)"></div>
-        <div class="genre-seg" style="width:0.6458557588805167%;background:#f97316" data-label="Rock, Funk / Soul, Pop: 6 (1%)"></div>
-        <div class="genre-seg" style="width:0.6458557588805167%;background:#84cc16" data-label="Hip Hop, Pop: 6 (1%)"></div>
-        <div class="genre-seg" style="width:0.5382131324004306%;background:#6366f1" data-label="Jazz, Pop: 5 (1%)"></div>
-        <div class="genre-seg" style="width:0.5382131324004306%;background:#14b8a6" data-label="Hip Hop, Jazz, Funk / Soul: 5 (1%)"></div>
-        <div class="genre-seg" style="width:0.4305705059203444%;background:#f43f5e" data-label="Electronic, Rock, Pop: 4 (0%)"></div>
-        <div class="genre-seg" style="width:0.4305705059203444%;background:#8b5cf6" data-label="Rock, Blues: 4 (0%)"></div>
-        <div class="genre-seg" style="width:0.4305705059203444%;background:#d946ef" data-label="Latin: 4 (0%)"></div>
-        <div class="genre-seg" style="width:0.4305705059203444%;background:#22c55e" data-label="Electronic, Hip Hop, Pop: 4 (0%)"></div>
-        <div class="genre-seg" style="width:0.32292787944025836%;background:#3b82f6" data-label="Rock, Stage & Screen: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.32292787944025836%;background:#eab308" data-label="Electronic, Classical, Stage & Screen: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.32292787944025836%;background:#ef4444" data-label="Rock, Funk / Soul: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.32292787944025836%;background:#a855f7" data-label="Rock, Pop, Folk, World, & Country: 3 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#ec4899" data-label="Electronic, Jazz, Rock, Pop: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#06b6d4" data-label="Jazz, Funk / Soul, Blues, Pop: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#f97316" data-label="Electronic, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#84cc16" data-label="Jazz, Latin, Funk / Soul: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#6366f1" data-label="Electronic, Hip Hop, Funk / Soul: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#14b8a6" data-label="Stage & Screen: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#f43f5e" data-label="Arabic, Pop, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#8b5cf6" data-label="Arabic, Rock: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#d946ef" data-label="Blues: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#22c55e" data-label="Electronic, Funk / Soul: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#3b82f6" data-label="Rock, Reggae, Funk / Soul, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#eab308" data-label="Electronic, Classical: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#ef4444" data-label="Jazz, Rock, Pop: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#a855f7" data-label="Arabic, Funk / Soul, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#ec4899" data-label="Rock, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#06b6d4" data-label="Electronic, Pop, Folk, World, & Country: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.2152852529601722%;background:#f97316" data-label="Jazz, Funk / Soul, Stage & Screen: 2 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#84cc16" data-label="Jazz, Rock, Funk / Soul, Pop, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#6366f1" data-label="Jazz, Rock, Pop, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#14b8a6" data-label="Jazz, Funk / Soul, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f43f5e" data-label="Pop, Classical: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#8b5cf6" data-label="Jazz, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#d946ef" data-label="Rock, Alternative Rock, Indie Rock: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#22c55e" data-label="Rock, Indie Rock: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#3b82f6" data-label="Funk / Soul, Blues: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#eab308" data-label="Hip Hop, Latin, Pop, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ef4444" data-label="Funk / Soul, Blues, Pop, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#a855f7" data-label="Electronic, Pop, Indie Pop, Alt-Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ec4899" data-label="Electronic, Jazz, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#06b6d4" data-label="Electronic, Jazz, Funk / Soul: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f97316" data-label="Electronic, Hip Hop, Latin, Funk / Soul, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#84cc16" data-label="Arabic, Jazz, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#6366f1" data-label="Arabic, Folk, World, & Country, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#14b8a6" data-label="Electronic, Downtempo: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f43f5e" data-label="Arabic, Jazz, Funk / Soul, Pop, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#8b5cf6" data-label="Electronic, Hip Hop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#d946ef" data-label="Electronic, Hip Hop, Rock, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#22c55e" data-label="Electronic, Hip Hop, Rock, Latin, Funk / Soul, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#3b82f6" data-label="Stage & Screen, Soundtrack: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#eab308" data-label="Funk / Soul, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ef4444" data-label="Electronic, Jazz, Reggae, Funk / Soul, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#a855f7" data-label="Jazz, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ec4899" data-label="Hip Hop, Funk / Soul, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#06b6d4" data-label="Rock, Nu Metal: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f97316" data-label="Funk / Soul, Pop, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#84cc16" data-label="Rock, Pop, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#6366f1" data-label="Rock, Funk / Soul, Pop, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#14b8a6" data-label="Electronic, Hip Hop, Jazz: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f43f5e" data-label="Reggae, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#8b5cf6" data-label="Rock, Reggae, Latin: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#d946ef" data-label="Latin, Pop, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#22c55e" data-label="Electronic, Hip Hop, Rock, Funk / Soul, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#3b82f6" data-label="Jazz, Funk / Soul, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#eab308" data-label="Arabic, Rock, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ef4444" data-label="Arabic, Classical, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#a855f7" data-label="Jazz, Rock, Latin, Funk / Soul, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ec4899" data-label="Electronic, Jazz, Rock, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#06b6d4" data-label="Pop, Children's, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f97316" data-label="Rock, Blues, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#84cc16" data-label="Electronic, Jazz: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#6366f1" data-label="Folk, World, & Country, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#14b8a6" data-label="Rock, Latin, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f43f5e" data-label="Latin, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#8b5cf6" data-label="Electronic, Hip Hop, Latin, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#d946ef" data-label="Arabic, Electronic: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#22c55e" data-label="Electronic, Latin, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#3b82f6" data-label="Hip Hop, Pop, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#eab308" data-label="Jazz, Rock, Reggae, Funk / Soul, Pop, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ef4444" data-label="Electronic, Jazz, Folk, World, & Country: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#a855f7" data-label="Electronic, Jazz, Rock, Funk / Soul, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#ec4899" data-label="Electronic, Hip Hop, Jazz, Funk / Soul: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#06b6d4" data-label="Rock, Reggae, Pop: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#f97316" data-label="Funk / Soul, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#84cc16" data-label="Arabic, Funk / Soul, Folk, World, & Country, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#6366f1" data-label="Arabic, Jazz, Latin, Folk, World, & Country, Stage & Screen: 1 (0%)"></div>
-        <div class="genre-seg" style="width:0.1076426264800861%;background:#14b8a6" data-label="Arabic, Jazz: 1 (0%)"></div>
-      </div>
-      <table class="detail-table" style="margin-top:8px">
-        <tr><th>Genre</th><th>Count</th><th>%</th></tr>
-        <tr><td>Rock</td><td>257</td><td>28%</td></tr>
-        <tr><td>Electronic</td><td>83</td><td>9%</td></tr>
-        <tr><td>Funk / Soul</td><td>74</td><td>8%</td></tr>
-        <tr><td>Jazz</td><td>57</td><td>6%</td></tr>
-        <tr><td>Hip Hop</td><td>52</td><td>6%</td></tr>
-        <tr><td>Arabic, Folk, World, & Country</td><td>36</td><td>4%</td></tr>
-        <tr><td>Rock, Pop</td><td>28</td><td>3%</td></tr>
-        <tr><td>Folk, World, & Country</td><td>26</td><td>3%</td></tr>
-        <tr><td>Pop</td><td>26</td><td>3%</td></tr>
-        <tr><td>Electronic, Pop</td><td>20</td><td>2%</td></tr>
-        <tr><td>Arabic</td><td>19</td><td>2%</td></tr>
-        <tr><td>Funk / Soul, Pop</td><td>17</td><td>2%</td></tr>
-        <tr><td>Unknown</td><td>17</td><td>2%</td></tr>
-        <tr><td>Hip Hop, Funk / Soul</td><td>13</td><td>1%</td></tr>
-        <tr><td>Jazz, Funk / Soul</td><td>10</td><td>1%</td></tr>
-        <tr><td>Electronic, Rock</td><td>10</td><td>1%</td></tr>
-        <tr><td>Reggae</td><td>10</td><td>1%</td></tr>
-        <tr><td>Pop, Folk, World, & Country</td><td>9</td><td>1%</td></tr>
-        <tr><td>Electronic, Hip Hop, Funk / Soul, Pop</td><td>8</td><td>1%</td></tr>
-        <tr><td>Hip Hop, Funk / Soul, Pop</td><td>7</td><td>1%</td></tr>
-        <tr><td>Electronic, Funk / Soul, Pop</td><td>7</td><td>1%</td></tr>
-        <tr><td>Rock, Funk / Soul, Pop</td><td>6</td><td>1%</td></tr>
-        <tr><td>Hip Hop, Pop</td><td>6</td><td>1%</td></tr>
-        <tr><td>Jazz, Pop</td><td>5</td><td>1%</td></tr>
-        <tr><td>Hip Hop, Jazz, Funk / Soul</td><td>5</td><td>1%</td></tr>
-        <tr><td>Electronic, Rock, Pop</td><td>4</td><td>0%</td></tr>
-        <tr><td>Rock, Blues</td><td>4</td><td>0%</td></tr>
-        <tr><td>Latin</td><td>4</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Pop</td><td>4</td><td>0%</td></tr>
-        <tr><td>Rock, Stage & Screen</td><td>3</td><td>0%</td></tr>
-        <tr><td>Electronic, Classical, Stage & Screen</td><td>3</td><td>0%</td></tr>
-        <tr><td>Rock, Funk / Soul</td><td>3</td><td>0%</td></tr>
-        <tr><td>Rock, Pop, Folk, World, & Country</td><td>3</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Rock, Pop</td><td>2</td><td>0%</td></tr>
-        <tr><td>Jazz, Funk / Soul, Blues, Pop</td><td>2</td><td>0%</td></tr>
-        <tr><td>Electronic, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
-        <tr><td>Jazz, Latin, Funk / Soul</td><td>2</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Funk / Soul</td><td>2</td><td>0%</td></tr>
-        <tr><td>Stage & Screen</td><td>2</td><td>0%</td></tr>
-        <tr><td>Arabic, Pop, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
-        <tr><td>Arabic, Rock</td><td>2</td><td>0%</td></tr>
-        <tr><td>Blues</td><td>2</td><td>0%</td></tr>
-        <tr><td>Electronic, Funk / Soul</td><td>2</td><td>0%</td></tr>
-        <tr><td>Rock, Reggae, Funk / Soul, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
-        <tr><td>Electronic, Classical</td><td>2</td><td>0%</td></tr>
-        <tr><td>Jazz, Rock, Pop</td><td>2</td><td>0%</td></tr>
-        <tr><td>Arabic, Funk / Soul, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
-        <tr><td>Rock, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
-        <tr><td>Electronic, Pop, Folk, World, & Country</td><td>2</td><td>0%</td></tr>
-        <tr><td>Jazz, Funk / Soul, Stage & Screen</td><td>2</td><td>0%</td></tr>
-        <tr><td>Jazz, Rock, Funk / Soul, Pop, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Rock, Pop, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Funk / Soul, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Pop, Classical</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Alternative Rock, Indie Rock</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Indie Rock</td><td>1</td><td>0%</td></tr>
-        <tr><td>Funk / Soul, Blues</td><td>1</td><td>0%</td></tr>
-        <tr><td>Hip Hop, Latin, Pop, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Funk / Soul, Blues, Pop, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Pop, Indie Pop, Alt-Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Funk / Soul</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Latin, Funk / Soul, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Jazz, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Folk, World, & Country, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Downtempo</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Jazz, Funk / Soul, Pop, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Rock, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Rock, Latin, Funk / Soul, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Stage & Screen, Soundtrack</td><td>1</td><td>0%</td></tr>
-        <tr><td>Funk / Soul, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Reggae, Funk / Soul, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Hip Hop, Funk / Soul, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Nu Metal</td><td>1</td><td>0%</td></tr>
-        <tr><td>Funk / Soul, Pop, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Pop, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Funk / Soul, Pop, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Jazz</td><td>1</td><td>0%</td></tr>
-        <tr><td>Reggae, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Reggae, Latin</td><td>1</td><td>0%</td></tr>
-        <tr><td>Latin, Pop, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Rock, Funk / Soul, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Funk / Soul, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Rock, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Classical, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Rock, Latin, Funk / Soul, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Rock, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Pop, Children's, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Blues, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz</td><td>1</td><td>0%</td></tr>
-        <tr><td>Folk, World, & Country, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Latin, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Latin, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Latin, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Electronic</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Latin, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Hip Hop, Pop, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Jazz, Rock, Reggae, Funk / Soul, Pop, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Folk, World, & Country</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Jazz, Rock, Funk / Soul, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Electronic, Hip Hop, Jazz, Funk / Soul</td><td>1</td><td>0%</td></tr>
-        <tr><td>Rock, Reggae, Pop</td><td>1</td><td>0%</td></tr>
-        <tr><td>Funk / Soul, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Funk / Soul, Folk, World, & Country, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Jazz, Latin, Folk, World, & Country, Stage & Screen</td><td>1</td><td>0%</td></tr>
-        <tr><td>Arabic, Jazz</td><td>1</td><td>0%</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══ PRICE INTELLIGENCE ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot red"></span> Price Intelligence</div>
-    <div class="row"><span class="row-label">Competitors tracked</span><span class="row-value">Cavo (712) + Vinyl.ae (892)</span></div>
-    <div class="row"><span class="row-label">Products matched</span><span class="row-value">49 / 1,141</span></div>
-
-    <div class="row clickable" onclick="toggle('overpriced')">
-      <span class="row-label">Overpriced (20%+) <span class="arrow">▸</span></span>
-      <span class="row-value err-text">9</span>
-    </div>
-    <div class="detail" id="overpriced">
-      <table class="detail-table">
-        <tr><th>Artist</th><th>Album</th><th>UF</th><th>Comp</th><th>Diff</th><th>Competitor</th></tr>
-        <tr><td>Oum Kalthoum Oum Kalthoum</td><td><a href="https://unfamiliarfamiliar.com/products/3272" target="_blank">يا مسهرني = Ya Msaharny</a></td><td>AED 160</td><td>AED 59</td><td class="err-text">+171%</td><td><a href="https://www.cavo.ae/products/oum-kulthoum-يا-مسهرني-ya-msaharni-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
-        <tr><td>Phil Collins</td><td><a href="https://unfamiliarfamiliar.com/products/2775" target="_blank">Face Value</a></td><td>AED 140</td><td>AED 79</td><td class="err-text">+77%</td><td><a href="https://www.cavo.ae/products/phil-collins-face-value-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
-        <tr><td>Santana</td><td><a href="https://unfamiliarfamiliar.com/products/2829" target="_blank">Shango</a></td><td>AED 140</td><td>AED 89</td><td class="err-text">+57%</td><td><a href="https://www.cavo.ae/products/santana-shango-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
-        <tr><td>Frank Sinatra</td><td><a href="https://unfamiliarfamiliar.com/products/3428" target="_blank">Ultimate Sinatra</a></td><td>AED 223</td><td>AED 159</td><td class="err-text">+40%</td><td><a href="https://www.vinyl.ae/products/ultimate-christmas-frank-sinatra-1" target="_blank">Vinyl.ae</a></td></tr>
-        <tr><td>Aretha Franklin</td><td><a href="https://unfamiliarfamiliar.com/products/3673" target="_blank">Lady Soul</a></td><td>AED 228</td><td>AED 169</td><td class="err-text">+35%</td><td><a href="https://www.vinyl.ae/products/queen-of-soul-aretha-franklin" target="_blank">Vinyl.ae</a></td></tr>
-        <tr><td>The Rolling Stones</td><td><a href="https://unfamiliarfamiliar.com/products/3448" target="_blank">Let It Bleed</a></td><td>AED 176</td><td>AED 139</td><td class="err-text">+27%</td><td><a href="https://www.cavo.ae/products/the-rolling-stones-black-and-blue-gatefold-lp-used-vinyl" target="_blank">Cavo</a></td></tr>
-        <tr><td>Ed Sheeran</td><td><a href="https://unfamiliarfamiliar.com/products/1857" target="_blank">÷ (Divide)</a></td><td>AED 236</td><td>AED 189</td><td class="err-text">+25%</td><td><a href="https://www.vinyl.ae/products/x-ed-sheeran" target="_blank">Vinyl.ae</a></td></tr>
-        <tr><td>Andrea Bocelli</td><td><a href="https://unfamiliarfamiliar.com/products/2596" target="_blank">Believe</a></td><td>AED 277</td><td>AED 229</td><td class="err-text">+21%</td><td><a href="https://www.vinyl.ae/products/believe-andrea-bocelli-1" target="_blank">Vinyl.ae</a></td></tr>
-        <tr><td>Calvin Harris</td><td><a href="https://unfamiliarfamiliar.com/products/3570" target="_blank">18 Months</a></td><td>AED 191</td><td>AED 159</td><td class="err-text">+20%</td><td><a href="https://www.vinyl.ae/products/18-months-2-discs-calvin-harris" target="_blank">Vinyl.ae</a></td></tr>
-      </table>
-    </div>
-
-    <div class="row clickable" onclick="toggle('underpriced')">
-      <span class="row-label">Underpriced (room to raise) <span class="arrow">▸</span></span>
-      <span class="row-value ok-text">8</span>
-    </div>
-    <div class="detail" id="underpriced">
-      <table class="detail-table">
-        <tr><th>Artist</th><th>Album</th><th>UF</th><th>Comp</th><th>Diff</th></tr>
-        <tr><td>Supertramp</td><td><a href="https://unfamiliarfamiliar.com/products/2933" target="_blank">Breakfast In America</a></td><td>AED 110</td><td>AED 189</td><td class="ok-text">-42%</td></tr>
-        <tr><td>Al Green</td><td><a href="https://unfamiliarfamiliar.com/products/3416" target="_blank">Greatest Hits</a></td><td>AED 141</td><td>AED 229</td><td class="ok-text">-38%</td></tr>
-        <tr><td>Chaka Khan</td><td><a href="https://unfamiliarfamiliar.com/products/2954" target="_blank">Chaka</a></td><td>AED 110</td><td>AED 169</td><td class="ok-text">-35%</td></tr>
-        <tr><td>Michael Jackson</td><td><a href="https://unfamiliarfamiliar.com/products/3120" target="_blank">Thriller</a></td><td>AED 139</td><td>AED 199</td><td class="ok-text">-30%</td></tr>
-        <tr><td>Michael Jackson</td><td><a href="https://unfamiliarfamiliar.com/products/1986" target="_blank">Thriller</a></td><td>AED 139</td><td>AED 199</td><td class="ok-text">-30%</td></tr>
-        <tr><td>Michael Jackson</td><td><a href="https://unfamiliarfamiliar.com/products/1987" target="_blank">Bad</a></td><td>AED 139</td><td>AED 189</td><td class="ok-text">-26%</td></tr>
-        <tr><td>Linkin Park</td><td><a href="https://unfamiliarfamiliar.com/products/1879" target="_blank">Hybrid Theory</a></td><td>AED 151</td><td>AED 199</td><td class="ok-text">-24%</td></tr>
-        <tr><td>Linkin Park</td><td><a href="https://unfamiliarfamiliar.com/products/3372" target="_blank">Hybrid Theory</a></td><td>AED 151</td><td>AED 199</td><td class="ok-text">-24%</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══ CURATION ═══ -->
-  <div class="card section-full">
-    <div class="card-title"><span class="dot green"></span> Curation (Kamal)</div>
-    <div class="two-col">
-      <div>
-        <div class="row"><span class="row-label">Mood tagged</span><span class="row-value ok-text">100%</span></div>
-        <div class="row"><span class="row-label">Secondary mood</span><span class="row-value">811/929 (87%)</span></div>
-        <div class="row"><span class="row-label">Brand DNA</span><span class="row-value ok-text">57% (531/929)</span></div>
-        <div class="row"><span class="row-label">Low confidence tags</span><span class="row-value err-text">13</span></div>
-        <div class="row"><span class="row-label">Weak mood configs</span><span class="row-value ">0</span></div>
-      </div>
-      <div>
-        <div style="margin-bottom:12px"><div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Restock Priorities</div>
-        <div class="sub-row"><span class="err-text">Reading Room</span><span>4 left / 71% sold</span></div>
+  <!-- ═══════════════════ UNIT ECONOMICS ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Unit Economics</div>
+    <div class="card">
+      <div class="ue-grid">
+        <div class="ue-cell">
+          <div class="ue-value">AED 555</div>
+          <div class="ue-label">Blended AOV</div>
         </div>
-        <div><div style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Slow Movers</div>
-        <div class="sub-row"><span class="warn-text">GRWM</span><span>171 avail / 9% sold</span></div>
-        <div class="sub-row"><span class="warn-text">80's Night</span><span>117 avail / 4% sold</span></div>
-        <div class="sub-row"><span class="warn-text">Soul & Funk</span><span>95 avail / 9% sold</span></div>
-        <div class="sub-row"><span class="warn-text">TikTok Bangers</span><span>78 avail / 2% sold</span></div>
+        <div class="ue-cell">
+          <div class="ue-value">AED 763</div>
+          <div class="ue-label">Online AOV</div>
+        </div>
+        <div class="ue-cell">
+          <div class="ue-value">AED 406</div>
+          <div class="ue-label">Walk-in AOV</div>
+        </div>
+        <div class="ue-cell">
+          <div class="ue-value">AED ~127</div>
+          <div class="ue-label">Online CAC (Ads)</div>
         </div>
       </div>
-    </div>
-
-    <div class="row clickable" onclick="toggle('mood-backbone')" style="margin-top:12px">
-      <span class="row-label">Mood backbone (20 moods) <span class="arrow">▸</span></span>
-      <span class="row-value">1841 total primary</span>
-    </div>
-    <div class="detail" id="mood-backbone">
-      <table class="detail-table">
-        <tr><th>Mood</th><th>Primary</th><th>Avail</th><th>Sold</th><th>Sell-Through</th></tr>
-        <tr><td>Roadtrip: Home Edition</td><td>333</td><td>250</td><td>49</td><td class="">15%</td></tr>
-        <tr><td>GRWM</td><td>207</td><td>171</td><td>18</td><td class="warn-text">9%</td></tr>
-        <tr><td>Rock Lovers</td><td>141</td><td>86</td><td>32</td><td class="">23%</td></tr>
-        <tr><td>Habibi Heat</td><td>137</td><td>84</td><td>30</td><td class="">22%</td></tr>
-        <tr><td>80's Night</td><td>128</td><td>117</td><td>5</td><td class="warn-text">4%</td></tr>
-        <tr><td>Soul & Funk</td><td>127</td><td>95</td><td>12</td><td class="warn-text">9%</td></tr>
-        <tr><td>Habibi After Hours</td><td>106</td><td>42</td><td>54</td><td class="">51%</td></tr>
-        <tr><td>Selector Mode</td><td>87</td><td>68</td><td>4</td><td class="warn-text">5%</td></tr>
-        <tr><td>TikTok Bangers</td><td>85</td><td>78</td><td>2</td><td class="warn-text">2%</td></tr>
-        <tr><td>90's Rewind</td><td>71</td><td>48</td><td>14</td><td class="">20%</td></tr>
-        <tr><td>Dinner: The Host's Edit</td><td>68</td><td>38</td><td>16</td><td class="">24%</td></tr>
-        <tr><td>Midnight Jazz</td><td>63</td><td>40</td><td>5</td><td class="warn-text">8%</td></tr>
-        <tr><td>Cool Kids Club</td><td>63</td><td>48</td><td>6</td><td class="warn-text">10%</td></tr>
-        <tr><td>Slow Sunday</td><td>60</td><td>29</td><td>25</td><td class="">42%</td></tr>
-        <tr><td>Dancefloor Throwback</td><td>41</td><td>21</td><td>7</td><td class="">17%</td></tr>
-        <tr><td>Kitchen Grooves</td><td>32</td><td>19</td><td>6</td><td class="">19%</td></tr>
-        <tr><td>Coffee First</td><td>32</td><td>16</td><td>7</td><td class="">22%</td></tr>
-        <tr><td>Can't-Go-Wrong Classics</td><td>22</td><td>14</td><td>4</td><td class="">18%</td></tr>
-        <tr><td>Reading Room</td><td>21</td><td>4</td><td>15</td><td class="err-text">71%</td></tr>
-        <tr><td>House Warm-Up</td><td>17</td><td>15</td><td>2</td><td class="">12%</td></tr>
-      </table>
-    </div>
-
-    <div class="row clickable" onclick="toggle('mood-overlaps')">
-      <span class="row-label">High overlaps (>20 shared) <span class="arrow">▸</span></span>
-      <span class="row-value warn-text">21 pairs</span>
-    </div>
-    <div class="detail" id="mood-overlaps">
-      <table class="detail-table">
-        <tr><th>Mood A</th><th>Mood B</th><th>Shared</th></tr>
-        <tr><td>Roadtrip: Home Edition</td><td>Rock Lovers</td><td>189</td></tr>
-        <tr><td>GRWM</td><td>TikTok Bangers</td><td>114</td></tr>
-        <tr><td>Roadtrip: Home Edition</td><td>Can't-Go-Wrong Classics</td><td>77</td></tr>
-        <tr><td>80's Night</td><td>Roadtrip: Home Edition</td><td>76</td></tr>
-        <tr><td>Rock Lovers</td><td>Can't-Go-Wrong Classics</td><td>56</td></tr>
-        <tr><td>Habibi Heat</td><td>Slow Sunday</td><td>50</td></tr>
-        <tr><td>Rock Lovers</td><td>Roadtrip: Home Edition</td><td>48</td></tr>
-        <tr><td>Soul & Funk</td><td>Dinner: The Host's Edit</td><td>45</td></tr>
-        <tr><td>Midnight Jazz</td><td>Dinner: The Host's Edit</td><td>42</td></tr>
-        <tr><td>Soul & Funk</td><td>Kitchen Grooves</td><td>40</td></tr>
-        <tr><td>GRWM</td><td>Coffee First</td><td>38</td></tr>
-        <tr><td>Dinner: The Host's Edit</td><td>Coffee First</td><td>38</td></tr>
-        <tr><td>Slow Sunday</td><td>Habibi Heat</td><td>38</td></tr>
-        <tr><td>TikTok Bangers</td><td>GRWM</td><td>34</td></tr>
-        <tr><td>Habibi After Hours</td><td>Dinner: The Host's Edit</td><td>30</td></tr>
-        <tr><td>Habibi Heat</td><td>Dinner: The Host's Edit</td><td>29</td></tr>
-        <tr><td>Habibi After Hours</td><td>Habibi Heat</td><td>29</td></tr>
-        <tr><td>Habibi Heat</td><td>Habibi After Hours</td><td>27</td></tr>
-        <tr><td>Roadtrip: Home Edition</td><td>90's Rewind</td><td>25</td></tr>
-        <tr><td>80's Night</td><td>Kitchen Grooves</td><td>22</td></tr>
-        <tr><td>Habibi After Hours</td><td>Midnight Jazz</td><td>21</td></tr>
-      </table>
-    </div>
-
-    <div class="row clickable" onclick="toggle('low-conf')">
-      <span class="row-label">Low confidence tags (score &lt;30) <span class="arrow">▸</span></span>
-      <span class="row-value err-text">13</span>
-    </div>
-    <div class="detail" id="low-conf">
-      <table class="detail-table">
-        <tr><th>Artist</th><th>Album</th><th>Mood</th><th>Score</th></tr>
-        <tr><td>DMX</td><td><a href="https://unfamiliarfamiliar.com/products/3488" target="_blank">X Gon' Give It To Ya</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
-        <tr><td>Kanye West</td><td><a href="https://unfamiliarfamiliar.com/products/3455" target="_blank">The College Dropout </a></td><td>Cool Kids Club</td><td class="err-text">10</td></tr>
-        <tr><td>Kendrick Lamar</td><td><a href="https://unfamiliarfamiliar.com/products/2425" target="_blank">GNX(1LP) / Lamar, Kendrick / GNX(1LP)</a></td><td>TikTok Bangers</td><td class="err-text">10</td></tr>
-        <tr><td>Lizzo</td><td><a href="https://unfamiliarfamiliar.com/products/3180" target="_blank">Coconut Oil</a></td><td>TikTok Bangers</td><td class="err-text">10</td></tr>
-        <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/3652" target="_blank">GO:OD AM (2LP) / Miller, Mac / GO:OD AM </a></td><td>GRWM</td><td class="err-text">10</td></tr>
-        <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/3442" target="_blank">Macadelic</a></td><td>GRWM</td><td class="err-text">10</td></tr>
-        <tr><td>Snoop Doggy Dogg</td><td><a href="https://unfamiliarfamiliar.com/products/2740" target="_blank">Tha Doggfather</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
-        <tr><td>Various Artists</td><td><a href="https://unfamiliarfamiliar.com/products/3431" target="_blank">KPOP Demon Hunters (Sountrack From Netfl</a></td><td>Cool Kids Club</td><td class="err-text">10</td></tr>
-        <tr><td>Wu-Tang Clan</td><td><a href="https://unfamiliarfamiliar.com/products/3624" target="_blank">Wu-Tang Forever</a></td><td>90's Rewind</td><td class="err-text">10</td></tr>
-        <tr><td>Earth Wind And Fire</td><td><a href="https://unfamiliarfamiliar.com/products/3561" target="_blank">Greatest Hits 1978 Vol1 (1LP) / Earth Wi</a></td><td>Dinner: The Host's Edit</td><td class="err-text">15</td></tr>
-        <tr><td>Lil Wayne</td><td><a href="https://unfamiliarfamiliar.com/products/3519" target="_blank">I Am Music</a></td><td>Selector Mode</td><td class="err-text">15</td></tr>
-        <tr><td>Mac Miller</td><td><a href="https://unfamiliarfamiliar.com/products/2495" target="_blank">K.I.D.S. (Kickin Incredibly Dope Shit)</a></td><td>Cool Kids Club</td><td class="err-text">15</td></tr>
-        <tr><td>ARAB STAR</td><td><a href="https://unfamiliarfamiliar.com/products/3323" target="_blank">EGYPTIAN MIX</a></td><td>Habibi Heat</td><td class="err-text">20</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══ SUBSCRIBERS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> Subscribers</div>
-    <div class="row"><span class="row-label">Active</span><span class="row-value ok-text">176</span></div>
-    <div class="row"><span class="row-label">Unsubscribed</span><span class="row-value">0</span></div>
-    <div class="row"><span class="row-label">Total ever</span><span class="row-value">176</span></div>
-
-    <div class="row clickable" onclick="toggle('sub-sources')">
-      <span class="row-label">By source <span class="arrow">▸</span></span>
-      <span class="row-value">2 sources</span>
-    </div>
-    <div class="detail" id="sub-sources">
-      <table class="detail-table">
-        <tr><th>Source</th><th>Count</th></tr>
-        <tr><td>newsletter</td><td>173</td></tr>
-        <tr><td>order</td><td>5</td></tr>
-      </table>
-    </div>
-
-    <div class="row clickable" onclick="toggle('sub-recent')">
-      <span class="row-label">Recent subscribers <span class="arrow">▸</span></span>
-      <span class="row-value">last 20</span>
-    </div>
-    <div class="detail" id="sub-recent">
-      <table class="detail-table">
-        <tr><th>Name</th><th>Email</th><th>Source</th><th>Date</th></tr>
-        <tr><td>—</td><td>javed@rhythmrecordsllc.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>rikusdxb@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>muneera</td><td>munnerafakhroo@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>Flame</td><td>farouis136@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>Daniela Meulblok</td><td>daniela.meulblok@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>dana.almulla47@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>khalid.faroug92@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>badr.albadri890@icloud.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>jad.yazbeck95@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>marianamtron@hotmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>magixtdj@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>brunoab4@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>liamaustin123@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>anushamajid@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>almezaini19@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>nour el ali</td><td>elalinour@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>irupecanet@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>taimur123@hotmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>jdpos@mail.ru</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-        <tr><td>—</td><td>william.glenwright@gmail.com</td><td><span class="tag tag-blue">newsletter</span></td><td></td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══ CUSTOMERS + LEADS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot red"></span> Customers &amp; Hot Leads</div>
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin-bottom:8px">Hot Leads</div>
-    <div class="lead-row">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-        <strong>Neil Williams</strong> <span class="lead-hot">HOT</span>
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--dim); margin-top: 12px; padding: 0 4px;">
+        Online CAC = ~AED 380 ad spend / 3 conversions. Walk-in CAC effectively zero (organic foot traffic + pop-up). LTV data insufficient &mdash; needs repeat purchase tracking.
       </div>
-      <div style="color:var(--dim);font-size:11px">GN'R Use Your Illusion I + II &bull; via Email &bull; 27 Mar 2026</div>
-      <div style="color:#888;font-size:11px;margin-top:2px">Added to LAF next order</div>
-    </div>
-
-    <div class="row clickable" onclick="toggle('top-customers')" style="margin-top:12px">
-      <span class="row-label">Top Customers <span class="arrow">▸</span></span>
-      <span class="row-value">10 customers</span>
-    </div>
-    <div class="detail" id="top-customers">
-      <table class="detail-table">
-        <tr><th>#</th><th>Customer</th><th>Orders</th><th>Total Spend</th></tr>
-        <tr><td>1</td><td>Vinyl Souk</td><td>2</td><td class="ok-text">AED 10,529</td></tr>
-        <tr><td>2</td><td>Mohamed Kurdi</td><td>2</td><td class="ok-text">AED 3,080</td></tr>
-        <tr><td>3</td><td>Fares Serhan</td><td>2</td><td class="ok-text">AED 1,377</td></tr>
-        <tr><td>4</td><td>nour el ali</td><td>1</td><td class="ok-text">AED 1,314</td></tr>
-        <tr><td>5</td><td>Nawal Hilal</td><td>1</td><td class="ok-text">AED 1,057</td></tr>
-        <tr><td>6</td><td>Cecilio</td><td>1</td><td class="ok-text">AED 1,045</td></tr>
-        <tr><td>7</td><td>Álvaro Jiménez Bejarano</td><td>1</td><td class="ok-text">AED 871</td></tr>
-        <tr><td>8</td><td>Jasem Almulla</td><td>1</td><td class="ok-text">AED 840</td></tr>
-        <tr><td>9</td><td>Ala</td><td>1</td><td class="ok-text">AED 796</td></tr>
-        <tr><td>10</td><td>Fares vinyls</td><td>1</td><td class="ok-text">AED 486</td></tr>
-      </table>
     </div>
   </div>
 
-  <!-- ═══ EMAIL SYSTEM ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot yellow"></span> Email System</div>
-    <div class="row"><span class="row-label">Jobs sent</span><span class="row-value ok-text">88</span></div>
-    <div class="row"><span class="row-label">Jobs pending</span><span class="row-value warn-text">0</span></div>
-    <div class="row"><span class="row-label">Jobs failed</span><span class="row-value err-text">112</span></div>
-    <div class="row"><span class="row-label">Drops</span><span class="row-value">1</span></div>
+  <!-- ═══════════════════ CHANNEL PERFORMANCE ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Channel Performance</div>
+    <div class="cards-grid">
 
-    <div class="row clickable" onclick="toggle('failed-jobs')">
-      <span class="row-label">Failed jobs <span class="arrow">▸</span></span>
-      <span class="row-value err-text">112</span>
-    </div>
-    <div class="detail" id="failed-jobs">
-      <table class="detail-table">
-        <tr><th>To</th><th>Template</th><th>Error</th><th>Date</th></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 14:12</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 14:07</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 14:02</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:57</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:52</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:47</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:42</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:37</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:32</td></tr>
-        <tr><td>kamalabouhachem</td><td>winback_1</td><td class="err-text">SendGrid 400: {"errors":[{"message":"Does not contain a valid address.","field":</td><td>26 Mar 13:27</td></tr>
-      </table>
-    </div>
-
-    <div class="row clickable" onclick="toggle('drops-detail')">
-      <span class="row-label">Drop details <span class="arrow">▸</span></span>
-      <span class="row-value">1</span>
-    </div>
-    <div class="detail" id="drops-detail">
-      <table class="detail-table">
-        <tr><th>ID</th><th>Subject</th><th>Products</th><th>Status</th></tr>
-        <tr><td>1</td><td>New arrivals just landed</td><td>20</td><td class="ok-text">sent</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══ SYSTEMS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> Systems Status</div>
-    <div class="row"><span>Replit (website)</span><span class="badge ok">LIVE</span></div>
-    <div class="row"><span>OpenClaw TG bot</span><span class="badge ok">LIVE (Sonnet 4.6)</span></div>
-    <div class="row"><span>Google Search Console</span><span class="badge ok">CONNECTED</span></div>
-    <div class="row"><span>Google Analytics (GA4)</span><span class="badge ok">CONNECTED</span></div>
-    <div class="row"><span>Google Merchant Center</span><span class="badge err">SUSPENDED — review pending</span></div>
-    <div class="row"><span>Google Ads (PMax)</span><span class="badge ok">RUNNING</span></div>
-    <div class="row"><span>Google Business Profile</span><span class="badge ok">VERIFIED</span></div>
-    <div class="row"><span>Meta Pixel</span><span class="badge ok">4 EVENTS LIVE</span></div>
-    <div class="row"><span>Meta Ads API</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span>TikTok</span><span class="badge ok">Nour posting daily</span></div>
-    <div class="row"><span>Reddit scanner</span><span class="badge warn">BLOCKED (acct age)</span></div>
-    <div class="row"><span>Notion OS</span><span class="badge ok">6 DBs LIVE</span></div>
-    <div class="row"><span>Quiqup (shipping)</span><span class="badge ok">CONNECTED</span></div>
-    <div class="row"><span>SendGrid (email)</span><span class="badge ok">17 FLOWS</span></div>
-    <div class="row"><span>Task Agent (ops watchdog)</span><span class="badge ok">8:05am DAILY</span></div>
-    <div class="row"><span>Blog generator (Luna)</span><span class="badge ok">9am FRIDAYS</span></div>
-    <div class="row"><span>Customer list sync</span><span class="badge ok">9am DAILY (+50 trigger)</span></div>
-  </div>
-
-  <!-- ═══ TRAFFIC ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot blue"></span> Site Activity &amp; Traffic</div>
-    <div class="row"><span class="row-label">Sessions (API)</span><span class="row-value">—</span></div>
-    <div class="row"><span class="row-label">Pages / Session</span><span class="row-value ok-text">2.5</span></div>
-    <div class="row"><span class="row-label">Bounce Rate</span><span class="row-value ">—</span></div>
-    <div class="row"><span class="row-label">Conversion Rate</span><span class="row-value warn-text">—</span></div>
-    <div class="row"><span class="row-label">New Users</span><span class="row-value">—</span></div>
-    <div class="row"><span class="row-label">Orders tracked</span><span class="row-value">14</span></div>
-    <div class="row"><span class="row-label">SEO queries</span><span class="row-value">25</span></div>
-    <div class="row"><span class="row-label">Last heartbeat</span><span class="row-value">2026-04-02T23:55</span></div>
-    <div style="margin-top:8px;font-size:11px"><a href="https://analytics.google.com" target="_blank" style="color:var(--butter)">Open GA4 ↗</a> &nbsp; <a href="https://search.google.com/search-console" target="_blank" style="color:var(--butter)">GSC ↗</a></div>
-
-    <div class="row clickable" onclick="toggle('seo-queries')">
-      <span class="row-label">Search queries <span class="arrow">▸</span></span>
-      <span class="row-value">25</span>
-    </div>
-    <div class="detail" id="seo-queries">
-      <div class="sub-row"><span>astroworld vinyl</span></div>
-      <div class="sub-row"><span>build your store</span></div>
-      <div class="sub-row"><span>crate digging</span></div>
-      <div class="sub-row"><span>darius rucker back to then</span></div>
-      <div class="sub-row"><span>darius rucker back to then album</span></div>
-      <div class="sub-row"><span>down memory lane</span></div>
-      <div class="sub-row"><span>familar</span></div>
-      <div class="sub-row"><span>familer</span></div>
-      <div class="sub-row"><span>familiar</span></div>
-      <div class="sub-row"><span>famillar</span></div>
-      <div class="sub-row"><span>femilier</span></div>
-      <div class="sub-row"><span>lp record</span></div>
-      <div class="sub-row"><span>memory lane</span></div>
-      <div class="sub-row"><span>quick records</span></div>
-      <div class="sub-row"><span>taste vinyl</span></div>
-      <div class="sub-row"><span>thriller michael jackson vinyl</span></div>
-      <div class="sub-row"><span>throback</span></div>
-      <div class="sub-row"><span>throwback</span></div>
-      <div class="sub-row"><span>trow back</span></div>
-      <div class="sub-row"><span>unfamiliar familiar</span></div>
-      <div class="sub-row"><span>unfamiliar records</span></div>
-      <div class="sub-row"><span>vinyl shop</span></div>
-      <div class="sub-row"><span>vinyl sky</span></div>
-      <div class="sub-row"><span>whole</span></div>
-      <div class="sub-row"><span>ziad rahbani houdou nisbi vinyl</span></div>
-    </div>
-    <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.02);border-radius:4px;font-size:11px;color:#999;line-height:1.5">
-      11:55pm Thu Apr 2: No new orders since #82 (Nour El Ali, AED 774). #82 still PICKING, #81 gift still UNFULFILLED. Quiet evening.
-    </div>
-  </div>
-
-  <!-- ═══ AGENT TEAM ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> Agent Team</div>
-    <div class="row"><div><strong>Atlas</strong> <span style="color:var(--dim);font-size:11px">Chief of Staff / COO</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Sage</strong> <span style="color:var(--dim);font-size:11px">Chief Strategy Officer</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Max</strong> <span style="color:var(--dim);font-size:11px">CTO / IT Architect</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Leo</strong> <span style="color:var(--dim);font-size:11px">Head of Operations</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Vera</strong> <span style="color:var(--dim);font-size:11px">CFO (inside Leo)</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Luna</strong> <span style="color:var(--dim);font-size:11px">CMO / Content Director</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Rami</strong> <span style="color:var(--dim);font-size:11px">Head of SEO & Growth</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Scout</strong> <span style="color:var(--dim);font-size:11px">Market Intelligence</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Kamal</strong> <span style="color:var(--dim);font-size:11px">Head of Curation & Taste</span></div><span class="badge live">LIVE</span></div>
-    <div class="row"><div><strong>Bianca</strong> <span style="color:var(--dim);font-size:11px">BD & Partnerships</span></div><span class="badge planned">PLANNED</span></div>
-    <div class="row"><div><strong>Eve</strong> <span style="color:var(--dim);font-size:11px">Events & PMO</span></div><span class="badge planned">PLANNED</span></div>
-    <div class="row"><div><strong>Rex</strong> <span style="color:var(--dim);font-size:11px">Security Analyst</span></div><span class="badge planned">PLANNED</span></div>
-    <div class="row"><div><strong>Cara</strong> <span style="color:var(--dim);font-size:11px">Customer Service</span></div><span class="badge planned">PLANNED</span></div>
-    <div class="row"><div><strong>Zara</strong> <span style="color:var(--dim);font-size:11px">CRM Intelligence</span></div><span class="badge planned">PLANNED</span></div>
-  </div>
-
-  <!-- ═══ TASK AGENT ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> Task Agent — Daily Ops Watchdog</div>
-    <div class="row"><span>Last run</span><span class="badge ok">2026-03-27</span></div>
-    <div class="row"><span>Schedule</span><span style="font-size:11px;color:var(--dim)">8:05am daily</span></div>
-    <div style="margin-top:10px;font-size:11px;color:var(--dim);margin-bottom:6px;letter-spacing:0.08em">DETECTOR STATUS</div>
-    <div class="row"><span style="font-size:11px">Replit WRITE endpoints</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Google Ads Basic Access</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Customer list uploaded</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Google Ads conversions</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Meta billing fix</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">TikTok Pixel</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Reddit credentials</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Kamal mood fix</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">Neil Williams lead</span><span class="badge warn">PENDING</span></div>
-    <div class="row"><span style="font-size:11px">WebAmi intake prep</span><span class="badge warn">PENDING</span></div>
-  </div>
-
-  <!-- ═══ CRON ═══ -->
-  <div class="card section-full">
-    <div class="card-title"><span class="dot green"></span> Automated Schedule</div>
-    <div class="cron-grid">
-      <div class="cron-item"><span class="cron-name">Order notifications</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">*/5 min</span></span></div>
-      <div class="cron-item"><span class="cron-name">Drop checker</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">*/30 min</span></span></div>
-      <div class="cron-item"><span class="cron-name">Merchant monitor</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">hourly</span></span></div>
-      <div class="cron-item"><span class="cron-name">Leo morning brief</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">8am daily</span></span></div>
-      <div class="cron-item"><span class="cron-name">Rami SEO daily</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">8am Tue-Sat</span></span></div>
-      <div class="cron-item"><span class="cron-name">Rami SEO weekly</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">8am Monday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Scout + Price Check</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">8am Wednesday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Luna content brief</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">9am Friday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Atlas CEO report</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">8pm Sunday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Founder Log</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">9pm Friday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Max health check</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">8:05am Monday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Kamal curation review</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">9am 1st &amp; 15th</span></span></div>
-      <div class="cron-item"><span class="cron-name">Task Agent (ops watchdog)</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">8:05am daily</span></span></div>
-      <div class="cron-item"><span class="cron-name">Blog generator (Luna)</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">9am Friday</span></span></div>
-      <div class="cron-item"><span class="cron-name">Customer list sync</span><span><span class="cron-type system">SYSTEM</span> <span class="cron-schedule">9am daily (+50 trigger)</span></span></div>
-      <div class="cron-item"><span class="cron-name">Sage monthly</span><span><span class="cron-type openclaw">OPENCLAW</span> <span class="cron-schedule">10am 1st of month</span></span></div>
-    </div>
-  </div>
-
-  <!-- ═══ BLOCKERS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot red"></span> Active Blockers</div>
-    <div class="todo-item"><span class="todo-check err-text">[!]</span><span>Meta Ads API — account too new, ~2 weeks wait <span class="tag tag-yellow">META</span></span></div>
-    <div class="todo-item"><span class="todo-check err-text">[!]</span><span>TikTok API rejected — need sandbox demo video <span class="tag tag-yellow">TIKTOK</span></span></div>
-    <div class="todo-item"><span class="todo-check err-text">[!]</span><span>TikTok Pixel not installed — Peter to add via ads.tiktok.com <span class="tag tag-yellow">TIKTOK</span></span></div>
-    <div class="todo-item"><span class="todo-check warn-text">[~]</span><span>Google Ads Basic Access — applied Mar 27, awaiting approval 1-3 days. Unlocks Rami keyword + competitor commands <span class="tag tag-blue">GOOGLE</span></span></div>
-    <div class="todo-item"><span class="todo-check warn-text">[~]</span><span>Reddit scanner — account needs ~5 days age. Retry ~Mar 27 <span class="tag tag-blue">REDDIT</span></span></div>
-  </div>
-
-  <!-- ═══ RECENT WINS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot green"></span> Recent Wins</div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Order notifications live — TG + SKU images to both founders</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Meta Pixel fully wired — 4 conversion events live</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Price intelligence — Scout flags 20%+ overpriced SKUs</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Competitor scraper rewritten — Shopify API, clean data</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>3 cron jobs moved to system cron — ~5x API cost reduction</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>OpenClaw switched Opus to Sonnet — ~5x cheaper TG bot</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Drop email workflow — auto-detect + TG preview + dual-founder approval</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>GMC feed healthy — 1,134/1,135 approved, auto-fetches daily</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Email validation fix — invalid addresses blocked before SendGrid</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>LAF 300 products live + email drop working</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Kamal (curator) live — mood analytics, sell-through, overlaps, AI year resolution</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>20 Replit admin API endpoints built — moods, CRM, analytics, fulfillment</span></div>
-    <div class="todo-item"><span class="todo-check ok-text">[+]</span><span>Tribe w Nos agency hired — Emirati founders, creative community + influencer network</span></div>
-  </div>
-
-  <!-- ═══ UNIT ECONOMICS ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot blue"></span> Unit Economics</div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-
-      <div>
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin-bottom:10px">Online Order (box + Quiqup)</div>
-        <div class="row"><span class="row-label">Box</span><span class="row-value">{FC_BOX:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Paper</span><span class="row-value">{FC_PAPER:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Brand sticker sheet (×13)</span><span class="row-value">{FC_STICKER_SHEET:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Round stickers wrapping (×2)</span><span class="row-value">{FC_ROUND_STICKER:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Mood sticker (×1)</span><span class="row-value">{FC_MOOD_STICKER:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Thank you card</span><span class="row-value">{FC_CARD:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Shipping (Quiqup)</span><span class="row-value">{FC_SHIPPING:.2f} AED</span></div>
-        <div class="row" style="border-top:2px solid var(--border);margin-top:4px;padding-top:8px">
-          <span class="row-label" style="font-weight:600;color:var(--beige)">Total</span>
-          <span class="row-value" style="font-weight:600;color:var(--beige)">{FC_ONLINE:.2f} AED</span>
+      <!-- Google Ads -->
+      <div class="channel-card">
+        <div class="channel-header">
+          <span class="channel-name">Google Ads</span>
+          <span class="channel-badge badge-live">Live</span>
+        </div>
+        <div class="channel-metrics">
+          <div class="metric">
+            <div class="metric-label">Daily Spend</div>
+            <div class="metric-value">AED 20</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Total Clicks</div>
+            <div class="metric-value">685</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Conversions</div>
+            <div class="metric-value">3</div>
+            <div class="metric-note"><span class="status-dot dot-amber"></span>Low</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">CPC</div>
+            <div class="metric-value">AED 0.56</div>
+            <div class="metric-note">~AED 380 total</div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin-bottom:10px">Event / In-Store (bag, no shipping)</div>
-        <div class="row"><span class="row-label">Bag</span><span class="row-value">{FC_BAG:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Paper</span><span class="row-value">{FC_PAPER:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Brand sticker sheet (×13)</span><span class="row-value">{FC_STICKER_SHEET:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Round stickers wrapping (×2)</span><span class="row-value">{FC_ROUND_STICKER:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Mood sticker (×1)</span><span class="row-value">{FC_MOOD_STICKER:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Thank you card</span><span class="row-value">{FC_CARD:.2f} AED</span></div>
-        <div class="row"><span class="row-label">Shipping</span><span class="row-value">0.00 AED</span></div>
-        <div class="row" style="border-top:2px solid var(--border);margin-top:4px;padding-top:8px">
-          <span class="row-label" style="font-weight:600;color:var(--beige)">Total</span>
-          <span class="row-value" style="font-weight:600;color:var(--beige)">{FC_EVENT:.2f} AED</span>
+      <!-- Meta / Instagram -->
+      <div class="channel-card">
+        <div class="channel-header">
+          <span class="channel-name">Meta / Instagram</span>
+          <span class="channel-badge badge-active">Manual</span>
+        </div>
+        <div class="channel-metrics">
+          <div class="metric">
+            <div class="metric-label">Total Spend</div>
+            <div class="metric-value">$434</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Campaigns</div>
+            <div class="metric-value">12</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Clicks</div>
+            <div class="metric-value">2,385</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">API</div>
+            <div class="metric-value"><span class="status-dot dot-red"></span>Blocked</div>
+            <div class="metric-note">Invite issue</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Organic Search -->
+      <div class="channel-card">
+        <div class="channel-header">
+          <span class="channel-name">Organic Search</span>
+          <span class="channel-badge badge-live">Growing</span>
+        </div>
+        <div class="channel-metrics">
+          <div class="metric">
+            <div class="metric-label">Clicks / Week</div>
+            <div class="metric-value">13</div>
+            <div class="metric-note change-up">+160% WoW</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Impressions</div>
+            <div class="metric-value">182</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Cost</div>
+            <div class="metric-value">AED 0</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Status</div>
+            <div class="metric-value"><span class="status-dot dot-green"></span>Indexing</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TikTok -->
+      <div class="channel-card">
+        <div class="channel-header">
+          <span class="channel-name">TikTok</span>
+          <span class="channel-badge badge-active">Organic</span>
+        </div>
+        <div class="channel-metrics">
+          <div class="metric">
+            <div class="metric-label">Posting</div>
+            <div class="metric-value">Daily</div>
+            <div class="metric-note">Nour</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Pixel</div>
+            <div class="metric-value"><span class="status-dot dot-amber"></span>Pending</div>
+            <div class="metric-note">Not installed</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Paid</div>
+            <div class="metric-value">None</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Priority</div>
+            <div class="metric-value"><span class="status-dot dot-amber"></span>Install pixel</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="channel-card card-full">
+        <div class="channel-header">
+          <span class="channel-name">Email Marketing</span>
+          <span class="channel-badge badge-live">Active</span>
+        </div>
+        <div class="channel-metrics">
+          <div class="metric">
+            <div class="metric-label">Subscribers</div>
+            <div class="metric-value">220+</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Last Send</div>
+            <div class="metric-value">Pop-up invite</div>
+            <div class="metric-note">176 recipients</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Queued</div>
+            <div class="metric-value">Dinner Party</div>
+            <div class="metric-note">Mood drop</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Flows</div>
+            <div class="metric-value">Unified</div>
+            <div class="metric-note"><span class="status-dot dot-green"></span>No overlap</div>
+          </div>
         </div>
       </div>
 
     </div>
+  </div>
 
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin:20px 0 10px">Margin by Scenario</div>
-    <div class="row">
-      <span class="row-label">Single vinyl online (~120 AED)</span>
-      <span class="row-value {'ok-text' if single_margin_pct >= 50 else 'warn-text'}">{single_margin_pct:.0f}% · {SINGLE_VINYL_AVG_AED - FC_ONLINE:.0f} AED net</span>
-    </div>
-    <div class="row">
-      <span class="row-label">Single vinyl event (~120 AED)</span>
-      <span class="row-value ok-text">{single_event_margin_pct:.0f}% · {SINGLE_VINYL_AVG_AED - FC_EVENT:.0f} AED net</span>
-    </div>
-    <div class="row">
-      <span class="row-label">3-vinyl min online (~300 AED)</span>
-      <span class="row-value ok-text">{three_margin_pct:.0f}% · {THREE_VINYL_AVG_AED - FC_ONLINE:.0f} AED net</span>
-    </div>
-    <div class="row">
-      <span class="row-label">AOV — online orders</span>
-      <span class="row-value ok-text">{fulfillment_margin_pct:.0f}% · {fulfillment_margin_aed:.0f} AED net</span>
-    </div>
-    <div class="row"><span class="row-label">Total fulfillment spend to date</span><span class="row-value">{total_fulfillment_spend:.0f} AED ({total_orders} orders)</span></div>
-    <div style="font-size:11px;color:var(--dim);margin-top:12px;line-height:1.7;font-style:italic">
-      Event orders are 4× cheaper to fulfill (10.98 vs 46.55 AED) — no shipping cost. Single vinyl online is thin at {single_margin_pct:.0f}% but viable as acquisition. Hold min-order and single-vinyl-day decisions until CAC from paid ads is known.
+  <!-- ═══════════════════ SEO STATUS ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">SEO Status</div>
+    <div class="card">
+      <div class="seo-grid">
+        <div class="seo-stat">
+          <div class="seo-stat-value">16</div>
+          <div class="seo-stat-label">Blogs Live</div>
+        </div>
+        <div class="seo-stat">
+          <div class="seo-stat-value" style="color: var(--amber);">1</div>
+          <div class="seo-stat-label">Indexed</div>
+        </div>
+        <div class="seo-stat">
+          <div class="seo-stat-value">22,170</div>
+          <div class="seo-stat-label">Total URLs</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; color: var(--dim);">Rami Indexer Progress</span>
+          <span style="font-family: var(--mono); font-size: 11px; color: var(--dim);">396 / 22,170 submitted</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 1.8%;"></div>
+        </div>
+        <div class="progress-label">
+          <span>1.8% complete</span>
+          <span>200/day &middot; ~109 days remaining</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px; font-family: var(--mono); font-size: 11px; color: var(--dim);">
+        15 blogs submitted, awaiting indexing. Rami submitting 200 product URLs/day via Google Indexing API.
+      </div>
     </div>
   </div>
 
-  <!-- ═══ INCOMING ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot yellow"></span> Incoming Inventory</div>
-    <div class="row"><span class="row-label">EBO batch</span><span class="row-value ok-text">65 SKUs — RECEIVED</span></div>
-    <div class="row"><span class="row-label">LAF batch</span><span class="row-value ok-text">~300 SKUs — RECEIVED</span></div>
-    <div class="row"><span class="row-label">WebAmi batch</span><span class="row-value warn-text">~500 SKUs — arriving ~Apr 4</span></div>
+  <!-- ═══════════════════ INVENTORY HEALTH ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Inventory Health</div>
+    <div class="card">
+      <div class="inv-grid">
+        <div class="inv-stat">
+          <div class="inv-stat-value">991</div>
+          <div class="inv-stat-label">Active SKUs</div>
+        </div>
+        <div class="inv-stat">
+          <div class="inv-stat-value">1,651</div>
+          <div class="inv-stat-label">Total Units</div>
+        </div>
+        <div class="inv-stat">
+          <div class="inv-stat-value" style="color: var(--amber);">22%</div>
+          <div class="inv-stat-label">Sell-Through Rate</div>
+          <div class="inv-note">330 sold / 1,476 initial</div>
+        </div>
+      </div>
+      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <div>
+            <span style="font-family: var(--mono); font-size: 13px; color: var(--accent);">~31 records sold at pop-up</span>
+            <span style="font-family: var(--mono); font-size: 11px; color: var(--dim); margin-left: 8px;">in one day (Apr 18)</span>
+          </div>
+          <div>
+            <span style="font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim);">Days of Stock</span>
+            <span style="font-family: var(--mono); font-size: 13px; color: var(--text); margin-left: 8px;">~630</span>
+            <span style="font-family: var(--mono); font-size: 10px; color: var(--dim); margin-left: 4px;">at current velocity</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--dim);">
+        <span class="status-dot dot-amber"></span> Slow-mover analysis (Kamal) planned but not yet built. Dead stock % unknown &mdash; requires genre-level sell-through data.
+      </div>
+    </div>
   </div>
 
-  <!-- ═══ ARCHITECTURE ═══ -->
-  <div class="card">
-    <div class="card-title"><span class="dot blue"></span> Architecture</div>
-    <pre style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.8;overflow-x:auto">
-TELEGRAM (Peter + Nour)
-    |
-OPENCLAW (Mac 24/7, Sonnet 4.6)
-    |
-SCRIPTS (~/.openclaw/scripts/)
-    |
-+-- Replit (website + admin API)
-+-- Google APIs (GSC, GA4, GMC, GBP, Ads)
-+-- Notion (6 DBs, navigation, strategy)
-+-- Discogs (catalog source)
-+-- SendGrid (17 email flows)
-+-- Quiqup (UAE shipping)
-    </pre>
+  <!-- ═══════════════════ STRATEGIC INITIATIVES ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Strategic Initiatives</div>
+    <div class="cards-grid">
+
+      <!-- Completed / On Track -->
+      <div class="card">
+        <div class="card-title"><span class="status-dot dot-green"></span> Complete / On Track</div>
+        <div class="initiative">
+          <div class="init-status dot-green"></div>
+          <div class="init-name">SEO blog infrastructure</div>
+          <div class="init-detail">16 blogs live</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status dot-green"></div>
+          <div class="init-name">Email strategy unified</div>
+          <div class="init-detail">No overlaps</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status dot-green"></div>
+          <div class="init-name">Inventory consolidated</div>
+          <div class="init-detail">991 SKUs</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status dot-green"></div>
+          <div class="init-name">Pop-up model proven</div>
+          <div class="init-detail">AED 22K / 1 day</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status dot-green"></div>
+          <div class="init-name">Serkal proposal V3</div>
+          <div class="init-detail">Pending renders</div>
+        </div>
+      </div>
+
+      <!-- In Progress + Blocked -->
+      <div class="card">
+        <div class="card-title"><span class="status-dot dot-amber"></span> In Progress &amp; Blocked</div>
+        <div class="initiative">
+          <div class="init-status" style="background: var(--amber);"></div>
+          <div class="init-name">Blog indexing</div>
+          <div class="init-detail">1/16 indexed</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status" style="background: var(--amber);"></div>
+          <div class="init-name">Merchant Center products</div>
+          <div class="init-detail">Clear but limited</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status" style="background: var(--amber);"></div>
+          <div class="init-name">TikTok pixel</div>
+          <div class="init-detail">Not installed</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status" style="background: var(--amber);"></div>
+          <div class="init-name">Kamal slow-mover analysis</div>
+          <div class="init-detail">Planned, not built</div>
+        </div>
+        <div class="initiative">
+          <div class="init-status" style="background: var(--red);"></div>
+          <div class="init-name">Meta API integration</div>
+          <div class="init-detail">Blocked &mdash; invite issue</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ RISK REGISTER ═══════════════════ -->
+  <div class="section">
+    <div class="section-label">Risk Register</div>
+    <div class="card">
+      <table class="rev-table">
+        <thead>
+          <tr>
+            <th>Risk</th>
+            <th>Severity</th>
+            <th>Impact</th>
+            <th>Mitigation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Ads ROAS below 1x</td>
+            <td><span class="status-dot dot-red"></span> High</td>
+            <td class="mono" style="font-size: 12px;">Burning AED 20/day with 3 conversions</td>
+            <td style="font-size: 12px;">Audit campaigns, pause low performers, tighten keywords</td>
+          </tr>
+          <tr>
+            <td>SEO indexing stalled (1/16)</td>
+            <td><span class="status-dot dot-amber"></span> Medium</td>
+            <td class="mono" style="font-size: 12px;">Organic traffic unlock delayed</td>
+            <td style="font-size: 12px;">Rami submitting 200/day, monitor weekly</td>
+          </tr>
+          <tr>
+            <td>No TikTok pixel</td>
+            <td><span class="status-dot dot-amber"></span> Medium</td>
+            <td class="mono" style="font-size: 12px;">Can't track TikTok-driven purchases</td>
+            <td style="font-size: 12px;">Install pixel this sprint</td>
+          </tr>
+          <tr>
+            <td>Over-reliance on pop-ups</td>
+            <td><span class="status-dot dot-amber"></span> Medium</td>
+            <td class="mono" style="font-size: 12px;">Apr revenue skewed by single event</td>
+            <td style="font-size: 12px;">Build recurring online demand via SEO + email</td>
+          </tr>
+          <tr>
+            <td>Inventory depth (630 days stock)</td>
+            <td><span class="status-dot dot-amber"></span> Low</td>
+            <td class="mono" style="font-size: 12px;">Capital tied up in slow movers</td>
+            <td style="font-size: 12px;">Build Kamal slow-mover report, identify dead stock</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ QUICK LINKS ═══════════════════ -->
+  <div class="section" style="text-align: center;">
+    <div class="section-label" style="text-align: center;">Quick Links</div>
+    <div class="quick-links">
+      <a href="seo-intelligence.html" class="pill">SEO Intelligence</a>
+      <a href="https://unfamiliarfamiliar.com" class="pill" target="_blank">unfamiliarfamiliar.com</a>
+      <a href="https://ads.google.com" class="pill" target="_blank">Google Ads</a>
+      <a href="https://merchants.google.com" class="pill" target="_blank">Merchant Center</a>
+      <a href="https://analytics.google.com" class="pill" target="_blank">GA4</a>
+      <a href="https://search.google.com/search-console" class="pill" target="_blank">Search Console</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <div class="footer">
+    Last updated: 19 Apr 2026 &middot; Data sources: Replit API, Google APIs, SendGrid
   </div>
 
 </div>
-
-<div style="margin:48px 24px 0; border-top:1px solid var(--border); padding-top:40px">
-
-  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:28px">Full Architecture</div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">Entry Points</div>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
-        iPhone → @UF_operator_bot → <span style="color:var(--beige)">UF++ Tab</span><br>
-        iPhone → @Soulmate_md_bot → <span style="color:var(--beige)">soulmate.md Tab</span><br>
-        Claude mobile app → Dispatch → Mac<br>
-        Nour → @UF_operator_bot → Luna (same bot)
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">Mac (Always On)</div>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
-        <span style="color:var(--beige)">Tab 1 — UF++</span> (this dashboard)<br>
-        <span style="color:var(--beige)">Tab 2 — soulmate.md</span> (separate context)<br>
-        OpenClaw — scheduler only (crons, no interactive)<br>
-        Background scripts — no Claude API needed
-      </div>
-    </div>
-
-  </div>
-
-  <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:20px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:20px">Agent Team</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-      {"".join(f'<div style="text-align:center"><div style="font-size:15px;margin-bottom:6px">{e}</div><div style="font-size:12px;font-weight:600;color:var(--beige)">{n}</div><div style="font-size:11px;color:var(--dim);margin-top:3px">{r}</div></div>' for e,n,r in [("🌅","Leo","Ops · 8am daily"),("📊","Rami","SEO · daily+Mon"),("🔭","Scout","Intel · Wed"),("🧠","Atlas","CEO · Sunday"),("🌙","Luna","Content · Fri+Nour"),("💰","Vera","CFO · monthly"),("🗺️","Sage","Strategy · monthly"),("🎵","Kamal","Curation · on-demand")])}
-    </div>
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px">
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">UF Stack</div>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
-        Website: React + Express / Replit<br>
-        Deploy: Google Cloud<br>
-        Inventory: Discogs<br>
-        Payments: Stripe<br>
-        Delivery: Quiqup<br>
-        Email: SendGrid (17 workflows)<br>
-        Analytics: GA4 + Search Console<br>
-        Ads: Google Ads (Perf Max, AED 50/d)
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">TG Delivery</div>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.9">
-        All reports → uf_tg.py → TG_BOT_TOKEN<br>
-        @UF_operator_bot: commands + reports<br>
-        @Soulmate_md_bot: soulmate.md only<br>
-        CTO: daily 8:05am + hourly silent<br>
-        Scripts self-send (no agent relay)<br>
-        OpenClaw: outbound backup only
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--butter);margin-bottom:16px">Phase Status</div>
-      <div style="font-size:12px;color:var(--dim);line-height:2">
-        <span style="color:var(--green)">✅</span> Phase 1 — SEO<br>
-        <span style="color:var(--green)">✅</span> Phase 2 — Content<br>
-        <span style="color:var(--green)">✅</span> Phase 3 — CEO Brain<br>
-        <span style="color:var(--yellow)">⏳</span> Phase 4 — Social (next)<br>
-        <span style="color:var(--dim)">○</span> Phase 5 — Growth<br>
-        <span style="color:var(--dim)">○</span> Phase 6 — Scale
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<div class="footer">
-  UNFAMILIAR FAMILIAR — CONTROL ROOM — BUILT WITH CLAUDE<br>
-  <span style="color:var(--dim)">Regenerate: python3 ~/.openclaw/scripts/uf-control-room.py</span>
-</div>
-
-<script>
-function toggle(id) {
-  const el = document.getElementById(id);
-  const parent = el.previousElementSibling;
-  el.classList.toggle('open');
-  parent.classList.toggle('open');
-}
-</script>
 
 </body>
 </html>

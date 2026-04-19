@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Label Intelligence — Unfamiliar Familiar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #FBF9F2;
+    --card: #FFFFFF;
+    --border: rgba(35,32,31,0.08);
+    --text: #23201F;
+    --accent: #9D3F0D;
+    --dim: #8a847e;
+    --green: #166534;
+    --green-bg: rgba(22,101,52,0.08);
+    --amber: #92400e;
+    --amber-bg: rgba(146,64,14,0.08);
+    --red: #991b1b;
+    --red-bg: rgba(153,27,27,0.08);
+    --butter: #FFF5C4;
+    --butter-dark: #a38b00;
+    --mono: 'DM Mono', 'SF Mono', monospace;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    padding: 48px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .back-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .back-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .header-brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .header-title {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .header-subtitle {
+    font-size: 16px;
+    color: var(--dim);
+    margin-top: 8px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .header-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 12px;
+  }
+
+  /* ── Banner ── */
+  .audit-banner {
+    background: var(--amber-bg);
+    border: 1px solid rgba(146,64,14,0.15);
+    border-radius: 10px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .audit-banner-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    flex-shrink: 0;
+    animation: pulse-amber 2s ease-in-out infinite;
+  }
+  @keyframes pulse-amber {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .audit-banner-text {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--amber);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  /* ── Stat Grid ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .stat-value.green { color: var(--green); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-label {
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .stat-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+  .stat-note {
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 16px;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-weight: 500;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr.row-total td {
+    font-weight: 600;
+    border-top: 2px solid var(--border);
+    background: rgba(35,32,31,0.02);
+  }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-green {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+  .badge-amber {
+    background: var(--amber-bg);
+    color: var(--amber);
+  }
+  .badge-red {
+    background: var(--red-bg);
+    color: var(--red);
+  }
+  .badge-dim {
+    background: rgba(35,32,31,0.05);
+    color: var(--dim);
+  }
+
+  /* ── Distributor Cards ── */
+  .dist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .dist-grid { grid-template-columns: 1fr; }
+  }
+  .dist-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .dist-card.flagged {
+    border-color: rgba(153,27,27,0.2);
+    background: linear-gradient(135deg, var(--card) 95%, var(--red-bg) 100%);
+  }
+  .dist-name {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .dist-detail {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .dist-detail span {
+    color: var(--dim);
+    font-size: 12px;
+  }
+  .dist-status {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+  .dist-flag {
+    color: var(--red);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+
+  /* ── Value Chain ── */
+  .chain-wrap {
+    padding: 24px 0;
+  }
+  .chain-node {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    padding-bottom: 8px;
+  }
+  .chain-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 40px;
+    position: relative;
+  }
+  .chain-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ccc;
+    z-index: 1;
+    flex-shrink: 0;
+    border: 3px solid var(--card);
+    box-shadow: 0 0 0 2px #ccc;
+  }
+  .chain-dot.dot-here {
+    background: var(--green);
+    box-shadow: 0 0 0 2px var(--green), 0 0 0 6px var(--green-bg);
+    width: 16px;
+    height: 16px;
+  }
+  .chain-dot.dot-target {
+    background: var(--butter-dark);
+    box-shadow: 0 0 0 2px var(--butter-dark), 0 0 0 6px rgba(163,139,0,0.12);
+    width: 16px;
+    height: 16px;
+  }
+  .chain-line {
+    width: 2px;
+    height: 40px;
+    background: #ddd;
+  }
+  .chain-content {
+    padding-top: 0;
+    flex: 1;
+  }
+  .chain-role {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .chain-desc {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+  .chain-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-left: 8px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+  .chain-badge.badge-here {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+  .chain-badge.badge-target {
+    background: rgba(163,139,0,0.1);
+    color: var(--butter-dark);
+  }
+  .chain-skip {
+    margin-top: 20px;
+    padding: 14px 20px;
+    background: rgba(163,139,0,0.06);
+    border: 1px solid rgba(163,139,0,0.15);
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--butter-dark);
+    font-weight: 500;
+  }
+
+  /* ── Checklist ── */
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    font-size: 14px;
+    line-height: 1.7;
+    padding: 10px 0;
+    padding-left: 32px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .checklist li:last-child {
+    border-bottom: none;
+  }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: var(--card);
+  }
+  .checklist li.done::before {
+    background: var(--green-bg);
+    border-color: var(--green);
+  }
+  .checklist li.done::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 17px;
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid var(--green);
+    border-bottom: 2px solid var(--green);
+    transform: rotate(-45deg);
+  }
+
+  /* ── Incident Log ── */
+  .incident-list {
+    list-style: none;
+    padding: 0;
+  }
+  .incident-list li {
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 10px 0;
+    padding-left: 20px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .incident-list li:last-child {
+    border-bottom: none;
+  }
+  .incident-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dim);
+  }
+  .incident-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    margin-right: 8px;
+  }
+
+  /* ── Status Dots ── */
+  .dot-yellow {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #eab308;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .dot-white {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d4d4d8;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── Pill Links ── */
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    text-decoration: none;
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .pill:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(157,63,13,0.04);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-value { font-size: 22px; }
+    .header-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-brand">unfamiliar familiar</div>
+        <h1 class="header-title">Label Intelligence</h1>
+        <p class="header-subtitle">Who makes what we sell. Who distributes it. Where we fit.</p>
+        <div class="header-date">Updated: 19 Apr 2026</div>
+      </div>
+      <a href="control-room.html" class="back-link">&larr; Control Room</a>
+    </div>
+  </div>
+
+  <!-- ── AUDIT BANNER ── -->
+  <div class="audit-banner">
+    <div class="audit-banner-dot"></div>
+    <div class="audit-banner-text">FULL AUDIT IN PROGRESS &mdash; Discogs API lookup running for 977 products. Label data will update.</div>
+  </div>
+
+  <!-- ── 1. INVENTORY SPLIT ── -->
+  <div class="section">
+    <div class="section-label">Inventory Split</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value">977</div>
+        <div class="stat-label">Total SKUs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">1,630</div>
+        <div class="stat-label">Total Units</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value amber">~23</div>
+        <div class="stat-label">Major Label SKUs</div>
+        <div class="stat-sub">2.4%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value green">~954</div>
+        <div class="stat-label">Indie / Other SKUs</div>
+        <div class="stat-sub">97.6%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">200+</div>
+        <div class="stat-label">Unique Labels</div>
+        <div class="stat-sub">estimated, audit in progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">7</div>
+        <div class="stat-label">Suppliers</div>
+        <div class="stat-sub">LAF, Modulor, EbO, WebAmi, Music Box, Mr Vinylos, Disc Jockey</div>
+      </div>
+    </div>
+    <p class="stat-note">Full Discogs API audit running &mdash; label data updating automatically</p>
+  </div>
+
+  <!-- ── 2. MAJOR LABEL EXPOSURE ── -->
+  <div class="section">
+    <div class="section-label">Major Label Exposure &mdash; Risk Table</div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Parent Group</th>
+              <th>SKUs</th>
+              <th>Units</th>
+              <th>% of Inv.</th>
+              <th>Local Distributor in UAE</th>
+              <th>Risk Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500">Universal Music</td>
+              <td>~14</td>
+              <td>~17</td>
+              <td>1.4%</td>
+              <td>Shooting Stars ME (+97144225828) / Rhythm & Beats (claimed)</td>
+              <td><span class="badge badge-amber">AMBER</span> verify Javed's claim</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Warner Music</td>
+              <td>~1</td>
+              <td>~2</td>
+              <td>0.1%</td>
+              <td>Shooting Stars ME</td>
+              <td><span class="badge badge-green">LOW</span> minimal exposure</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Sony Music</td>
+              <td>~8</td>
+              <td>~10</td>
+              <td>0.8%</td>
+              <td>Shooting Stars ME</td>
+              <td><span class="badge badge-green">LOW</span> minimal exposure</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Beggars Group</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0%</td>
+              <td>Rhythm & Beats (claimed)</td>
+              <td><span class="badge badge-dim">NONE</span> not in inventory</td>
+            </tr>
+            <tr class="row-total">
+              <td>Total Major</td>
+              <td>~23</td>
+              <td>~29</td>
+              <td>2.4%</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="row-total">
+              <td>Indie / Other</td>
+              <td>~954</td>
+              <td>~1,601</td>
+              <td>97.6%</td>
+              <td>No local distributor</td>
+              <td><span class="badge badge-green">GREEN</span> no risk</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="stat-note" style="margin-top:20px;">Numbers are estimates from first 30 Discogs lookups. Full audit in progress.</p>
+    </div>
+  </div>
+
+  <!-- ── 3. LOCAL DISTRIBUTORS IN UAE ── -->
+  <div class="section">
+    <div class="section-label">Local Distributors in UAE &mdash; Who to Know</div>
+    <div class="dist-grid">
+
+      <div class="dist-card">
+        <div class="dist-name">Shooting Stars ME <span class="badge badge-green">ESTABLISHED</span></div>
+        <div class="dist-detail"><span>Phone:</span> +97144225828</div>
+        <div class="dist-detail"><span>Web:</span> shootingstars-me.com</div>
+        <div class="dist-detail"><span>Distributes:</span> Universal, Warner, Sony (physical media, film, music)</div>
+        <div class="dist-detail"><span>Clients:</span> Virgin Megastore, Cavo</div>
+        <div class="dist-detail"><span>History:</span> 60+ years in the region</div>
+        <div class="dist-status">
+          <span class="badge badge-amber">NOT CONTACTED</span>
+          <br>Open wholesale account for top mainstream titles
+        </div>
+      </div>
+
+      <div class="dist-card flagged">
+        <div class="dist-name">Rhythm & Beats Multimedia LLC <span class="badge badge-red">UNDER INVESTIGATION</span></div>
+        <div class="dist-detail"><span>Contact:</span> Muhammad Javed</div>
+        <div class="dist-detail"><span>Phone:</span> +971 4 2710900 / +971 55 1016867</div>
+        <div class="dist-detail"><span>Claims:</span> Exclusive Universal + Warner + Beggars for Gulf & Middle East</div>
+        <div class="dist-status">
+          Jayesh checking with Warner + Vinyl.ae
+        </div>
+        <div class="dist-flag">
+          <strong>Red flags:</strong> Bought from UF pop-up (non-Universal/Warner titles), mystery shopper tactics, 3am legal threat
+        </div>
+        <div class="dist-flag">
+          <strong>Key question:</strong> Is this a registered Commercial Agency with UAE Ministry of Economy?
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 4. SUPPLIER &rarr; LABEL MAP ── -->
+  <div class="section">
+    <div class="section-label">Supplier &rarr; Label Map</div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Supplier</th>
+              <th>Major Label SKUs</th>
+              <th>Indie SKUs</th>
+              <th>Total</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500">WebAmi</td>
+              <td>~20</td>
+              <td>~200+</td>
+              <td>~220+</td>
+              <td><span class="badge badge-amber">Highest major label exposure</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">LAF (Little Amber Fish)</td>
+              <td>~5</td>
+              <td>~400+</td>
+              <td>~405+</td>
+              <td>Mostly indie + Wewantsounds Arabic</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Modulor</td>
+              <td>~2</td>
+              <td>~50+</td>
+              <td>~52+</td>
+              <td>French distributor, Wewantsounds partner</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Even by Odd</td>
+              <td>~3</td>
+              <td>~300+</td>
+              <td>~303+</td>
+              <td>UK distributor</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Music Box International</td>
+              <td>0</td>
+              <td>~30+</td>
+              <td>~30+</td>
+              <td>Local</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Mr Vinylos</td>
+              <td>0</td>
+              <td>~20+</td>
+              <td>~20+</td>
+              <td>Greece</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Disc Jockey</td>
+              <td>0</td>
+              <td>varies</td>
+              <td>varies</td>
+              <td>Heritage collection</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. TARGET LABELS &mdash; OUTREACH PIPELINE ── -->
+  <div class="section">
+    <div class="section-label">Target Labels &mdash; Outreach Pipeline</div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Label</th>
+              <th>Key Artists</th>
+              <th>GCC Distributor</th>
+              <th>Outreach Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td style="font-weight:500">Wewantsounds</td>
+              <td>Fairuz, Ziad Rahbani, Abdel Halim</td>
+              <td><span class="badge badge-amber">OPEN</span></td>
+              <td><span class="dot-yellow"></span>Draft email ready &mdash; pending Modulor response</td>
+              <td>Send email</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td style="font-weight:500">Souma Records</td>
+              <td>Oum Kalthoum</td>
+              <td><span class="badge badge-amber">OPEN</span></td>
+              <td><span class="dot-white"></span>Not contacted</td>
+              <td>Find contact</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td style="font-weight:500">Habibi Funk</td>
+              <td>Arabic funk/soul</td>
+              <td><span class="badge badge-dim">Partial</span></td>
+              <td><span class="dot-white"></span>Not contacted</td>
+              <td>Contact Bandcamp</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td style="font-weight:500">Crammed Discs</td>
+              <td>Soapkills, Yasmine Hamdan</td>
+              <td><span class="badge badge-amber">OPEN</span></td>
+              <td><span class="dot-white"></span>Not contacted</td>
+              <td>Contact</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td style="font-weight:500">Shoop! Shoop!</td>
+              <td>Mashrou' Leila</td>
+              <td><span class="badge badge-amber">OPEN</span></td>
+              <td><span class="dot-white"></span>Not contacted</td>
+              <td>Find contact</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td style="font-weight:500">Now-Again</td>
+              <td>Voix de l'Orient</td>
+              <td><span class="badge badge-amber">OPEN</span></td>
+              <td><span class="dot-white"></span>Not contacted</td>
+              <td>Contact</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. RIGHTS CHAIN ── -->
+  <div class="section">
+    <div class="section-label">Rights Chain &mdash; Wewantsounds</div>
+    <div class="card">
+      <div class="card-title">From Master to Shelf</div>
+      <div class="chain-wrap">
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Relax-in Music Intl SAL (Lebanon)</div>
+            <div class="chain-desc">OWNS masters</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot dot-target"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Wewantsounds (Paris) <span class="chain-badge badge-target">TARGET</span></div>
+            <div class="chain-desc">PRESSES vinyl</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Kudos Distribution (UK)</div>
+            <div class="chain-desc">WHOLESALE</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">Modulor.tv (France) + Forward Music (UK)</div>
+            <div class="chain-desc">SUB-DISTRIBUTORS</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">LAF + EbO + WebAmi</div>
+            <div class="chain-desc">SUPPLIERS to UF</div>
+          </div>
+        </div>
+
+        <div class="chain-node">
+          <div class="chain-connector">
+            <div class="chain-dot dot-here"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-role">UF (Dubai) <span class="chain-badge badge-here">YOU ARE HERE</span></div>
+            <div class="chain-desc">RETAIL</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chain-skip">Skip to Wewantsounds for GCC exclusivity = skip 3 middlemen</div>
+    </div>
+  </div>
+
+  <!-- ── 7. ACTION ITEMS ── -->
+  <div class="section">
+    <div class="section-label">Action Items</div>
+    <div class="card">
+      <ul class="checklist">
+        <li>Call Shooting Stars ME (+97144225828) &mdash; open wholesale account for top mainstream titles</li>
+        <li>Check UAE Commercial Agencies Register for "Rhythm & Beats Multimedia"</li>
+        <li>Wait for Modulor response &rarr; then email Wewantsounds (draft on TG)</li>
+        <li>Wait for Jayesh feedback from Warner + Vinyl.ae</li>
+        <li>Contact Souma Records for Oum Kalthoum distribution</li>
+        <li>Contact Habibi Funk for Arabic funk distribution</li>
+        <li>Run full Discogs API audit (in progress &mdash; ~927 remaining)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── 8. INCIDENT LOG ── -->
+  <div class="section">
+    <div class="section-label">Incident Log</div>
+    <div class="card">
+      <ul class="incident-list">
+        <li><span class="incident-date">Apr 18</span> Javed (Rhythm & Beats) pop-up visit + purchase + mystery shopper + 3am legal threat</li>
+        <li><span class="incident-date">Apr 19</span> Peter emailed Modulor + Forward Music for GCC exclusivity</li>
+        <li><span class="incident-date">Apr 19</span> Jayesh checking with Warner + Vinyl.ae about Javed</li>
+        <li><span class="incident-date">Apr 19</span> Discogs label audit started</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── 9. QUICK LINKS ── -->
+  <div class="section">
+    <div class="section-label">Quick Links</div>
+    <div class="pill-row">
+      <a href="distribution-strategy.html" class="pill">Distribution Strategy</a>
+      <a href="control-room.html" class="pill">Control Room</a>
+      <a href="https://shootingstars-me.com" class="pill" target="_blank">Shooting Stars ME</a>
+      <a href="https://wewantsounds.com" class="pill" target="_blank">Wewantsounds</a>
+      <a href="https://discogs.com" class="pill" target="_blank">Discogs</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

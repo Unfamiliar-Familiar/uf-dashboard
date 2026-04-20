@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The UF Story — From Rock Bottom to Market Leader</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --beige: #FBF9F2;
+    --black: #23201F;
+    --burnt: #9D3F0D;
+    --burnt-light: rgba(157, 63, 13, 0.08);
+    --white: #FFFFFF;
+    --gray-100: #F5F3EC;
+    --gray-200: #E8E5DD;
+    --gray-300: #C4C0B8;
+    --gray-400: #9A9690;
+    --chapter-num: rgba(157, 63, 13, 0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--beige);
+    color: var(--black);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* === BACK LINK === */
+  .back-link {
+    position: fixed;
+    top: 24px;
+    left: 32px;
+    z-index: 100;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--gray-400);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-link:hover { color: var(--burnt); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(157, 63, 13, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--burnt);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--black);
+    max-width: 800px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+
+  .hero-title span {
+    color: var(--burnt);
+  }
+
+  .hero-subtitle {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 300;
+    color: var(--gray-400);
+    max-width: 560px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+
+  .hero-meta {
+    margin-top: 48px;
+    display: flex;
+    gap: 48px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--burnt);
+  }
+
+  .hero-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+
+  .scroll-indicator span {
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--burnt), transparent);
+    margin: 0 auto 8px;
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  .scroll-indicator p {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+  }
+
+  /* === CHAPTER CONTAINER === */
+  .chapters {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 32px 120px;
+  }
+
+  /* === CHAPTER CARD === */
+  .chapter {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 56px 52px;
+    margin-bottom: 64px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(35, 32, 31, 0.04), 0 8px 32px rgba(35, 32, 31, 0.03);
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .chapter.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .chapter:hover {
+    box-shadow: 0 2px 6px rgba(35, 32, 31, 0.06), 0 16px 48px rgba(35, 32, 31, 0.06);
+  }
+
+  .chapter-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 120px;
+    font-weight: 500;
+    color: var(--chapter-num);
+    position: absolute;
+    top: -12px;
+    right: 32px;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .chapter-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--burnt);
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chapter-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 28px;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chapter-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .chapter-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 16px;
+  }
+
+  .chapter-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* === BULLET LIST === */
+  .chapter-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+  }
+
+  .chapter-content ul li {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .chapter-content ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--burnt);
+    opacity: 0.5;
+  }
+
+  /* === QUOTE BLOCK === */
+  .quote {
+    border-left: 3px solid var(--burnt);
+    padding: 20px 28px;
+    margin: 24px 0;
+    background: var(--burnt-light);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .quote p {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 18px !important;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--black) !important;
+    line-height: 1.7 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* === DIVIDER BETWEEN CHAPTERS === */
+  .chapter-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 64px;
+    opacity: 0.3;
+  }
+
+  .chapter-divider span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--burnt);
+    margin: 0 6px;
+  }
+
+  /* === FOOTER === */
+  .story-footer {
+    text-align: center;
+    padding: 80px 32px 120px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .story-footer .continues {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gray-400);
+    margin-bottom: 40px;
+  }
+
+  .story-footer .cta-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--burnt);
+    text-decoration: none;
+    padding: 14px 32px;
+    border: 1px solid var(--burnt);
+    border-radius: 8px;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .story-footer .cta-link:hover {
+    background: var(--burnt);
+    color: var(--white);
+  }
+
+  /* === TIMELINE PROGRESS === */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--burnt);
+    z-index: 1000;
+    transition: width 0.1s linear;
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .hero-meta { flex-direction: column; gap: 24px; }
+    .chapter { padding: 40px 28px; }
+    .chapter-number { font-size: 80px; right: 16px; }
+    .chapter-title { font-size: 22px; }
+    .back-link { top: 16px; left: 16px; }
+    .quote { padding: 16px 20px; }
+    .quote p { font-size: 16px !important; }
+  }
+
+  /* === CHAPTER SPECIAL: HERITAGE === */
+  .chapter.heritage {
+    background: var(--black);
+    color: var(--white);
+  }
+  .chapter.heritage .chapter-number { color: rgba(255,255,255,0.05); }
+  .chapter.heritage .chapter-title { color: var(--white); }
+  .chapter.heritage .chapter-date { color: rgba(157, 63, 13, 0.9); }
+  .chapter.heritage .chapter-content p { color: rgba(255,255,255,0.75); }
+  .chapter.heritage .quote { background: rgba(157, 63, 13, 0.12); }
+  .chapter.heritage .quote p { color: var(--white) !important; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<a href="control-room.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  Control Room
+</a>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <p class="hero-eyebrow">Unfamiliar Familiar</p>
+  <h1 class="hero-title">From Rock Bottom<br>to <span>Market Leader</span></h1>
+  <p class="hero-subtitle">The raw, unfiltered story of building UF — a vinyl empire powered by obsession, AI, and the refusal to quit.</p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <div class="hero-stat-value">84</div>
+      <div class="hero-stat-label">Orders</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">46.6K</div>
+      <div class="hero-stat-label">AED Revenue</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">4</div>
+      <div class="hero-stat-label">Months</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">188K</div>
+      <div class="hero-stat-label">SKUs Sourced</div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span></span>
+    <p>Read the story</p>
+  </div>
+</section>
+
+<!-- ===== CHAPTERS ===== -->
+<div class="chapters">
+
+  <!-- CHAPTER 0 -->
+  <article class="chapter heritage">
+    <div class="chapter-number">00</div>
+    <div class="chapter-date">1970s</div>
+    <h2 class="chapter-title">The Heritage</h2>
+    <div class="chapter-content">
+      <p>Kamal Abou Hachem opens Disc Jockey in Beirut. Lebanon's first record store. Over 50 years, it grows to 90,000+ records — the oldest, largest vinyl collection in the MENA region.</p>
+      <p>This is where it all starts. Not with a business plan. With a father who loved music.</p>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 1 -->
+  <article class="chapter">
+    <div class="chapter-number">01</div>
+    <div class="chapter-date">October 2025</div>
+    <h2 class="chapter-title">The Trigger</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Joe x Dad incident — the trigger</li>
+        <li>Post wedding, down. Clean up mode on.</li>
+        <li>Take life slaps as a reason to do something</li>
+        <li>Disc Jockeys Madrid trip</li>
+        <li>Full speed &rarr; Stop!! Everyone said too fast</li>
+        <li>Start small &rarr; Dubai pop up</li>
+        <li>Pop up done &rarr; this is not what I want. Lost again.</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 2 -->
+  <article class="chapter">
+    <div class="chapter-number">02</div>
+    <div class="chapter-date">November 7, 2025</div>
+    <h2 class="chapter-title">Dark Week</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Felt manipulated, used, abused, alone (Nour only)</li>
+        <li>Missed dad's birthday</li>
+        <li>Uninspired</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 3 -->
+  <article class="chapter">
+    <div class="chapter-number">03</div>
+    <div class="chapter-date">Week of Nov 3</div>
+    <h2 class="chapter-title">The Spark</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Frustrated. Angry at friends. Deep loneliness.</li>
+        <li>AI vs human world conversation sparked something</li>
+      </ul>
+      <div class="quote">
+        <p>"I need a purpose, a vision — not to follow money. I cannot be an employee anymore."</p>
+      </div>
+      <ul>
+        <li>Lisbon trip &rarr; ecosystem builder meets creative world</li>
+        <li>Warehouse incubator idea &rarr; Foundry OS</li>
+        <li>Too big to crack &rarr; need an MLP</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 4 -->
+  <article class="chapter">
+    <div class="chapter-number">04</div>
+    <div class="chapter-date">November 15, 2025</div>
+    <h2 class="chapter-title">Pissed Off, Then Clarity</h2>
+    <div class="chapter-content">
+      <p>Not inspired. Need to own what I work on. More loneliness.</p>
+      <div class="quote">
+        <p>"Peter + Nour vs everyone. Prove them wrong."</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 5 -->
+  <article class="chapter">
+    <div class="chapter-number">05</div>
+    <div class="chapter-date">November 16, 2025</div>
+    <h2 class="chapter-title">The Flight to SF</h2>
+    <div class="chapter-content">
+      <div class="quote">
+        <p>"VISUALIZE NODE ZERO. AI-enabled, not AI-dependent. Perception is reality."</p>
+      </div>
+      <p>Created first deck word by word — 80% of the concept. Fully bought in.</p>
+      <div class="quote">
+        <p>"Real founder buys his freedom. No bosses, no big teams. An ecosystem loyal to your offerings."</p>
+      </div>
+      <p>80% of plan clear. EXECUTION MODE ON.</p>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 6 -->
+  <article class="chapter">
+    <div class="chapter-number">06</div>
+    <div class="chapter-date">November 23–24, 2025</div>
+    <h2 class="chapter-title">Post SF Reset</h2>
+    <div class="chapter-content">
+      <div class="quote">
+        <p>"RESET: pop up + ecomm. Do a good job, test setups, then go big."</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 7 -->
+  <article class="chapter">
+    <div class="chapter-number">07</div>
+    <div class="chapter-date">November 25, 2025</div>
+    <h2 class="chapter-title">The Internal Battle</h2>
+    <div class="chapter-content">
+      <p>Stuck in my head. Felt changing and losing everyone.</p>
+      <p>Why is everyone wrong and I am right &rarr; I am the problem.</p>
+      <div class="quote">
+        <p>"Trust no one, hide your cards, be the vibe everyone wants. Trust NO ONE. GO."</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 8 -->
+  <article class="chapter">
+    <div class="chapter-number">08</div>
+    <div class="chapter-date">Late Nov / Early Dec 2025</div>
+    <h2 class="chapter-title">It Became Real</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Decided: pop up + ecomm</li>
+        <li>Hired architect from Aya universe</li>
+        <li>Went to self.space + Effie Gallery &rarr; IT BECAME REAL</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 9 -->
+  <article class="chapter">
+    <div class="chapter-number">09</div>
+    <div class="chapter-date">First Week of Dec 2025</div>
+    <h2 class="chapter-title">Momentum</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Gary Vee in town &rarr; desert meetup &rarr; spoke about it</li>
+        <li>Trade license started. Designer hired.</li>
+      </ul>
+      <div class="quote">
+        <p>"Feeling fucking inspired. It will be hard but easy. I am the one to do it with Nour."</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 10 -->
+  <article class="chapter">
+    <div class="chapter-number">10</div>
+    <div class="chapter-date">Mid December — Greece</div>
+    <h2 class="chapter-title">Full Build</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>License + bank + Stripe. Started branding. Full website + ecomm + crates decided.</li>
+        <li>Daria 6.3k$ &rarr; suggested MVP</li>
+        <li>Bought 100 used vinyls from Athens with dad</li>
+        <li>Feeling confident, clear, happy</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 11 -->
+  <article class="chapter">
+    <div class="chapter-number">11</div>
+    <div class="chapter-date">3rd Week of Dec 2025</div>
+    <h2 class="chapter-title">Listen to Your Gut</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Dev finally put scope together — great work</li>
+        <li>Samer: confusing, said do light MVP</li>
+        <li>Big fights with Nour — moving fast</li>
+      </ul>
+      <div class="quote">
+        <p>"Decided: listen to gut only."</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 12 -->
+  <article class="chapter">
+    <div class="chapter-number">12</div>
+    <div class="chapter-date">Christmas Week 2025</div>
+    <h2 class="chapter-title">Disgusted, Then Inspired</h2>
+    <div class="chapter-content">
+      <ul>
+        <li>Back to office &rarr; disgusted. Will QUIT.</li>
+        <li>Linked Foundry with AI venture building</li>
+        <li>Pitch deck during Christmas dinner</li>
+        <li>Huge fights with Nour &rarr; agreed: colleagues, clear agenda</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 13 -->
+  <article class="chapter">
+    <div class="chapter-number">13</div>
+    <div class="chapter-date">Christmas – NYE 2025</div>
+    <h2 class="chapter-title">Sri Lanka Reset</h2>
+    <div class="chapter-content">
+      <p>Day 1: felt like a new person.</p>
+      <p>Committed to Vinyl Souk Feb 1. Working backwards.</p>
+      <div class="quote">
+        <p>"1M AED revenue target 2026. 200k profit. Grow from there."</p>
+      </div>
+      <div class="quote">
+        <p>"Biggest learning: baby steps. Tame the visionary — keep him warm in the background."</p>
+      </div>
+      <p>Figured out how to work with Nour: clear agenda, treat like colleagues.</p>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 14 -->
+  <article class="chapter">
+    <div class="chapter-number">14</div>
+    <div class="chapter-date">January 2026</div>
+    <h2 class="chapter-title">Ultimate Clarity</h2>
+    <div class="chapter-content">
+      <p>Execution on UF. Cracked fixed crates + simple credit subscription.</p>
+      <p>Present, no stress. Prepping for Vinyl Souk.</p>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 15 -->
+  <article class="chapter">
+    <div class="chapter-number">15</div>
+    <div class="chapter-date">February 2026</div>
+    <h2 class="chapter-title">First Real Revenue</h2>
+    <div class="chapter-content">
+      <p>Vinyl Souk: 15k AED sold. Everyone loved the inventory.</p>
+      <p>After event: nothing ready to go live. Hamoom + Daria stuck, 40k$+. Above the Fold 50k$ — accepted.</p>
+      <div class="quote">
+        <p>"Started building on Replit. IT WORKED. Solo founder mentality. Nour continued posting."</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 16 -->
+  <article class="chapter">
+    <div class="chapter-number">16</div>
+    <div class="chapter-date">March 2026</div>
+    <h2 class="chapter-title">AI Everything</h2>
+    <div class="chapter-content">
+      <p>100+ sign ups. First 2 orders from people we don't know. Printed packaging. Unlocked website.</p>
+      <div class="quote">
+        <p>"MacBook Air + OpenClaw + Claude. Telegram bots. No agency — self-service and automated. AI works, we execute."</p>
+      </div>
+      <div class="quote">
+        <p>"I move so fast people get overwhelmed &rarr; AI fixed that. Now I have a team. Need to bring them to life."</p>
+      </div>
+      <ul>
+        <li>Agent team created: Leo, Luna, Rami, Scout, Atlas, Kamal</li>
+        <li>188,870 SKUs sourced. 20 moods concept. SEO foundation.</li>
+        <li>Blog email incident (56 subscribers) — first major mistake. Lesson learned.</li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 17 -->
+  <article class="chapter">
+    <div class="chapter-number">17</div>
+    <div class="chapter-date">April 2026</div>
+    <h2 class="chapter-title">Breaking Through</h2>
+    <div class="chapter-content">
+      <p>Nour starts shooting daily. TikTok goes live.</p>
+      <p>Pop-up at Shabab Lab: AED 22,166 in ONE DAY. 55 walk-in customers. Best day ever.</p>
+      <p>Then at 3am: a stranger who bought from the pop-up threatens legal action.</p>
+      <div class="quote">
+        <p>"Don't say it. Become it."</p>
+      </div>
+      <p>Instead of defending: pivot to becoming the distributor.</p>
+      <ul>
+        <li>Elie agent created. Wewantsounds emailed. Indigo emailed. Shooting Stars targeted.</li>
+        <li>30-day plan to own the market. May 14 finale.</li>
+      </ul>
+      <p><strong>84 orders. AED 46,649 revenue. From zero to market leader in 4 months.</strong></p>
+    </div>
+  </article>
+
+  <div class="chapter-divider"><span></span><span></span><span></span></div>
+
+  <!-- CHAPTER 18 -->
+  <article class="chapter" style="border: 1px solid rgba(157,63,13,0.15);">
+    <div class="chapter-number">18</div>
+    <div class="chapter-date">Now</div>
+    <h2 class="chapter-title">What's Next</h2>
+    <div class="chapter-content">
+      <div class="quote">
+        <p>"We're not building a record store. We're building the infrastructure for Arabic music in the Gulf."</p>
+      </div>
+      <ul>
+        <li>Distribution partnerships in progress</li>
+        <li>22,170 pages indexing on Google</li>
+        <li>Monthly pop-ups locked</li>
+      </ul>
+      <p><strong>The story continues...</strong></p>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="story-footer">
+  <p class="continues">The story continues...</p>
+  <a href="control-room.html" class="cta-link">Back to Control Room</a>
+</div>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+  });
+
+  // Scroll reveal for chapters
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.chapter').forEach(ch => observer.observe(ch));
+</script>
+
+</body>
+</html>

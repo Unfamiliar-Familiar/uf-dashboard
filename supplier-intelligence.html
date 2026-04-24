@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Intelligence — Unfamiliar Familiar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #FBF9F2;
+    --card: #FFFFFF;
+    --border: rgba(35,32,31,0.08);
+    --text: #23201F;
+    --accent: #9D3F0D;
+    --green: #166534;
+    --green-bg: rgba(22,101,52,0.06);
+    --yellow: #92400e;
+    --yellow-bg: rgba(146,64,14,0.06);
+    --red: #991b1b;
+    --red-bg: rgba(153,27,27,0.06);
+    --dim: #8a8480;
+    --dim2: #b0aaa6;
+    --mono: 'DM Mono', 'SF Mono', monospace;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); padding: 40px 24px 64px; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  .header { text-align: center; padding: 0 0 32px; margin-bottom: 32px; border-bottom: 1px solid rgba(35,32,31,0.14); }
+  .header-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+  .header-title { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .header-sub { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-top: 6px; }
+  .back-link { font-family: var(--mono); font-size: 12px; color: var(--dim); text-decoration: none; padding: 5px 12px; border: 1px solid var(--border); border-radius: 6px; }
+  .back-link:hover { color: var(--text); border-color: rgba(35,32,31,0.2); }
+  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+
+  .section { margin-bottom: 36px; }
+  .section-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 14px; }
+
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin-bottom: 12px; }
+  .card-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+  .kpi-value { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
+  .kpi-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dim); }
+  .kpi-sub { font-size: 11px; color: var(--dim2); margin-top: 4px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { text-align: left; padding: 8px 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  thead th.right { text-align: right; }
+  tbody td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tbody td.right { text-align: right; font-family: var(--mono); font-size: 12px; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(35,32,31,0.02); }
+  .total-row { font-weight: 600; border-top: 2px solid var(--border); }
+
+  .badge { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.05em; }
+  .badge-green { color: var(--green); background: var(--green-bg); }
+  .badge-yellow { color: var(--yellow); background: var(--yellow-bg); }
+  .badge-red { color: var(--red); background: var(--red-bg); }
+
+  .bar-container { height: 20px; background: rgba(35,32,31,0.04); border-radius: 4px; overflow: hidden; display: flex; }
+  .bar-segment { height: 100%; transition: width 0.3s; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 11px; color: var(--dim); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+  .callout { padding: 14px 18px; border-radius: 8px; font-size: 13px; margin-top: 12px; }
+  .callout-green { background: var(--green-bg); border: 1px solid rgba(22,101,52,0.12); color: var(--green); }
+  .callout-yellow { background: var(--yellow-bg); border: 1px solid rgba(146,64,14,0.12); color: var(--yellow); }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 16px 60px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="header-label">Supplier Intelligence</div>
+    <a href="control-room.html" class="back-link">&larr; Control Room</a>
+  </div>
+  <div class="header-title">Supplier Cost & Inventory Analytics</div>
+  <div class="header-sub">Updated 24 Apr 2026 &middot; Sources: LAF, WebAmi, EbO, Modulor, MBI</div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="section">
+  <div class="section-title">Supplier Overview</div>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-value">946</div>
+      <div class="kpi-label">Active SKUs</div>
+      <div class="kpi-sub">across 6 suppliers</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">1,597</div>
+      <div class="kpi-label">Total Units</div>
+      <div class="kpi-sub">in inventory</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">AED 97</div>
+      <div class="kpi-label">Avg Cost</div>
+      <div class="kpi-sub">per unit</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">46%</div>
+      <div class="kpi-label">Avg Margin</div>
+      <div class="kpi-sub">blended gross</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">18,671</div>
+      <div class="kpi-label">Overlap SKUs</div>
+      <div class="kpi-sub">LAF &cap; WebAmi</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUPPLIER BREAKDOWN -->
+<div class="section">
+  <div class="section-title">Inventory by Supplier</div>
+  <div class="card">
+    <!-- Stacked bar -->
+    <div class="card-label">SKU Distribution</div>
+    <div class="bar-container" style="height: 28px; border-radius: 6px;">
+      <div class="bar-segment" style="width:32.8%;background:#23201F;" title="LAF: 310"></div>
+      <div class="bar-segment" style="width:27.1%;background:#9D3F0D;" title="Disc Jockey: 256"></div>
+      <div class="bar-segment" style="width:16.8%;background:#B597E8;" title="WebAmi: 159"></div>
+      <div class="bar-segment" style="width:7.8%;background:#B0CBE8;" title="MBI: 74"></div>
+      <div class="bar-segment" style="width:7.3%;background:#FFF5C4;" title="Modulor: 69"></div>
+      <div class="bar-segment" style="width:4.2%;background:#E8E5DF;" title="EbO: 40"></div>
+      <div class="bar-segment" style="width:2.0%;background:#d4d0cc;" title="Other: 19+15+4"></div>
+    </div>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:#23201F;"></span>LAF (310)</span>
+      <span><span class="legend-dot" style="background:#9D3F0D;"></span>Disc Jockey (256)</span>
+      <span><span class="legend-dot" style="background:#B597E8;"></span>WebAmi (159)</span>
+      <span><span class="legend-dot" style="background:#B0CBE8;"></span>MBI (74)</span>
+      <span><span class="legend-dot" style="background:#FFF5C4;border:1px solid #ddd;"></span>Modulor (69)</span>
+      <span><span class="legend-dot" style="background:#E8E5DF;"></span>EbO (40)</span>
+      <span><span class="legend-dot" style="background:#d4d0cc;"></span>Other (38)</span>
+    </div>
+
+    <table style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Supplier</th>
+          <th class="right">SKUs</th>
+          <th class="right">Share</th>
+          <th class="right">Avg Cost</th>
+          <th class="right">Avg Price</th>
+          <th class="right">Margin</th>
+          <th>Catalog Size</th>
+          <th>Strengths</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Little Amber Fish</strong></td>
+          <td class="right">310</td>
+          <td class="right">33%</td>
+          <td class="right">AED 105</td>
+          <td class="right">AED 191</td>
+          <td class="right"><span class="badge badge-green">45%</span></td>
+          <td>62,122 titles</td>
+          <td>Widest catalog. UK-based. Cheapest on most titles.</td>
+        </tr>
+        <tr>
+          <td><strong>Disc Jockey</strong></td>
+          <td class="right">256</td>
+          <td class="right">27%</td>
+          <td class="right">AED 0</td>
+          <td class="right">AED 160</td>
+          <td class="right"><span class="badge badge-green">100%</span></td>
+          <td>Heritage</td>
+          <td>Family inventory. Zero cost. Pre-loved gems. 50yr legacy.</td>
+        </tr>
+        <tr>
+          <td><strong>WebAmi</strong></td>
+          <td class="right">159</td>
+          <td class="right">17%</td>
+          <td class="right">AED 98</td>
+          <td class="right">AED 186</td>
+          <td class="right"><span class="badge badge-green">47%</span></td>
+          <td>46,710 titles</td>
+          <td>Good for classics. Fast shipping. Higher prices than LAF.</td>
+        </tr>
+        <tr>
+          <td><strong>MBI</strong></td>
+          <td class="right">74</td>
+          <td class="right">8%</td>
+          <td class="right">AED 100</td>
+          <td class="right">AED 160</td>
+          <td class="right"><span class="badge badge-yellow">38%</span></td>
+          <td>Regional</td>
+          <td>Arabic titles (Elissa, Wael Kfoury). Dubai-based.</td>
+        </tr>
+        <tr>
+          <td><strong>Modulor</strong></td>
+          <td class="right">69</td>
+          <td class="right">7%</td>
+          <td class="right">AED 70</td>
+          <td class="right">AED 200</td>
+          <td class="right"><span class="badge badge-green">65%</span></td>
+          <td>Niche</td>
+          <td>Wewantsounds (Fairuz, Ziad). Best margins. Arabic monopoly.</td>
+        </tr>
+        <tr>
+          <td><strong>Even by Odd</strong></td>
+          <td class="right">40</td>
+          <td class="right">4%</td>
+          <td class="right">AED 95</td>
+          <td class="right">AED 178</td>
+          <td class="right"><span class="badge badge-green">47%</span></td>
+          <td>Mid</td>
+          <td>UK indie. Competitive on select titles.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- COST COMPARISON: LAF vs WebAmi -->
+<div class="section">
+  <div class="section-title">LAF vs WebAmi &mdash; Head-to-Head</div>
+  <div class="card">
+    <div class="kpi-grid" style="margin-bottom: 16px;">
+      <div class="kpi" style="border-left: 3px solid #23201F;">
+        <div class="kpi-value" style="color: var(--green);">78%</div>
+        <div class="kpi-label">LAF Cheaper</div>
+        <div class="kpi-sub">of 18,671 shared titles</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">15%</div>
+        <div class="kpi-label">WebAmi Cheaper</div>
+        <div class="kpi-sub">mostly box sets</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">7%</div>
+        <div class="kpi-label">Same Price</div>
+        <div class="kpi-sub">within &pound;0.50</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">&pound;2.40</div>
+        <div class="kpi-label">Avg Savings</div>
+        <div class="kpi-sub">per unit via LAF</div>
+      </div>
+    </div>
+
+    <div class="callout callout-green">
+      <strong>Rule of thumb:</strong> Default to LAF for all orders. Only use WebAmi for titles LAF doesn't carry (Omar Souleyman, some jazz, selected box sets where WebAmi is cheaper).
+    </div>
+  </div>
+</div>
+
+<!-- BEST SELLERS & RESTOCK -->
+<div class="section">
+  <div class="section-title">Top Sellers &mdash; Restock Priority</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Artist</th>
+          <th>Album</th>
+          <th class="right">Units Sold</th>
+          <th class="right">Stock Left</th>
+          <th>Source</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Ziad Rahbani</strong></td>
+          <td>Houdou Nisbi</td>
+          <td class="right">13</td>
+          <td class="right" style="color:var(--red);">0</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-red">Out of stock</span></td>
+        </tr>
+        <tr>
+          <td><strong>Ziad Rahbani</strong></td>
+          <td>Bennesbeh Labokra</td>
+          <td class="right">9</td>
+          <td class="right" style="color:var(--yellow);">1</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-red">Critical</span></td>
+        </tr>
+        <tr>
+          <td><strong>Ziad Rahbani</strong></td>
+          <td>Abu Ali</td>
+          <td class="right">7</td>
+          <td class="right">4</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-yellow">Low</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fairuz</strong></td>
+          <td>Wahdon</td>
+          <td class="right">7</td>
+          <td class="right">2</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-yellow">Low</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sade</strong></td>
+          <td>Best Of Sade</td>
+          <td class="right">5</td>
+          <td class="right" style="color:var(--red);">0</td>
+          <td>LAF / WebAmi</td>
+          <td><span class="badge badge-red">Out of stock</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fairuz</strong></td>
+          <td>Kifak Inta</td>
+          <td class="right">5</td>
+          <td class="right">2</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-yellow">Low</span></td>
+        </tr>
+        <tr>
+          <td><strong>Tame Impala</strong></td>
+          <td>Currents (2LP)</td>
+          <td class="right">4</td>
+          <td class="right" style="color:var(--yellow);">1</td>
+          <td>LAF &pound;14.99</td>
+          <td><span class="badge badge-red">Critical</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fairuz</strong></td>
+          <td>Chat Iskandaria</td>
+          <td class="right">4</td>
+          <td class="right">2</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-yellow">Low</span></td>
+        </tr>
+        <tr>
+          <td><strong>Omar Khorshid</strong></td>
+          <td>With Love Vol. 1</td>
+          <td class="right">4</td>
+          <td class="right" style="color:var(--red);">0</td>
+          <td>Modulor</td>
+          <td><span class="badge badge-red">Out of stock</span></td>
+        </tr>
+        <tr>
+          <td><strong>Kanye West</strong></td>
+          <td>MBDTF (3LP)</td>
+          <td class="right">4</td>
+          <td class="right" style="color:var(--red);">0</td>
+          <td>LAF &pound;29.50</td>
+          <td><span class="badge badge-red">Out of stock</span></td>
+        </tr>
+        <tr>
+          <td><strong>Pink Floyd</strong></td>
+          <td>Dark Side Of The Moon</td>
+          <td class="right">3</td>
+          <td class="right">3</td>
+          <td>WebAmi</td>
+          <td><span class="badge badge-green">OK</span></td>
+        </tr>
+        <tr>
+          <td><strong>Hans Zimmer</strong></td>
+          <td>The Classics (2LP)</td>
+          <td class="right">3</td>
+          <td class="right" style="color:var(--red);">0</td>
+          <td>LAF</td>
+          <td><span class="badge badge-red">Out of stock</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fleetwood Mac</strong></td>
+          <td>Rumours</td>
+          <td class="right">3</td>
+          <td class="right" style="color:var(--red);">0</td>
+          <td>LAF / WebAmi</td>
+          <td><span class="badge badge-red">Out of stock</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-yellow" style="margin-top: 16px;">
+      <strong>Arabic vinyl = 40% of all units sold.</strong> Ziad Rahbani alone accounts for 29 units across 3 albums. Modulor is sole source. Wewantsounds order (132 titles) incoming will replenish.
+    </div>
+  </div>
+</div>
+
+<!-- MARGIN ANALYSIS BY SUPPLIER -->
+<div class="section">
+  <div class="section-title">Margin Analysis by Source</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Supplier</th>
+          <th class="right">Avg Cost</th>
+          <th class="right">Avg Sell</th>
+          <th class="right">Gross Margin</th>
+          <th class="right">Profit/Unit</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: var(--green-bg);">
+          <td><strong>Disc Jockey</strong></td>
+          <td class="right">AED 0</td>
+          <td class="right">AED 160</td>
+          <td class="right"><strong>100%</strong></td>
+          <td class="right"><strong>AED 160</strong></td>
+          <td>Family heritage. Pure profit. Finite supply.</td>
+        </tr>
+        <tr style="background: var(--green-bg);">
+          <td><strong>Modulor</strong></td>
+          <td class="right">AED 70</td>
+          <td class="right">AED 200</td>
+          <td class="right"><strong>65%</strong></td>
+          <td class="right"><strong>AED 130</strong></td>
+          <td>Arabic vinyl monopoly. Highest margin on new stock.</td>
+        </tr>
+        <tr>
+          <td><strong>EbO</strong></td>
+          <td class="right">AED 95</td>
+          <td class="right">AED 178</td>
+          <td class="right">47%</td>
+          <td class="right">AED 83</td>
+          <td>Competitive on select titles vs LAF.</td>
+        </tr>
+        <tr>
+          <td><strong>WebAmi</strong></td>
+          <td class="right">AED 98</td>
+          <td class="right">AED 186</td>
+          <td class="right">47%</td>
+          <td class="right">AED 88</td>
+          <td>Good margins but usually more expensive than LAF.</td>
+        </tr>
+        <tr>
+          <td><strong>LAF</strong></td>
+          <td class="right">AED 105</td>
+          <td class="right">AED 191</td>
+          <td class="right">45%</td>
+          <td class="right">AED 86</td>
+          <td>Cheapest per unit on 78% of overlapping titles.</td>
+        </tr>
+        <tr>
+          <td><strong>MBI</strong></td>
+          <td class="right">AED 100</td>
+          <td class="right">AED 160</td>
+          <td class="right">38%</td>
+          <td class="right">AED 60</td>
+          <td>Arabic mainstream (Elissa, Wael). Lowest margins.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ORDERING RULES -->
+<div class="section">
+  <div class="section-title">Ordering Decision Matrix</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Default Supplier</th>
+          <th>Why</th>
+          <th>Exception</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Western mainstream</strong><br><span style="font-size:11px;color:var(--dim);">Rock, pop, hip-hop, indie</span></td>
+          <td><strong>LAF</strong></td>
+          <td>Cheapest 78% of the time. Widest catalog.</td>
+          <td>Check WebAmi for box sets, deluxe editions</td>
+        </tr>
+        <tr>
+          <td><strong>Arabic vinyl</strong><br><span style="font-size:11px;color:var(--dim);">Fairuz, Ziad, Warda, Khorshid</span></td>
+          <td><strong>Modulor</strong></td>
+          <td>Sole Wewantsounds source. AED 70 cost, AED 200 sell. 65% margin.</td>
+          <td>MBI for Elissa, Wael Kfoury, mainstream Arabic</td>
+        </tr>
+        <tr>
+          <td><strong>Japanese / world</strong><br><span style="font-size:11px;color:var(--dim);">City pop, Tokyo comps</span></td>
+          <td><strong>Modulor</strong></td>
+          <td>Exclusive Wewantsounds pressings. Same 65% margin.</td>
+          <td>&mdash;</td>
+        </tr>
+        <tr>
+          <td><strong>Pre-loved / vintage</strong></td>
+          <td><strong>Disc Jockey</strong></td>
+          <td>Zero cost. 100% margin. Heritage credibility.</td>
+          <td>Finite &mdash; cannot reorder</td>
+        </tr>
+        <tr>
+          <td><strong>Niche indie labels</strong><br><span style="font-size:11px;color:var(--dim);">Habibi Funk, Crammed, Sublime Freq</span></td>
+          <td><strong>EbO or LAF</strong></td>
+          <td>Compare per title. EbO wins on some indies.</td>
+          <td>Check both catalogs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CATALOG SIZE -->
+<div class="section">
+  <div class="section-title">Supplier Catalog Depth</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Supplier</th>
+          <th class="right">Catalog Size</th>
+          <th class="right">In UF Inventory</th>
+          <th class="right">Penetration</th>
+          <th>Opportunity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>LAF</strong></td>
+          <td class="right">62,122</td>
+          <td class="right">310</td>
+          <td class="right">0.5%</td>
+          <td>Massive untapped. Hip-hop, indie, electronic &mdash; all available.</td>
+        </tr>
+        <tr>
+          <td><strong>WebAmi</strong></td>
+          <td class="right">46,710</td>
+          <td class="right">159</td>
+          <td class="right">0.3%</td>
+          <td>Use for titles LAF doesn't stock. Overlap: 18,671 shared.</td>
+        </tr>
+        <tr>
+          <td><strong>Modulor</strong></td>
+          <td class="right">~5,000</td>
+          <td class="right">69</td>
+          <td class="right">1.4%</td>
+          <td>132-title Wewantsounds order incoming. Arabic + Japanese.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:32px 0 0;color:var(--dim2);font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">
+  Supplier Intelligence &middot; Auto-updates every 5 min &middot; unfamiliarfamiliar.com
+</div>
+
+</div>
+</body>
+</html>

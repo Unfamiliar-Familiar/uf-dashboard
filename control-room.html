@@ -29,8 +29,18 @@ table{width:100%;border-collapse:collapse;font-size:13px}thead th{text-align:lef
 <div class="header"><div class="header-left"><h1>Control Room <span>— Unfamiliar Familiar</span></h1><div class="meta">Live data &middot; Auto-updates every 5 min</div></div><div class="nav-pills"><a class="nav-pill" href="seo-intelligence.html">SEO</a><a class="nav-pill" href="supplier-intelligence.html">Suppliers</a><a class="nav-pill" href="distribution-strategy.html">Distribution</a><a class="nav-pill" href="founder-story.html">Story</a></div></div>
 
 <div class="section"><div class="section-title">Key Metrics</div><div class="kpi-grid">
-<div class="kpi"><div class="kpi-label">Total Revenue</div><div class="kpi-value">AED 54,732</div><div class="kpi-sub">97 paid orders</div></div>
-<div class="kpi"><div class="kpi-label">April MTD</div><div class="kpi-value">0</div><div class="kpi-sub">AED &middot; 0 orders</div><div class="kpi-delta up">+-100% vs Mar</div></div>
+<div class="kpi" style="position:relative;">
+<div class="kpi-label">Monthly Revenue</div>
+<select id="monthSelect" onchange="updateMonth()" style="position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:9px;background:var(--card);color:var(--dim);border:1px solid var(--border);border-radius:4px;padding:2px 6px;cursor:pointer;">
+<option value="2026-02">February 2026 — 12 orders, AED 15,391</option>
+<option value="2026-03">March 2026 — 7 orders, AED 4,885</option>
+<option value="2026-04">April 2026 — 78 orders, AED 34,456</option>
+
+</select>
+<div class="kpi-value" id="monthRev">0</div>
+<div class="kpi-sub" id="monthSub">AED &middot; 0 orders</div>
+<div class="kpi-delta up" id="monthDelta" style="cursor:pointer;" onclick="toggleOrders()">click to see orders</div>
+</div>
 <div class="kpi"><div class="kpi-label">Online AOV</div><div class="kpi-value">AED 1,099</div><div class="kpi-sub">14 online orders</div></div>
 <div class="kpi"><div class="kpi-label">Walk-in AOV</div><div class="kpi-value">AED 474</div><div class="kpi-sub">83 walk-in orders</div></div>
 <div class="kpi"><div class="kpi-label">Catalogue</div><div class="kpi-value">935</div><div class="kpi-sub">SKUs &middot; 1,440 units</div></div>
@@ -107,6 +117,316 @@ table{width:100%;border-collapse:collapse;font-size:13px}thead th{text-align:lef
 <tr><td><strong>Frank Ocean</strong></td><td class="r">2</td><td class="r">12</td><td class="r">AED 4,500</td><td><span class="badge b-blue">ARRIVING</span></td></tr>
 <tr class="total-row"><td><strong>Total</strong></td><td class="r"><strong>653+</strong></td><td class="r"><strong>674+</strong></td><td class="r"><strong>~AED 53K</strong></td><td></td></tr>
 </tbody></table></div></div>
+
+
+<div id="ordersPopup" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:999;overflow-y:auto;padding:40px 20px;" onclick="if(event.target===this)toggleOrders()">
+<div style="max-width:800px;margin:0 auto;background:var(--card);border-radius:10px;padding:24px;border:1px solid var(--border);">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+<span style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);">ORDERS</span>
+<span onclick="toggleOrders()" style="cursor:pointer;color:var(--dim);font-size:20px;">&times;</span>
+</div>
+<table id="ordersTable"><thead><tr><th>Order</th><th>Customer</th><th>Date</th><th class="r">Total</th></tr></thead>
+<tbody id="ordersBody"></tbody></table>
+</div>
+</div>
+
+<div class="section"><div class="section-title">Stock Alerts &mdash; Sold Out &amp; Last Copy</div>
+<div class="card">
+<div style="font-size:11px;color:var(--dim);font-family:var(--mono);margin-bottom:12px;">SOLD OUT: 133 &middot; LAST COPY: 2 &middot; with supplier availability</div>
+<table>
+<thead><tr><th>Artist</th><th>Album</th><th>Status</th><th class="r">LAF</th><th class="r">WebAmi</th><th>Suggested</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>2Pac</strong></td>
+<td>Strictly 4 My N.I.G.G.A.Z...</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>ABBA</strong></td>
+<td>Gold (2LP BLACK) / ABBA / Gold</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>AMMAR EL SHEREI (AKA O</strong></td>
+<td>MUSIC FROM THE EAST / AMMAR EL</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">YES</td>
+<td><span class="badge b-green">Modulor</span></td>
+</tr>
+<tr>
+<td><strong>ARAB STAR</strong></td>
+<td>EGYPTIAN MIX</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Abba</strong></td>
+<td>Gold (2LP / GF / PIC DISC / 30</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Abdel Halim Hafez, عبد</strong></td>
+<td>Abdel Halim Hafez Golden Colle</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Abdel Halim Hafez, عبد</strong></td>
+<td>حاول تفتكرني = Hawel Teftekern</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Al Jarreau</strong></td>
+<td>Breakin' Away</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Alice In Chains</strong></td>
+<td>Jar Of Flies</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Amy Winehouse</strong></td>
+<td>Back To Black</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Arctic Monkeys</strong></td>
+<td>AM</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">YES</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Ariana Grande</strong></td>
+<td>Thank U, Next (2LP) / Grande, </td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Armin Van Buuren</strong></td>
+<td>In and Out Of Love (12" EP Aqu</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Assi El Helani, عاصي ا</strong></td>
+<td>Best of Assi El Hallani</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Bad Company</strong></td>
+<td>Bad Co</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Barry White</strong></td>
+<td>Let The Music Play</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Beyoncé</strong></td>
+<td>Lemonade</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">YES</td>
+<td><span class="badge b-green">WebAmi</span></td>
+</tr>
+<tr>
+<td><strong>Billy Cobham</strong></td>
+<td>Magic</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Bob Dylan</strong></td>
+<td>Blonde On Blonde</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Bob Marley & The Waile</strong></td>
+<td>Survival</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Bob Marley & The Waile</strong></td>
+<td>Legend (The Best Of Bob Marley</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Bob Marley & The Waile</strong></td>
+<td>Survival (1LP) / Bob Marley & </td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">YES</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Boney M.</strong></td>
+<td>Oceans Of Fantasy</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Bruno Mars</strong></td>
+<td>24K Magic(1LP / GF / CRYSTAL C</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Burna Boy</strong></td>
+<td>No Sign Of Weakness</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Cat Stevens</strong></td>
+<td>Tea For The Tillerman</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Chic</strong></td>
+<td>Tongue In Chic</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Chic</strong></td>
+<td>Believer</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+<tr>
+<td><strong>Coldplay</strong></td>
+<td>Parachutes</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">—</td>
+<td class="r">YES</td>
+<td><span class="badge b-green">WebAmi</span></td>
+</tr>
+<tr>
+<td><strong>Coldplay</strong></td>
+<td>A Head Full Of Dreams</td>
+<td><span class="badge b-red">SOLD OUT</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Arctic Monkeys</strong></td>
+<td>Whatever People Say I Am, That</td>
+<td><span class="badge b-yellow">LAST COPY</span></td>
+<td class="r">YES</td>
+<td class="r">—</td>
+<td><span class="badge b-green">LAF</span></td>
+</tr>
+<tr>
+<td><strong>Omar Khorshid</strong></td>
+<td>Omar Khorshid With Love Vol. 1</td>
+<td><span class="badge b-yellow">LAST COPY</span></td>
+<td class="r">—</td>
+<td class="r">—</td>
+<td><span class="badge b-green">—</span></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+<script>
+var orderData = {"2026-02": [{"num": "GFT-260227-2413", "name": "Disc Jockey Music Store", "total": 0, "date": "2026-02-27"}, {"num": "UF-260227-6214", "name": "Fares vinyls", "total": 486, "date": "2026-02-27"}, {"num": "UF-260226-7283", "name": "Fares Serhan", "total": 305, "date": "2026-02-26"}, {"num": "UF-260222-1584", "name": "Vinyl Souk", "total": 188, "date": "2026-02-22"}, {"num": "GFT-260222-6875", "name": "John", "total": 0, "date": "2026-02-22"}, {"num": "UF-260222-5708", "name": "Vinyl Souk", "total": 10341, "date": "2026-02-22"}, {"num": "GFT-260222-6819", "name": "Disc Jockey Music Store", "total": 0, "date": "2026-02-22"}, {"num": "GFT-260221-5713", "name": "Disc Jockey Music Store", "total": 0, "date": "2026-02-21"}, {"num": "UF-260221-4590", "name": "Mohamed Kurdi", "total": 1600, "date": "2026-02-21"}, {"num": "UF-260221-9805", "name": "Ala", "total": 796, "date": "2026-02-21"}, {"num": "UF-260219-5833", "name": "Mohamed Kurdi", "total": 1480, "date": "2026-02-19"}, {"num": "UF-1004", "name": "James Wilson", "total": 195, "date": "2026-02-01"}], "2026-03": [{"num": "GFT-260326-1831", "name": "Nader - Tribe w noss", "total": 0, "date": "2026-03-26"}, {"num": "GFT-260325-1757", "name": "Samer & Nawal first order gift", "total": 0, "date": "2026-03-25"}, {"num": "UF-260323-6276", "name": "Nawal Hilal", "total": 1057, "date": "2026-03-23"}, {"num": "UF-260315-2600", "name": "Fares Serhan", "total": 1072, "date": "2026-03-15"}, {"num": "UF-260313-5682", "name": "Jasem Almulla", "total": 840, "date": "2026-03-13"}, {"num": "UF-260309-9914", "name": "\u00c1lvaro Jim\u00e9nez Bejarano", "total": 871, "date": "2026-03-09"}, {"num": "UF-260307-3555", "name": "Cecilio", "total": 1045, "date": "2026-03-07"}], "2026-04": [{"num": "GFT-260430-4543", "name": "Khalil", "total": 0, "date": "2026-04-30"}, {"num": "UF-260429-1690", "name": "Ruth Essam", "total": 767, "date": "2026-04-29"}, {"num": "UF-260427-7264", "name": "Meera AlSuwaidi", "total": 859, "date": "2026-04-27"}, {"num": "GFT-260426-3160", "name": "Peter Abou Hachem", "total": 0, "date": "2026-04-26"}, {"num": "GFT-260425-8580", "name": "Peter Abou Hachem", "total": 0, "date": "2026-04-25"}, {"num": "UF-260425-1351", "name": "abmullumba@gmail.com", "total": 125, "date": "2026-04-25"}, {"num": "UF-260424-1766", "name": "Michele Abi Hable Abi Hable", "total": 770, "date": "2026-04-24"}, {"num": "UF-260423-7592", "name": "john paulo lumba", "total": 759, "date": "2026-04-23"}, {"num": "UF-260422-7373", "name": "Brendan Gow", "total": 1854, "date": "2026-04-22"}, {"num": "UF-260421-6939", "name": "Brendan Gow", "total": 3553, "date": "2026-04-21"}, {"num": "GFT-260419-3792", "name": "Cheb Moha", "total": 0, "date": "2026-04-19"}, {"num": "GFT-260419-2737", "name": "Jayesh Vinyl Souk", "total": 0, "date": "2026-04-19"}, {"num": "GFT-260419-7872", "name": "Cheb Moha", "total": 0, "date": "2026-04-19"}, {"num": "UF-260419-7349", "name": "Sara Dweik", "total": 200, "date": "2026-04-19"}, {"num": "UF-260419-4007", "name": "Shabab pop up", "total": 140, "date": "2026-04-19"}, {"num": "UF-260419-5084", "name": "Shabab pop up", "total": 200, "date": "2026-04-19"}, {"num": "UF-260419-6671", "name": "Jad abi Haidar", "total": 130, "date": "2026-04-19"}, {"num": "UF-260418-7373", "name": "Walk-in Customer", "total": 140, "date": "2026-04-18"}, {"num": "UF-260418-1075", "name": "Walk-in Customer", "total": 200, "date": "2026-04-18"}, {"num": "UF-260418-9227", "name": "Walk-in Customer", "total": 196, "date": "2026-04-18"}, {"num": "UF-260418-6401", "name": "Walk-in Customer", "total": 324, "date": "2026-04-18"}, {"num": "UF-260418-1190", "name": "Walk-in Customer", "total": 217, "date": "2026-04-18"}, {"num": "UF-260418-3334", "name": "Patrick Hobeika", "total": 1650, "date": "2026-04-18"}, {"num": "UF-260418-1970", "name": "Walk-in Customer", "total": 143, "date": "2026-04-18"}, {"num": "UF-260418-6498", "name": "Walk-in Customer", "total": 232, "date": "2026-04-18"}, {"num": "UF-260418-7034", "name": "Walk-in Customer", "total": 191, "date": "2026-04-18"}, {"num": "UF-260418-1138", "name": "Walk-in Customer", "total": 328, "date": "2026-04-18"}, {"num": "UF-260418-2643", "name": "Walk-in Customer", "total": 200, "date": "2026-04-18"}, {"num": "UF-260418-4974", "name": "Walk-in Customer", "total": 1280, "date": "2026-04-18"}, {"num": "UF-260418-4490", "name": "Walk-in Customer", "total": 164, "date": "2026-04-18"}, {"num": "UF-260418-1607", "name": "Walk-in Customer", "total": 681, "date": "2026-04-18"}, {"num": "UF-260418-3770", "name": "Walk-in Customer", "total": 534, "date": "2026-04-18"}, {"num": "UF-260418-1959", "name": "Walk-in Customer", "total": 534, "date": "2026-04-18"}, {"num": "UF-260418-3780", "name": "Walk-in Customer", "total": 110, "date": "2026-04-18"}, {"num": "UF-260418-2272", "name": "Walk-in Customer", "total": 559, "date": "2026-04-18"}, {"num": "UF-260418-2978", "name": "Walk-in Customer", "total": 184, "date": "2026-04-18"}, {"num": "UF-260418-2413", "name": "Walk-in Customer", "total": 379, "date": "2026-04-18"}, {"num": "UF-260418-2116", "name": "Walk-in Customer", "total": 413, "date": "2026-04-18"}, {"num": "UF-260418-6180", "name": "Walk-in Customer", "total": 752, "date": "2026-04-18"}, {"num": "UF-260418-9457", "name": "Walk-in Customer", "total": 738, "date": "2026-04-18"}, {"num": "UF-260418-2784", "name": "Walk-in Customer", "total": 191, "date": "2026-04-18"}, {"num": "UF-260418-6024", "name": "Walk-in Customer", "total": 576, "date": "2026-04-18"}, {"num": "UF-260418-8984", "name": "Walk-in Customer", "total": 332, "date": "2026-04-18"}, {"num": "UF-260418-1243", "name": "Walk-in Customer", "total": 200, "date": "2026-04-18"}, {"num": "UF-260418-2081", "name": "Walk-in Customer", "total": 340, "date": "2026-04-18"}, {"num": "UF-260418-8777", "name": "Walk-in Customer", "total": 197, "date": "2026-04-18"}, {"num": "UF-260418-8932", "name": "ranggie chaninda", "total": 167, "date": "2026-04-18"}, {"num": "UF-260418-8578", "name": "Walk-in Customer", "total": 362, "date": "2026-04-18"}, {"num": "UF-260418-1039", "name": "Marise Mahfoud", "total": 191, "date": "2026-04-18"}, {"num": "UF-260418-3855", "name": "Walk-in Customer", "total": 1002, "date": "2026-04-18"}, {"num": "UF-260418-5394", "name": "Walk-in Customer", "total": 164, "date": "2026-04-18"}, {"num": "UF-260418-2372", "name": "Bruno", "total": 164, "date": "2026-04-18"}, {"num": "UF-260418-8466", "name": "Walk-in Customer", "total": 315, "date": "2026-04-18"}, {"num": "UF-260418-5782", "name": "Walk-in Customer", "total": 191, "date": "2026-04-18"}, {"num": "UF-260418-6573", "name": "Walk-in Customer", "total": 391, "date": "2026-04-18"}, {"num": "UF-260418-6060", "name": "Walk-in Customer", "total": 622, "date": "2026-04-18"}, {"num": "UF-260418-2560", "name": "Walk-in Customer", "total": 200, "date": "2026-04-18"}, {"num": "UF-260418-1883", "name": "Walk-in Customer", "total": 164, "date": "2026-04-18"}, {"num": "UF-260418-4520", "name": "Walk-in Customer", "total": 400, "date": "2026-04-18"}, {"num": "UF-260418-9466", "name": "Walk-in Customer", "total": 250, "date": "2026-04-18"}, {"num": "UF-260418-9255", "name": "Walk-in Customer", "total": 140, "date": "2026-04-18"}, {"num": "UF-260418-2633", "name": "Walk-in Customer", "total": 520, "date": "2026-04-18"}, {"num": "UF-260418-5317", "name": "Walk-in Customer", "total": 777, "date": "2026-04-18"}, {"num": "UF-260418-3771", "name": "Walk-in Customer", "total": 200, "date": "2026-04-18"}, {"num": "UF-260418-9810", "name": "Walk-in Customer", "total": 545, "date": "2026-04-18"}, {"num": "UF-260418-2805", "name": "Walk-in Customer", "total": 362, "date": "2026-04-18"}, {"num": "UF-260418-7648", "name": "Walk-in Customer", "total": 626, "date": "2026-04-18"}, {"num": "UF-260418-5881", "name": "Walk-in Customer", "total": 217, "date": "2026-04-18"}, {"num": "UF-260418-9562", "name": "Walk-in Customer", "total": 727, "date": "2026-04-18"}, {"num": "UF-260418-6461", "name": "Walk-in Customer", "total": 219, "date": "2026-04-18"}, {"num": "UF-260418-3158", "name": "Walk-in Customer", "total": 501, "date": "2026-04-18"}, {"num": "UF-260418-7610", "name": "Taima Baraz", "total": 160, "date": "2026-04-18"}, {"num": "UF-260415-1315", "name": "Thomas Van Mechelen", "total": 712, "date": "2026-04-15"}, {"num": "GFT-260411-8678", "name": "Fares", "total": 0, "date": "2026-04-11"}, {"num": "UF-260408-1981", "name": "Michel Bakouny", "total": 788, "date": "2026-04-08"}, {"num": "UF-260407-2900", "name": "Mustafa Ata", "total": 723, "date": "2026-04-07"}, {"num": "GFT-260403-2793", "name": "Fares Serhan", "total": 0, "date": "2026-04-03"}, {"num": "UF-260402-9752", "name": "nour el ali", "total": 1314, "date": "2026-04-02"}]};
+var monthSelect = document.getElementById("monthSelect");
+if(monthSelect) monthSelect.value = "2026-05";
+
+function updateMonth() {
+  var m = monthSelect.value;
+  var d = orderData[m] || [];
+  var rev = d.reduce(function(s,o){return s+o.total},0);
+  document.getElementById("monthRev").textContent = rev.toLocaleString();
+  document.getElementById("monthSub").textContent = "AED · " + d.length + " orders";
+}
+
+function toggleOrders() {
+  var popup = document.getElementById("ordersPopup");
+  if(popup.style.display === "none") {
+    var m = monthSelect.value;
+    var d = orderData[m] || [];
+    var tbody = document.getElementById("ordersBody");
+    tbody.innerHTML = "";
+    d.forEach(function(o) {
+      tbody.innerHTML += "<tr><td>"+o.num+"</td><td>"+o.name+"</td><td>"+o.date+"</td><td class='r'>AED "+o.total.toLocaleString()+"</td></tr>";
+    });
+    popup.style.display = "block";
+  } else {
+    popup.style.display = "none";
+  }
+}
+</script>
 
 <div class="section"><div class="section-title">Systems</div><div class="card"><table>
 <thead><tr><th>System</th><th>Status</th><th>Detail</th></tr></thead>
